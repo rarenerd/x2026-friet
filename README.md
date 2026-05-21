@@ -1,4 +1,4 @@
-# Friet from Desire
+# Friet van Desire
 
 A Commodore 64 SID remix project inspired by Gala's "Freed from Desire" (1996).
 
