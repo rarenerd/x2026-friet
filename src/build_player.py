@@ -70,41 +70,75 @@ def remap(src_beat):
 
 with open(LAYERS_PATH) as f:
     ly = yaml.safe_load(f)
-# song_layers.yaml stores lyrics with leading whitespace preserved (word
-# boundaries); melody_lyrics.yaml was an older stripped variant.
-syls = [{'beat': l['beat'], 'syllable': l['syllable'], 'pitch': 1}
+syls = [{'beat': l['beat'], 'syllable': l['syllable']}
         for l in ly.get('lyrics', [])]
-src_bpm = ly.get('source_bpm', 120)
-FRAMES_PER_BEAT = 50.0 * 60 / src_bpm   # 25 fr/beat at 120 BPM
 
-# Group syllables into lines using inter-syllable gaps > 1.5 beats.
-LINE_GAP_BEATS = 1.5
+# The standalone .prg embeds the FAST release SID; lyric frames must match
+# that tempo. Keep in sync with FAST_BPM in src/compose.py.
+FAST_BPM = 175
+FRAMES_PER_BEAT = 50.0 * 60 / FAST_BPM   # ≈ 17.14 fr/beat at 175 BPM
+
+# Group syllables into lines. A syllable is a line-start if it has no
+# leading space AND begins with a capital — Soft-Karaoke encodes word
+# starts as " word" but mid-word continuations as "ey" (lowercase), so
+# capital-without-space cleanly distinguishes "Na" (new line) from "ey"
+# (still inside "money"). Large beat gaps also force a break, to catch
+# silences between phrases.
+LINE_GAP_BEATS = 2.0
 lines = []
-cur_syls, cur_start = [], None
+cur_syls, cur_start, last_beat = [], None, None
 for s in syls:
-    if s['pitch'] is None: continue
-    if not cur_syls:
-        cur_syls, cur_start = [s], s['beat']
-        continue
-    if s['beat'] - cur_syls[-1]['beat'] > LINE_GAP_BEATS:
+    syl = s['syllable']
+    is_line_start = (not syl.startswith(' ')) and syl[:1].isupper()
+    big_gap = last_beat is not None and (s['beat'] - last_beat) > LINE_GAP_BEATS
+    if (is_line_start or big_gap) and cur_syls:
         lines.append((cur_start, cur_syls))
-        cur_syls, cur_start = [s], s['beat']
-    else:
-        cur_syls.append(s)
+        cur_syls, cur_start = [], None
+    if not cur_syls:
+        cur_start = s['beat']
+    cur_syls.append(s)
+    last_beat = s['beat']
 if cur_syls:
     lines.append((cur_start, cur_syls))
 
+# Word-wrap any line still > 40 cols. The screen row is 40 cols wide; the
+# .asm centres each event by `(40 - len) / 2`, which underflows for >40
+# and writes off the bottom of the screen. Emit each wrapped chunk as its
+# own event, spaced ~1 beat apart so it has time to read before the next
+# line replaces it.
+MAX_LINE_COLS = 40
+WRAP_BEAT_STEP = 1.0  # beat offset between successive wrapped chunks
+
+def wrap_text(text, width):
+    text = text.strip()
+    if len(text) <= width:
+        return [text]
+    chunks, cur = [], ''
+    for word in text.split(' '):
+        if not cur:
+            cur = word[:width]  # single word longer than width: hard-truncate
+        elif len(cur) + 1 + len(word) <= width:
+            cur += ' ' + word
+        else:
+            chunks.append(cur)
+            cur = word[:width]
+    if cur:
+        chunks.append(cur)
+    return chunks
+
 events = []   # (frame, text)
 for line_beat, ss in lines:
-    # Preserve the leading space the karaoke syllables sometimes embed (e.g.
-    # ' love' vs 'My'); when stitched together that gives proper word
-    # separation. Strip outer whitespace once.
     text = ''.join(s['syllable'] for s in ss).strip()
+    chunks = wrap_text(text, MAX_LINE_COLS)
     for out_beat in remap(line_beat):
-        events.append((int(round(out_beat * FRAMES_PER_BEAT)), text))
+        for i, chunk in enumerate(chunks):
+            events.append((
+                int(round((out_beat + i * WRAP_BEAT_STEP) * FRAMES_PER_BEAT)),
+                chunk,
+            ))
 events.sort()
 print(f"{len(syls)} syllables -> {len(lines)} lyric lines -> "
-      f"{len(events)} on-screen lyric updates")
+      f"{len(events)} on-screen lyric updates @ {FAST_BPM} BPM")
 
 # ---- Text -> C64 screen codes -----------------------------------------
 def to_screen(s, width=40):
