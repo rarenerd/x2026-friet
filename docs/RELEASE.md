@@ -10,12 +10,36 @@
 - **Format:** PSID v2 / `out/friet_clean.sid`
 - **Chip:** MOS 6581/8580 (PAL, 985 248 Hz)
 - **Player:** 50 Hz IRQ, init at $1000, play at $1003
-- **Length:** ~3 min 25 s (matches source MIDI; loops)
+- **Length:** **1:44** clean build (120 BPM), **1:11** HH build (175 BPM);
+  loops on reaching the end. See "Structure" below.
 
 ## Companion demo
 
 This SID will sound in deFEEST's X2026 demo, *"Kloten met de
 broodtrommel"* — see <https://github.com/annejan/outline26-claude-c64>.
+
+## Structure
+
+Compose-time segment map (`SEGMENTS` in `src/compose.py`) re-orders the
+source MIDI to fit a happy-hardcore arrangement:
+
+| #  | Segment         | Source-beat range | Beats |
+|----|-----------------|-------------------|-------|
+| 1  | Intro           | 0.0 → 21.5        | 21.5  |
+| 2  | Verse 1         | 21.5 → 54.5       | 33.0  |
+| 3  | Pre-chorus 1    | 54.5 → 88.0       | 33.5  |
+| 4  | Chorus 1        | 88.0 → 117.5      | 29.5  |
+| 5  | Post-chorus (Na-na) | 117.5 → 149.5 | 32.0  |
+| 6  | Chorus 2 reprise | 88.0 → 117.5     | 29.5  |
+| 7  | Chorus 3 reprise | 88.0 → 117.5     | 29.5  |
+|    | **Total**       |                   | **208.5** |
+
+Each chorus reprise (#6 and #7) replays the same source range as Chorus 1,
+so the vocal + bass + drum events are bar-for-bar identical. A synthetic
+crash-riser fires 3 beats before each chorus's output position so each
+one hits as a "drop". Verses 2 / Pre-chorus 2 / Instrumental break /
+Outro of the original arrangement are NOT used — they don't fit the HH
+form factor.
 
 ## Arrangement (current build)
 

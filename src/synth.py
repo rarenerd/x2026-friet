@@ -35,10 +35,12 @@ DRUM_KIT = {
     'kick':  (2,  6, 0x09, 0x00),   # decay 720 ms — full "boom" body
     'snare': (36, 5, 0x07, 0x00),   # decay 168 ms — sharp snap
     'hat':   (78, 2, 0x02, 0x00),   # decay  24 ms — tick
-    'crash': (60, 70, 0x0B, 0xC4),  # ~800 ms slow attack -> sustained at $C
-                                     # -> short release. Proper SWELL: you hear
-                                     # the noise *rise* into the next section
-                                     # instead of a quick tick.
+    'crash': (40, 130, 0x0D, 0x08),  # ATTACK $D=3s but gated for 2.6s so the
+                                     # envelope only climbs to ~50% — quieter
+                                     # than the previous $F peak. Pitch index
+                                     # 40 (≈ MIDI 64) is lower-frequency noise
+                                     # (less "sssss", more "wwwoosh").
+                                     # Release $8 = 240 ms = clean tail.
 }
 
 NOTE_LO, NOTE_HI = 12, 119
@@ -177,6 +179,9 @@ ZP_CNT2 = $06
 ZP_FILT_CUR = $08
 ZP_FILT_TGT = $09
 ZP_V2_LAST = $0A         ; last lead note played (0 = rest); drives legato
+ZP_V2BASE_LO = $0B       ; V2 base freq lo (vibrato adds to this)
+ZP_V2BASE_HI = $0C       ; V2 base freq hi
+ZP_VIB_IDX   = $0D       ; vibrato LFO phase
 
 *=$1000
     jmp init_routine
@@ -240,6 +245,9 @@ init_clr:
     sta ZP_CNT2
     sta ZP_CNT2+1
     sta ZP_V2_LAST
+    sta ZP_V2BASE_LO
+    sta ZP_V2BASE_HI
+    sta ZP_VIB_IDX
     cli
     rts
 
@@ -248,6 +256,29 @@ play_routine:
     jsr tick1
     jsr tick2
     jsr filter_env
+    jsr apply_vibrato
+    rts
+
+; Add a small LFO to V2's base freq each frame so the vocal feels SUNG
+; rather than dead-pan. Skipped while V2 hasn't received a note yet
+; (base = 0) — otherwise the LFO wraps to ~$FFxx and we hear a ~4 kHz beep.
+apply_vibrato:
+    lda ZP_V2BASE_LO
+    ora ZP_V2BASE_HI
+    bne vib_active
+    rts
+vib_active:
+    inc ZP_VIB_IDX
+    lda ZP_VIB_IDX
+    and #$0F
+    tay
+    lda vib_lo,y
+    clc
+    adc ZP_V2BASE_LO
+    sta SID+7
+    lda vib_hi,y
+    adc ZP_V2BASE_HI
+    sta SID+8
     rts
 
 filter_env:
@@ -372,14 +403,17 @@ f1go:
     cmp #0
     beq f1rest_path
 
-    ; NOTE event — always set frequency
+    ; NOTE event — store BASE frequency; apply_vibrato writes SID+7/+8
+    ; each frame with base+LFO.
     tax                   ; X = note (preserve raw note for compare/stash)
     sec
     sbc #NOTE_LO
     tay
     lda freq_lo,y
-    sta SID+7
+    sta ZP_V2BASE_LO
+    sta SID+7             ; also write immediately for clean attack
     lda freq_hi,y
+    sta ZP_V2BASE_HI
     sta SID+8
 
     ; Legato decision:
@@ -488,6 +522,11 @@ f2done:
 
 {bytes_to_asm('freq_lo', freq_lo)}
 {bytes_to_asm('freq_hi', freq_hi)}
+
+; Vibrato LFO: 16-step zigzag, ±$06 freq units (~quarter-tone wobble at A4)
+; vib_hi is the sign-extended high byte so the 16-bit add carries correctly.
+{bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,2,4,6,6,4,2,0,0,-2,-4,-6,-6,-4,-2,0]])}
+{bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,2,4,6,6,4,2,0,0,-2,-4,-6,-6,-4,-2,0]])}
 {bytes_to_asm('v0_data', v1_data)}
 {bytes_to_asm('v1_data', v2_data)}
 {bytes_to_asm('v2_data', v3_data)}

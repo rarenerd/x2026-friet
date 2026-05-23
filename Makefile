@@ -26,11 +26,13 @@ CLEAN_SID := $(OUT_DIR)/friet_clean.sid
 CLEAN_MP3 := $(OUT_DIR)/friet_clean.mp3
 MELODY_SID := $(OUT_DIR)/friet_melody_only.sid
 MELODY_MP3 := $(OUT_DIR)/friet_melody_only.mp3
+HH_NEW_SID := $(OUT_DIR)/friet_hh.sid
+HH_NEW_MP3 := $(OUT_DIR)/friet_hh.mp3
 LAYERS    := docs/song_layers.yaml
 
 PREVIEW_SECONDS ?= 90
 
-all: clean-pipeline melody-only preview-clean preview-melody
+all: clean-pipeline melody-only hh-build preview-clean preview-melody preview-hh-new
 
 # --- research ----
 analyze:
@@ -80,6 +82,19 @@ $(MELODY_SID): $(SRC_DIR)/compose.py $(SRC_DIR)/synth.py $(SPEC) $(LAYERS)
 
 preview-melody: $(MELODY_MP3)
 $(MELODY_MP3): $(MELODY_SID)
+	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
+
+# Happy-hardcore tempo variant — same data, rendered at 170 BPM.
+hh-build: $(HH_NEW_SID)
+$(HH_NEW_SID): $(SRC_DIR)/compose.py $(SRC_DIR)/synth.py $(SPEC) $(LAYERS)
+	HH_TEMPO=1 $(PYTHON) $(SRC_DIR)/compose.py
+	$(PYTHON) $(SRC_DIR)/synth.py
+	cp $(CLEAN_SID) $@
+	$(PYTHON) $(SRC_DIR)/compose.py
+	$(PYTHON) $(SRC_DIR)/synth.py
+
+preview-hh-new: $(HH_NEW_MP3)
+$(HH_NEW_MP3): $(HH_NEW_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
 
 # --- previews ----
