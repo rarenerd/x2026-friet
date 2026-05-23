@@ -2,7 +2,8 @@
 """Phase 2 of the cleanroom pipeline.
 
 Reads docs/song_spec.yaml (the abstract spec) and writes
-docs/composition.yaml (a concrete arrangement in happy-hardcore style).
+docs/composition.yaml (a concrete arrangement in happy-hardcore style;
+175 BPM with hoover lead when FAST=1, source BPM otherwise).
 
 Cleanroom rule: this script must NEVER open or read any MIDI file. It only
 sees the structured spec produced by phase 1.
@@ -13,8 +14,8 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPEC_PATH = sys.argv[1] if len(sys.argv) > 1 else os.path.join(BASE, 'docs', 'song_spec.yaml')
 COMP_PATH = sys.argv[2] if len(sys.argv) > 2 else os.path.join(BASE, 'docs', 'composition.yaml')
 
-# Happy hardcore target tempo (most HH tunes sit at 170–180)
-HH_BPM        = 175
+# Fast / happy-hardcore target tempo (the genre sits at 170–180 BPM)
+FAST_BPM        = 175
 PAL_HZ        = 50.0
 
 # Set env var MELODY_ONLY=1 to render the vocal melody alone at source tempo
@@ -76,7 +77,7 @@ def main():
 
     random.seed(42)  # reproducible
 
-    bpm = HH_BPM
+    bpm = FAST_BPM
     fpbar = beats_to_frames(4, bpm)        # frames per 4/4 bar
     fpbeat = fpbar / 4
     fp16  = fpbar / 16
@@ -84,14 +85,14 @@ def main():
     root_pc = name_to_pc(spec['key']['root'])
     mode = spec['key']['mode']
     scale = SCALES.get(mode, SCALES['minor'])
-    bass_root = root_pc + 12 * 3   # D3-ish for HH bass
+    bass_root = root_pc + 12 * 3   # D3-ish bass register
     if bass_root < 36: bass_root = 36
-    # Use Dm pentatonic-ish for lead (cleaner happy-hardcore feel)
+    # Use Dm pentatonic-ish for lead (cleaner rave feel)
     lead_root_pc = root_pc
     melody_octave = 5  # E5/D5 range — bright lead
 
     # Section structure long enough to host the entire vocal melody (~88 bars
-    # at HH BPM, since the source MIDI's vocal track spans ~88 bars).
+    # at the fast BPM, since the source MIDI's vocal track spans ~88 bars).
     sections = [
         ('intro',     4, 0.6, 'pedal'),
         ('verse',    16, 0.7, 'pedal'),
@@ -114,8 +115,8 @@ def main():
 
     # ---- helpers ----
     # Happy hardcore canonical patterns. The spec's bass rhythm is FFD-flavoured
-    # (X..X..X.X..X..X.) which is not a HH bouncy bass — we use clean off-beat
-    # 8ths instead. The spec's kick (X...X...XX..X..X) IS a great syncopated HH
+    # (X..X..X.X..X..X.) which is not a bouncy rave bass — we use clean off-beat
+    # 8ths instead. The spec's kick (X...X...XX..X..X) IS a great syncopated rave
     # kick, so we keep it.
     bass_pat  = [2, 6, 10, 14]          # off-beat 8ths — the "bouncy" bass
     kick_pat  = pattern_to_positions(spec['elements']['drums'].get('kick',  'X...X...X...X...'))
@@ -192,11 +193,11 @@ def main():
         with open(layers_path) as f:
             layers = yaml.safe_load(f)
         source_bpm = float(layers.get('source_bpm', 120))
-        # HH_TEMPO=1 picks the happy-hardcore variant: 175 BPM, plus
+        # FAST=1 picks the happy-hardcore variant: 175 BPM, plus
         # arrangement changes downstream (off-beat 8th bass, denser drums,
         # saw lead throughout). Default is the song-faithful clean build.
-        HH_TEMPO = bool(os.environ.get('HH_TEMPO'))
-        play_bpm = (HH_BPM if HH_TEMPO else source_bpm)
+        FAST = bool(os.environ.get('FAST'))
+        play_bpm = (FAST_BPM if FAST else source_bpm)
         play_bpm_lead = play_bpm
         play_bpm_groove = play_bpm
         fbeat_lead   = beats_to_frames(1, play_bpm_lead)
@@ -204,7 +205,7 @@ def main():
 
         # ---- Vocal (V2 lead) -- T7 verbatim, remapped per segment ----
         # V2 timbre per section: triangle in verses (vocal-like), sawtooth in
-        # choruses/na-na (HH hoover with filter envelope), pulse in the
+        # choruses/na-na (hoover with filter envelope), pulse in the
         # final chorus 3 (climactic). The filter envelope in synth.py opens
         # on every note-on and closes over the note's life — the "wow".
         SECTION_LEAD_CTRL = {
@@ -228,9 +229,9 @@ def main():
                     'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
 
-        # ---- Bass (V1) -- T11 4-note hook (-12) throughout for HH bounce.
+        # ---- Bass (V1) -- T11 4-note hook (-12) throughout for rave bounce.
         # Generated from source-beat positions and remapped. T5's full
-        # bassline is dropped here — too dense for the HH vibe; the
+        # bassline is dropped here — too dense for the rave vibe; the
         # iconic 4-note pattern carries every section.
         if not MELODY_ONLY:
             t11 = layers['layers'].get('hook', [])
@@ -247,10 +248,10 @@ def main():
                     role = 'root' if int(n[2]) == 50 else 'third'  # 50 = D3 in src
                     unit.append((rel_b, n[1], role))
 
-                # Bass timbre per output section. HH variant goes punchy
+                # Bass timbre per output section. Fast variant goes punchy
                 # pulse everywhere (no soft triangles in verses); clean
                 # variant stays smooth in verses and climaxes on saw.
-                if HH_TEMPO:
+                if FAST:
                     SECTION_BASS_CTRL = {k: 0x40 for k in (
                         'intro','verse1','prechorus1','chorus1',
                         'postchorus_nana','breathe1','chorus2','breathe2','chorus3')}
@@ -289,11 +290,11 @@ def main():
                     bar = int((src_beat - CHORUS_ANCHOR) // 4) % 4
                     return CYCLE[bar]
 
-                # HH variant: replace the T11 hook rhythm with classic
-                # HH bouncy off-beat 8ths (a quarter-beat blip at the 'and'
+                # Fast variant: replace the T11 hook rhythm with classic
+                # rave bouncy off-beat 8ths (a quarter-beat blip at the 'and'
                 # of every beat). Clean variant keeps the T11 shape so the
                 # song still sounds like FFD.
-                if HH_TEMPO:
+                if FAST:
                     hh_unit = [
                         (0.5,  0.3, 'root'),
                         (1.5,  0.3, 'root'),
@@ -336,9 +337,9 @@ def main():
             (280.0,  'chorus2'),     # full kit, reprise
             (309.5,  'outro_na'),    # full kit through the na-na outro
         ]
-        # Per-section drum-kit filter (which kinds survive). HH variant
+        # Per-section drum-kit filter (which kinds survive). Fast variant
         # is rave-loud everywhere except the intro swell.
-        if HH_TEMPO:
+        if FAST:
             SECTION_KIT = {
                 'intro':       set(),
                 'verse1':      {'kick', 'snare', 'hat'},

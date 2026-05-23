@@ -43,9 +43,9 @@ Currently kick + clap (from compose's spec-driven 1-bar grid). Options:
 We dropped to source 130 BPM to recover the melody. The user originally wanted
 happy hardcore (170-180 BPM). Path forward:
 
-- Render two builds: `friet_clean.sid` (130 BPM, song-faithful) and
-  `friet_hh.sid` (175 BPM, rave). Use the same source data; only the BPM
-  parameter changes.
+- Render two builds: `friet_clean.sid` (130 BPM, song-faithful workstage)
+  and `friet.sid` (175 BPM, release). Same source data; only the BPM
+  parameter changes (set `FAST=1` for the release).
 - The vocal will sound faster (chipmunked) at 175 BPM but stays recognisable
   now that we have the right notes.
 
@@ -67,7 +67,7 @@ straight through. We can:
 - Drums: `src/compose.py` — section loop's `drum_events.append(...)` paths.
   T13 verbatim path is not implemented yet; would need extending
   `extract_patterns.py` to dump T13 events to `song_layers.yaml`.
-- Tempo: `src/compose.py` — `HH_BPM` / `play_bpm_*` and the MELODY_ONLY env.
+- Tempo: `src/compose.py` — `FAST_BPM` / `play_bpm_*` and the MELODY_ONLY env.
 - Structure: `src/compose.py` — `sections` template + the bar loop.
 
 ## Suggested order
@@ -90,9 +90,22 @@ straight through. We can:
    Re-enable apply_vibrato with subtle depth (±$06 on freq) so syllables
    feel sung. Was disabled when we ripped out the filter; bring it back
    safely with the "skip when V2BASE = 0" guard.
-6. 🟡 **HH tempo variant** — TODO. Render the same data at 170 BPM
-   (sped up 1.3×) as `out/friet_hh.sid` while keeping `friet_clean.sid`
-   at the song-faithful 130 BPM.
+6. ✅ **Fast tempo variant** — done. `FAST=1 compose.py` renders the
+   same data at 175 BPM into `out/friet.sid` (the release); the
+   workstage `friet_clean.sid` stays at the song-faithful 130 BPM.
 7. 🟡 **Reprise / dynamics push** — TODO. Once verses are light and
    choruses heavy, see if Chorus 2 should hit even harder than Chorus 1
    (e.g. crash swell preceding it, hat density up).
+8. 🟡 **TL-Buis lyrics in the standalone .prg ticker** — TODO. The
+   ticker in `out/friet.prg` currently reads the English Soft-Karaoke
+   syllables from `docs/song_layers.yaml` (verbatim source MIDI). The
+   Dutch demoscene parody by TL-Buis lives in `docs/lyrics.md` as full
+   lines — not aligned to T7 note positions. Wiring it in needs:
+   - a per-line timing table that maps each Dutch line to a beat offset
+     in the OUTPUT timeline (the SEGMENTS map in `build_player.py`),
+     not the source-MIDI timeline;
+   - a yaml/json file alongside `lyrics.md` with `{beat: float, text:
+     str}` rows, fed into `build_player.py` instead of (or alongside)
+     `song_layers.yaml`;
+   - a decision on whether to keep the English syllable ticker as a
+     fallback for the workstage builds.

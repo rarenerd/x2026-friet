@@ -55,12 +55,6 @@ Plus the verified ground truth in `docs/song_layers.yaml`:
 syllable markers from T2 align note-for-note to T7's pitches — that's how
 we know T7 is genuinely the vocal melody and not a counter-line.
 
-### Legacy scripts (kept for reference)
-
-- **`src/midi2sid.py`** — early direct port.
-- **`src/midi2sid_hh.py`** — early happy-hardcore pass with generated drums.
-  Useful for comparison; not on the maintained pipeline.
-
 ## Source-MIDI roles (from `analyze_midi.py`)
 
 | Track | Range  | Role                                                      |
@@ -100,9 +94,9 @@ we know T7 is genuinely the vocal melody and not a counter-line.
    foundational pattern.
 7. **Don't try to play different layers at different tempos** ("half-time
    vocal over double-time drums"). The bar lengths diverge and section
-   timings stop aligning. Pick ONE BPM and render everything to it. We
-   currently use source 130 BPM globally; a `friet_hh.sid` variant at 170
-   BPM is on the polish plan.
+   timings stop aligning. Pick ONE BPM and render everything to it. The
+   song-faithful workstage is 130 BPM (`friet_clean.sid`); the release
+   variant is 175 BPM (`friet.sid`, built via `FAST=1`).
 8. **The vocal melody in T7 doesn't enter until beat 21.5** and the
    bassline in T5 doesn't enter until beat 120 (~60s). For short
    previews this means early seconds are sparse. That's the actual song
@@ -112,9 +106,9 @@ we know T7 is genuinely the vocal melody and not a counter-line.
 
 ```sh
 source .venv/bin/activate
-make analyze        # research dump
-make hh             # build happy-hardcore SID into out/
-make preview-hh PREVIEW_SECONDS=60   # render an MP3
+make analyze                          # research dump
+make friet                            # build the release SID (out/friet.sid)
+make preview-friet PREVIEW_SECONDS=60 # render an MP3 preview
 ```
 
 The user prefers iterative feedback: build → render → listen → ask. Don't

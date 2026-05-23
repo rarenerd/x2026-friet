@@ -1,11 +1,14 @@
 # Friet van Desire — build SID remixes from MIDI research material
 #
-# Primary target:  make preview-clean   (the maintained song-faithful build)
-# Verification:    make preview-melody  (vocal alone, no bass/drums)
-# Legacy:          make hh / port       (early direct-conversion experiments)
-.PHONY: all clean analyze preview \
-        extract compose synth clean-pipeline preview-clean preview-melody \
-        hh port preview-hh preview-port melody-only
+# Pipeline: extract -> compose -> synth.
+#   make friet           the release SID (175 BPM, hoover lead)
+#   make preview-friet   .mp3 preview of the release
+#   make player          standalone C64 .prg (embeds friet.sid + lyric ticker)
+#   make preview-clean   song-faithful workstage render (130 BPM)
+#   make preview-melody  vocal-only workstage (verification)
+.PHONY: all clean analyze extract compose synth \
+        clean-pipeline melody-only friet \
+        preview preview-clean preview-melody preview-friet player
 
 SHELL      := /bin/bash
 .ONESHELL:
@@ -16,38 +19,27 @@ OUT_DIR    := out
 MIDI_DIR   := midi
 TOOLS_DIR  := tools
 
-HH_SID    := $(OUT_DIR)/friet_from_desire_hh.sid
-HH_MP3    := $(OUT_DIR)/friet_from_desire_hh.mp3
-PORT_SID  := $(OUT_DIR)/friet_from_desire.sid
-PORT_MP3  := $(OUT_DIR)/friet_from_desire.mp3
-SPEC      := docs/song_spec.yaml
-COMP      := docs/composition.yaml
-CLEAN_SID := $(OUT_DIR)/friet_clean.sid
-CLEAN_MP3 := $(OUT_DIR)/friet_clean.mp3
+SPEC       := docs/song_spec.yaml
+LAYERS     := docs/song_layers.yaml
+COMP       := docs/composition.yaml
+
+CLEAN_SID  := $(OUT_DIR)/friet_clean.sid
+CLEAN_MP3  := $(OUT_DIR)/friet_clean.mp3
 MELODY_SID := $(OUT_DIR)/friet_melody_only.sid
 MELODY_MP3 := $(OUT_DIR)/friet_melody_only.mp3
-HH_NEW_SID := $(OUT_DIR)/friet_hh.sid
-HH_NEW_MP3 := $(OUT_DIR)/friet_hh.mp3
-LAYERS    := docs/song_layers.yaml
+FRIET_SID  := $(OUT_DIR)/friet.sid
+FRIET_MP3  := $(OUT_DIR)/friet.mp3
+FRIET_PRG  := $(OUT_DIR)/friet.prg
 
 PREVIEW_SECONDS ?= 90
 
-all: clean-pipeline melody-only hh-build preview-clean preview-melody preview-hh-new
+all: clean-pipeline melody-only friet preview-clean preview-melody preview-friet
 
 # --- research ----
 analyze:
 	$(PYTHON) $(SRC_DIR)/analyze_midi.py
 
-# --- assemble SIDs ----
-hh: $(HH_SID)
-$(HH_SID): $(SRC_DIR)/midi2sid_hh.py $(MIDI_DIR)/Gala_Freed_From_Desire.mid
-	$(PYTHON) $<
-
-port: $(PORT_SID)
-$(PORT_SID): $(SRC_DIR)/midi2sid.py $(MIDI_DIR)/Gala_Freed_From_Desire.mid
-	$(PYTHON) $<
-
-# --- maintained pipeline (extract -> compose -> synth) ----
+# --- pipeline (extract -> compose -> synth) ----
 # Phase 1: MIDI -> docs/song_spec.yaml (patterns) + docs/song_layers.yaml
 #          (verbatim T5/T7/T11/T12/T13 note lists). The MIDI isn't read again.
 extract: $(SPEC) $(LAYERS)
@@ -84,39 +76,29 @@ preview-melody: $(MELODY_MP3)
 $(MELODY_MP3): $(MELODY_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
 
-# Happy-hardcore tempo variant — same data, rendered at 170 BPM.
-hh-build: $(HH_NEW_SID)
-$(HH_NEW_SID): $(SRC_DIR)/compose.py $(SRC_DIR)/synth.py $(SPEC) $(LAYERS)
-	HH_TEMPO=1 $(PYTHON) $(SRC_DIR)/compose.py
+# Release build — 175 BPM with hoover lead. This is the final SID.
+friet: $(FRIET_SID)
+$(FRIET_SID): $(SRC_DIR)/compose.py $(SRC_DIR)/synth.py $(SPEC) $(LAYERS)
+	FAST=1 $(PYTHON) $(SRC_DIR)/compose.py
 	$(PYTHON) $(SRC_DIR)/synth.py
 	cp $(CLEAN_SID) $@
 	$(PYTHON) $(SRC_DIR)/compose.py
 	$(PYTHON) $(SRC_DIR)/synth.py
 
-preview-hh-new: $(HH_NEW_MP3)
-$(HH_NEW_MP3): $(HH_NEW_SID)
+preview-friet: $(FRIET_MP3)
+$(FRIET_MP3): $(FRIET_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
 
-# Stand-alone C64 .prg that plays the SID and shows lyrics in sync.
-# Build with KickAssembler (kickass/KickAss.jar). Run with `x64sc out/friet_player.prg`.
-PLAYER_PRG := $(OUT_DIR)/friet_player.prg
-.PHONY: player
-player: $(PLAYER_PRG)
-$(PLAYER_PRG): $(SRC_DIR)/build_player.py $(SRC_DIR)/player/friet_player.asm \
-               $(CLEAN_SID) docs/melody_lyrics.yaml
+# Stand-alone C64 .prg that plays the release SID with a lyric ticker.
+# Build with KickAssembler (kickass/KickAss.jar). Run with `x64sc out/friet.prg`.
+player: $(FRIET_PRG)
+$(FRIET_PRG): $(SRC_DIR)/build_player.py $(SRC_DIR)/player/friet.asm \
+              $(FRIET_SID) docs/melody_lyrics.yaml
 	$(PYTHON) $(SRC_DIR)/build_player.py
 
 # --- previews ----
-preview: preview-clean preview-melody
-
-preview-hh: $(HH_MP3)
-$(HH_MP3): $(HH_SID)
-	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
-
-preview-port: $(PORT_MP3)
-$(PORT_MP3): $(PORT_SID)
-	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
+preview: preview-clean preview-melody preview-friet
 
 clean:
-	rm -f $(OUT_DIR)/*.sid $(OUT_DIR)/*.wav $(OUT_DIR)/*.mp3
+	rm -f $(OUT_DIR)/*.sid $(OUT_DIR)/*.wav $(OUT_DIR)/*.mp3 $(OUT_DIR)/*.prg
 	rm -f /tmp/freed*.s /tmp/freed*.prg

@@ -273,7 +273,7 @@ init_clr:
     sta SID+10          ; V2 PW HI
     ; Filter — route V2 (lead) through a resonant low-pass. Each V2 note-on
     ; resets the cutoff to $E0 (open); filter_env decays it toward $80 over
-    ; the note's life => HH "hoover wow" sweep on every lead note.
+    ; the note's life => "hoover wow" sweep on every lead note.
     ; The decay is gentle so the triangle vocal in verses still cuts through.
     lda #$00
     sta SID+21          ; FC LO
@@ -629,7 +629,7 @@ f2done:
     # is "YYYY <PARTY>". Truncated automatically by pad32.
     header += pad32('Friet van Desire')
     header += pad32('Kloot, Anus & Augurk / deFEEST')
-    header += pad32('2026 X / deFEEST')
+    header += pad32('2026 X / deFEEST + MAYO')
     header += struct.pack('>H', 0x0000)
     header += bytes([0, 0, 0, 0])
     assert len(header) == 0x7C

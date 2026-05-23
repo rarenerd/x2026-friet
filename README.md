@@ -44,10 +44,8 @@ midi/*.mid  ──>  extract_patterns.py  ──>  docs/song_spec.yaml    (patte
 
 Set `MELODY_ONLY=1` before running compose to render the vocal alone (no
 bass, no drums) — handy for verifying the melody is recognisable in
-isolation.
-
-The legacy `midi2sid.py` and `midi2sid_hh.py` are early direct conversions
-kept for comparison.
+isolation. Set `FAST=1` to render the 175-BPM happy-hardcore release
+variant from the same composition.
 
 ## Layout
 
@@ -65,8 +63,8 @@ friet/
 │   ├── extract_patterns.py phase 1: MIDI -> docs/song_spec.yaml + song_layers.yaml
 │   ├── compose.py          phase 2: spec + layers -> docs/composition.yaml
 │   ├── synth.py            phase 3: composition -> out/friet_clean.sid
-│   ├── midi2sid.py         (legacy) early direct port
-│   └── midi2sid_hh.py      (legacy) early HH pass with generated drums
+│   ├── build_player.py     bundles SID + lyric ticker -> out/friet.prg
+│   └── player/             KickAssembler source for the standalone .prg
 ├── docs/
 │   ├── song_analysis.md    music theory: key/chords/structure (with sources)
 │   ├── melody_analysis.md  phrase-by-phrase analysis of the T7 vocal
@@ -107,20 +105,27 @@ exactly on the corresponding F5, F5, D5, D5, C5 in T7.
 ```sh
 source .venv/bin/activate
 
-# Cleanroom pipeline — read MIDI once, produce a fresh remix:
-make extract compose synth          # -> out/friet_clean.sid
-make preview-clean                   # -> out/friet_clean.mp3
+# Release build (175 BPM, hoover lead — this is the final track):
+make friet                          # -> out/friet.sid
+make preview-friet                  # -> out/friet.mp3
 
-# Legacy direct conversions (for comparison):
-make hh                              # -> out/friet_from_desire_hh.sid
-make port                            # -> out/friet_from_desire.sid
-make preview                         # render all .mp3 previews
+# Standalone C64 .prg with lyric ticker (embeds out/friet.sid):
+make player                         # -> out/friet.prg
+
+# Workstages — useful for shaving the arrangement without remixing the
+# whole thing:
+make extract compose synth          # -> out/friet_clean.sid (130 BPM workstage)
+make preview-clean                  # -> out/friet_clean.mp3
+make melody-only preview-melody     # -> out/friet_melody_only.{sid,mp3} (vocal only)
+
+# Everything at once:
+make preview                        # render all .mp3 previews
 
 # Research:
-make analyze                         # dump per-track stems + a textual report
+make analyze                        # dump per-track stems + a textual report
 ```
 
-Listen interactively: `vsid out/friet_clean.sid`.
+Listen interactively: `vsid out/friet.sid`.
 
 ## Tools required
 

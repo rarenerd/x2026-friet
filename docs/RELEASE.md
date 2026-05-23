@@ -7,11 +7,12 @@
 - **Composer / coder:** Kloot/deFEEST (Claude), Augurk/deFEEST (Big Pickle / OpenCode) +
   Anus/deFEEST (annejan)
 - **Target party:** **X2026** (Dutch Commodore demoparty)
-- **Format:** PSID v2 / `out/friet_clean.sid`
+- **Format:** PSID v2 / `out/friet.sid` (release) + `out/friet.prg`
+  (standalone C64 player with lyric ticker)
 - **Chip:** MOS 6581/8580 (PAL, 985 248 Hz)
 - **Player:** 50 Hz IRQ, init at $1000, play at $1003
-- **Length:** **1:48** clean build (120 BPM), **1:14** HH build (175 BPM);
-  loops on reaching the end. See "Structure" below.
+- **Length:** **1:14** release build (175 BPM); **1:48** song-faithful
+  workstage at 120 BPM; loops on reaching the end. See "Structure" below.
 
 ## Companion demo
 
@@ -21,7 +22,7 @@ broodtrommel"* — see <https://github.com/annejan/outline26-claude-c64>.
 ## Structure
 
 Compose-time segment map (`SEGMENTS` in `src/compose.py`) re-orders the
-source MIDI to fit a happy-hardcore arrangement:
+source MIDI to fit the happy-hardcore arrangement:
 
 | #  | Segment            | Source-beat range  | Beats |
 |----|--------------------|--------------------|-------|
@@ -38,15 +39,15 @@ source MIDI to fit a happy-hardcore arrangement:
 
 Breathe segments are 4-beat instrumental gaps (drums + T11 hook bass keep
 going, no vocal) so each chorus reprise gets room to breathe before the
-next one hits. Total loop: **1:48** at 120 BPM clean build, **1:14** at
-175 BPM HH build.
+next one hits. Total loop: **1:48** at 120 BPM workstage, **1:14** at
+175 BPM release.
 
 Each chorus reprise (#6 and #7) replays the same source range as Chorus 1,
 so the vocal + bass + drum events are bar-for-bar identical. A synthetic
 crash-riser fires 3 beats before each chorus's output position so each
 one hits as a "drop". Verses 2 / Pre-chorus 2 / Instrumental break /
-Outro of the original arrangement are NOT used — they don't fit the HH
-form factor.
+Outro of the original arrangement are NOT used — they don't fit the
+happy-hardcore form factor.
 
 ## Arrangement (current build)
 
@@ -69,10 +70,10 @@ Three SID voices, all running at the song's native 130 BPM:
 ## How to verify before the party
 
 ```sh
-make all                 # rebuild both SIDs + previews
-vsid out/friet_clean.sid # listen on VICE
-xxd out/friet_clean.sid | head -8   # confirm PSID header reads
-                                    #   'PSID' v2, Kloot, Anus & Augurk / deFEEST
+make all                 # rebuild release + workstage SIDs + previews
+vsid out/friet.sid       # listen on VICE
+xxd out/friet.sid | head -8   # confirm PSID header reads
+                              #   'PSID' v2, Kloot, Anus & Augurk / deFEEST
 ```
 
 ## Known gaps before release
@@ -80,9 +81,7 @@ xxd out/friet_clean.sid | head -8   # confirm PSID header reads
 See [`polish_plan.md`](polish_plan.md). Open items:
 
 1. Vibrato on V2 (vocal currently dead-pan).
-2. HH-tempo variant `friet_hh.sid` at 170 BPM alongside the 130 BPM
-   song-faithful build.
-3. Possible bigger Chorus 2 hit relative to Chorus 1 (extra crash, more
+2. Possible bigger Chorus 2 hit relative to Chorus 1 (extra crash, more
    hats) to give the song a proper "second drop" reprise.
 
 ## Sources used

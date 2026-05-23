@@ -1,7 +1,7 @@
 // Friet van Desire -- C64 player with synchronised lyrics ticker
 //
-// Build:    java -jar kickass/KickAss.jar src/player/friet_player.asm
-// Run:      x64sc src/player/friet_player.prg
+// Build:    java -jar kickass/KickAss.jar src/player/friet.asm
+// Run:      x64sc out/friet.prg
 //
 // Memory layout:
 //   $0801-$080F  BASIC stub (10 SYS 2064)

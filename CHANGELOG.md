@@ -3,6 +3,22 @@
 All notable changes to **Friet van Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-23 — Pipeline cleanup + release-name rename
+
+- Deleted legacy direct-conversion scripts `src/midi2sid.py` and
+  `src/midi2sid_hh.py` and their artefacts (`out/friet_from_desire*`).
+  All builds now flow through the extract → compose → synth pipeline.
+- Release file is now `out/friet.sid` (was `friet_hh.sid`), built by
+  `make friet` (was `make hh-build`/`make hh`). Preview target is
+  `make preview-friet`. The standalone C64 player is `out/friet.prg`
+  (was `friet_player.prg`) and now embeds the release SID.
+- `friet_clean.sid` and `friet_melody_only.sid` kept as workstage
+  builds — used for shaving the arrangement without remixing the whole
+  thing.
+- Internal: env var `HH_TEMPO` → `FAST`; Python `HH_BPM` → `FAST_BPM`;
+  player ASM source `src/player/friet_player.asm` → `friet.asm`.
+- The `port` / `preview-port` make targets are gone.
+
 ## 2026-05-23 — Release target: X2026 / deFEEST
 
 - PSID metadata updated: title "Friet van Desire",

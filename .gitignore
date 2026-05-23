@@ -2,8 +2,9 @@
 __pycache__/
 *.pyc
 *.wav
+# Release-quality .prg deliverables in out/ are tracked; everything else is build cruft.
 *.prg
-!out/*.prg                     # release-quality .prg deliverables are tracked
+!out/*.prg
 *.o65
 /tmp/
 .claude/
