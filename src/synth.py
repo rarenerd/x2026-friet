@@ -199,7 +199,9 @@ def main():
 
     bass_spans_ctrl = events_to_spans_ctrl(comp['voices']['bass'], default_ctrl=WF_PULSE)
     v1_data = encode_voice_4byte(bass_spans_ctrl, total_frames, default_ctrl=WF_PULSE)
-    v2_data = encode_voice_3byte(lead_spans, total_frames)
+
+    lead_spans_ctrl = events_to_spans_ctrl(comp['voices']['lead'], default_ctrl=WF_TRI)
+    v2_data = encode_voice_4byte(lead_spans_ctrl, total_frames, default_ctrl=WF_TRI)
     v3_data = encode_v3(build_drum_timeline(comp['voices']['drums'], total_frames))
 
     print(f"  bass : {len(comp['voices']['bass']):4d} events -> {len(v1_data)}B")
@@ -237,6 +239,7 @@ ZP_V2BASE_LO = $0B       ; V2 base freq lo (vibrato adds to this)
 ZP_V2BASE_HI = $0C       ; V2 base freq hi
 ZP_VIB_IDX   = $0D       ; vibrato LFO phase
 ZP_V0_CTRL   = $0E       ; ctrl byte read from V1 event stream
+ZP_V1_CTRL   = $0F       ; ctrl byte read from V2 event stream
 
 *=$1000
     jmp init_routine
@@ -268,17 +271,21 @@ init_clr:
     sta SID+9           ; V2 PW LO
     lda #$08
     sta SID+10          ; V2 PW HI
-    ; Filter — completely OFF. The lead is a clean triangle ("singer" tone)
-    ; and the bass is pulse; neither benefits from the resonant LP that was
-    ; previously eating the vocal.
+    ; Filter — route V2 (lead) through a resonant low-pass. Each V2 note-on
+    ; resets the cutoff to $E0 (open); filter_env decays it toward $80 over
+    ; the note's life => HH "hoover wow" sweep on every lead note.
+    ; The decay is gentle so the triangle vocal in verses still cuts through.
     lda #$00
-    sta SID+21
-    sta SID+22
+    sta SID+21          ; FC LO
+    lda #$80
+    sta SID+22          ; FC HI -- mid cutoff (so verses pass through)
+    lda #$42            ; resonance $4, V2 routed (bit 1)
     sta SID+23
-    lda #$0F
-    sta SID+24          ; volume max, no filter mode
-    lda #$00
-    sta ZP_FILT_CUR
+    lda #$1F            ; LP mode + volume max
+    sta SID+24
+    lda #$E0
+    sta ZP_FILT_CUR     ; start open so the first note isn't muffled
+    lda #$80
     sta ZP_FILT_TGT
     lda #<v0_data
     sta ZP_V0
@@ -436,6 +443,7 @@ d1lo:
     dec ZP_CNT1
     rts
 
+; --- V2 4-byte event: dur_hi, dur_lo, note, ctrl (waveform without gate) ---
 fetch1:
     ldy #0
     lda (ZP_V1),y
@@ -444,63 +452,64 @@ fetch1:
     lda (ZP_V1),y
     sta ZP_CNT1
     iny
-    lda (ZP_V1),y         ; A = note (0 means rest)
-    pha                   ; preserve note across sentinel check
+    lda (ZP_V1),y         ; A = note
+    pha
     lda ZP_CNT1
     ora ZP_CNT1+1
     bne f1go
-    pla                   ; sentinel: discard note, loop pointer
+    pla
     lda #<v1_data
     sta ZP_V1
     lda #>v1_data
     sta ZP_V1+1
     rts
 f1go:
+    iny
+    lda (ZP_V1),y         ; A = ctrl byte (waveform without gate)
+    sta ZP_V1_CTRL
     pla                   ; A = note
     cmp #0
     beq f1rest_path
 
-    ; NOTE event — store BASE frequency; apply_vibrato writes SID+7/+8
-    ; each frame with base+LFO.
-    tax                   ; X = note (preserve raw note for compare/stash)
+    ; NOTE event — store BASE frequency; apply_vibrato writes SID+7/+8.
+    tax
     sec
     sbc #NOTE_LO
     tay
     lda freq_lo,y
     sta ZP_V2BASE_LO
-    sta SID+7             ; also write immediately for clean attack
+    sta SID+7
     lda freq_hi,y
     sta ZP_V2BASE_HI
     sta SID+8
 
-    ; Legato decision:
-    ;   - same pitch as last  -> retrigger gate (articulate "stutter")
-    ;   - last was rest       -> retrigger gate (phrase entry)
-    ;   - else (pitch change) -> LEGATO: keep gate on, only freq changes
+    ; Reset filter cutoff on every new note — hoover "wow" sweep
+    lda #$E0
+    sta ZP_FILT_CUR
+
     cpx ZP_V2_LAST
     beq f1retrig
     lda ZP_V2_LAST
     beq f1retrig
     jmp f1stash
 f1retrig:
-    lda #${WF_TRI:02X}
+    lda ZP_V1_CTRL        ; gate off (waveform alone)
     sta SID+11
-    lda #${WF_TRI|1:02X}
+    ora #$01              ; OR gate -> attack
     sta SID+11
 f1stash:
     stx ZP_V2_LAST
     jmp f1adv
 
 f1rest_path:
-    ; Drop gate so the envelope releases between phrases.
-    lda #${WF_TRI:02X}
+    lda ZP_V1_CTRL        ; rest: waveform without gate -> release
     sta SID+11
     lda #0
     sta ZP_V2_LAST
 f1adv:
     clc
     lda ZP_V1
-    adc #3
+    adc #4
     sta ZP_V1
     bcc f1done
     inc ZP_V1+1

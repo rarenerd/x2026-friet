@@ -16,6 +16,8 @@
 .var ly_lo    = $04
 .var ly_hi    = $05
 .var tmp_len  = $06
+.var tmp_col  = $07      // starting column (centred)
+.var end_col  = $08      // tmp_col + tmp_len (loop bound)
 
 // ---- BASIC stub: 10 SYS 2064 ------------------------------------------
 *=$0801
@@ -147,7 +149,12 @@ maybe_show_lyric:
     cmp frame_hi
     bne !not_yet+
 
-    // Display row 12: first clear it
+    // Read length, compute centred starting column
+    iny
+    lda (ly_lo),y           // y=2, length
+    sta tmp_len
+
+    // Clear row 12
     lda #$20
     ldx #39
 !clr:
@@ -155,14 +162,30 @@ maybe_show_lyric:
     dex
     bpl !clr-
 
-    // Then copy length bytes of text from after the header
-    iny
-    lda (ly_lo),y           // y=2, length
-    sta tmp_len
+    // Compute centring: tmp_col = (40 - tmp_len) / 2
+    lda #40
+    sec
+    sbc tmp_len
+    lsr
+    sta tmp_col
+    // end_col = tmp_col + tmp_len
+    clc
+    adc tmp_len
+    sta end_col
+
+    // Highlight row 12 in yellow ($07) while a lyric is showing
+    lda #$07
+    ldx #39
+!col:
+    sta $D800 + 40*12,x
+    dex
+    bpl !col-
+
+    // Copy text bytes to screen, starting at column tmp_col
     iny                      // y=3, first text byte
-    ldx #0
+    ldx tmp_col
 !cp:
-    cpx tmp_len
+    cpx end_col
     beq !cp_done+
     lda (ly_lo),y
     sta $0400 + 40*12,x

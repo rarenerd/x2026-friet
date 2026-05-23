@@ -1775,825 +1775,1099 @@ voices:
   - frame: 538
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 550
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 562
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 575
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 588
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 600
     note: 77
     dur_frames: 14
+    ctrl: 16
   - frame: 619
     note: 74
     dur_frames: 7
+    ctrl: 16
   - frame: 638
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 650
     note: 72
     dur_frames: 7
+    ctrl: 16
   - frame: 662
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 675
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 688
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 694
     note: 70
     dur_frames: 13
+    ctrl: 16
   - frame: 738
     note: 76
     dur_frames: 6
+    ctrl: 16
   - frame: 750
     note: 76
     dur_frames: 6
+    ctrl: 16
   - frame: 762
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 775
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 788
     note: 76
     dur_frames: 6
+    ctrl: 16
   - frame: 800
     note: 77
     dur_frames: 15
+    ctrl: 16
   - frame: 812
     note: 74
     dur_frames: 7
+    ctrl: 16
   - frame: 838
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 850
     note: 72
     dur_frames: 7
+    ctrl: 16
   - frame: 862
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 875
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 888
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 894
     note: 70
     dur_frames: 13
+    ctrl: 16
   - frame: 938
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 950
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 962
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 975
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 988
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 1000
     note: 77
     dur_frames: 14
+    ctrl: 16
   - frame: 1019
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 1038
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 1050
     note: 72
     dur_frames: 8
+    ctrl: 16
   - frame: 1062
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 1075
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 1088
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1094
     note: 70
     dur_frames: 13
+    ctrl: 16
   - frame: 1138
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 1150
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 1162
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 1175
     note: 76
     dur_frames: 5
+    ctrl: 16
   - frame: 1188
     note: 76
     dur_frames: 6
+    ctrl: 16
   - frame: 1200
     note: 77
     dur_frames: 14
+    ctrl: 16
   - frame: 1212
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 1238
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 1250
     note: 72
     dur_frames: 7
+    ctrl: 16
   - frame: 1262
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 1275
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 1288
     note: 72
     dur_frames: 5
+    ctrl: 16
   - frame: 1294
     note: 70
     dur_frames: 15
+    ctrl: 16
   - frame: 1362
     note: 69
     dur_frames: 6
+    ctrl: 16
   - frame: 1375
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1381
     note: 74
     dur_frames: 11
+    ctrl: 16
   - frame: 1400
     note: 74
     dur_frames: 74
+    ctrl: 16
   - frame: 1475
     note: 74
     dur_frames: 8
+    ctrl: 16
   - frame: 1488
     note: 74
     dur_frames: 11
+    ctrl: 16
   - frame: 1500
     note: 72
     dur_frames: 11
+    ctrl: 16
   - frame: 1512
     note: 74
     dur_frames: 8
+    ctrl: 16
   - frame: 1525
     note: 74
     dur_frames: 10
+    ctrl: 16
   - frame: 1538
     note: 72
     dur_frames: 7
+    ctrl: 16
   - frame: 1544
     note: 74
     dur_frames: 17
+    ctrl: 16
   - frame: 1562
     note: 69
     dur_frames: 11
+    ctrl: 16
   - frame: 1575
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1581
     note: 74
     dur_frames: 14
+    ctrl: 16
   - frame: 1600
     note: 74
     dur_frames: 69
+    ctrl: 16
   - frame: 1700
     note: 72
     dur_frames: 10
+    ctrl: 16
   - frame: 1712
     note: 74
     dur_frames: 7
+    ctrl: 16
   - frame: 1725
     note: 74
     dur_frames: 10
+    ctrl: 16
   - frame: 1738
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1744
     note: 74
     dur_frames: 17
+    ctrl: 16
   - frame: 1762
     note: 69
     dur_frames: 11
+    ctrl: 16
   - frame: 1775
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1781
     note: 74
     dur_frames: 15
+    ctrl: 16
   - frame: 1800
     note: 74
     dur_frames: 65
+    ctrl: 16
   - frame: 1875
     note: 74
     dur_frames: 6
+    ctrl: 16
   - frame: 1888
     note: 74
     dur_frames: 10
+    ctrl: 16
   - frame: 1900
     note: 72
     dur_frames: 11
+    ctrl: 16
   - frame: 1912
     note: 74
     dur_frames: 7
+    ctrl: 16
   - frame: 1925
     note: 74
     dur_frames: 10
+    ctrl: 16
   - frame: 1938
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1944
     note: 74
     dur_frames: 16
+    ctrl: 16
   - frame: 1962
     note: 69
     dur_frames: 12
+    ctrl: 16
   - frame: 1975
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 1981
     note: 74
     dur_frames: 14
+    ctrl: 16
   - frame: 2000
     note: 74
     dur_frames: 66
+    ctrl: 16
   - frame: 2100
     note: 72
     dur_frames: 12
+    ctrl: 16
   - frame: 2112
     note: 74
     dur_frames: 8
+    ctrl: 16
   - frame: 2125
     note: 74
     dur_frames: 11
+    ctrl: 16
   - frame: 2138
     note: 72
     dur_frames: 6
+    ctrl: 16
   - frame: 2144
     note: 74
     dur_frames: 49
+    ctrl: 16
   - frame: 2200
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 2219
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 2238
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 2250
     note: 72
     dur_frames: 14
+    ctrl: 32
   - frame: 2269
     note: 72
     dur_frames: 14
+    ctrl: 32
   - frame: 2300
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 2312
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 2325
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 2338
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 2350
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2362
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2375
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2388
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2400
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 2419
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 2438
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 2450
     note: 72
     dur_frames: 12
+    ctrl: 32
   - frame: 2469
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 2500
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 2512
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 2525
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 2538
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 2550
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2562
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2575
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2588
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2600
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 2619
     note: 74
     dur_frames: 11
+    ctrl: 32
   - frame: 2638
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 2650
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 2669
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 2700
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 2712
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 2725
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 2738
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 2750
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2762
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 2775
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 2788
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2800
     note: 77
     dur_frames: 14
+    ctrl: 32
   - frame: 2819
     note: 74
     dur_frames: 8
+    ctrl: 32
   - frame: 2838
     note: 74
     dur_frames: 9
+    ctrl: 32
   - frame: 2850
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 2869
     note: 72
     dur_frames: 15
+    ctrl: 32
   - frame: 2938
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2950
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2962
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 2975
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 2988
     note: 76
     dur_frames: 8
+    ctrl: 32
   - frame: 3000
     note: 77
     dur_frames: 17
+    ctrl: 32
   - frame: 3019
     note: 74
     dur_frames: 9
+    ctrl: 32
   - frame: 3038
     note: 74
     dur_frames: 11
+    ctrl: 32
   - frame: 3050
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 3069
     note: 72
     dur_frames: 9
+    ctrl: 32
   - frame: 3088
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 3100
     note: 70
     dur_frames: 15
+    ctrl: 32
   - frame: 3119
     note: 70
     dur_frames: 7
+    ctrl: 32
   - frame: 3138
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3150
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3162
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3175
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3188
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3200
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 3219
     note: 74
     dur_frames: 9
+    ctrl: 32
   - frame: 3238
     note: 74
     dur_frames: 11
+    ctrl: 32
   - frame: 3250
     note: 72
     dur_frames: 10
+    ctrl: 32
   - frame: 3269
     note: 72
     dur_frames: 12
+    ctrl: 32
   - frame: 3288
     note: 72
     dur_frames: 10
+    ctrl: 32
   - frame: 3300
     note: 70
     dur_frames: 11
+    ctrl: 32
   - frame: 3338
     note: 76
     dur_frames: 7
+    ctrl: 32
   - frame: 3350
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3362
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3375
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3388
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3400
     note: 77
     dur_frames: 17
+    ctrl: 32
   - frame: 3419
     note: 74
     dur_frames: 7
+    ctrl: 32
   - frame: 3438
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 3450
     note: 72
     dur_frames: 12
+    ctrl: 32
   - frame: 3469
     note: 72
     dur_frames: 9
+    ctrl: 32
   - frame: 3488
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 3500
     note: 70
     dur_frames: 14
+    ctrl: 32
   - frame: 3519
     note: 70
     dur_frames: 8
+    ctrl: 32
   - frame: 3538
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3550
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3562
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3575
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 3588
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 3600
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 3619
     note: 74
     dur_frames: 9
+    ctrl: 32
   - frame: 3638
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 3650
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 3669
     note: 72
     dur_frames: 10
+    ctrl: 32
   - frame: 3688
     note: 72
     dur_frames: 10
+    ctrl: 32
   - frame: 3700
     note: 70
     dur_frames: 14
+    ctrl: 32
   - frame: 3838
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 3856
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 3875
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 3888
     note: 72
     dur_frames: 14
+    ctrl: 32
   - frame: 3906
     note: 72
     dur_frames: 14
+    ctrl: 32
   - frame: 3938
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 3950
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 3962
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 3975
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 3988
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4000
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4012
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4025
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4038
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 4056
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 4075
     note: 74
     dur_frames: 12
+    ctrl: 32
   - frame: 4088
     note: 72
     dur_frames: 12
+    ctrl: 32
   - frame: 4106
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 4138
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 4150
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 4162
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 4175
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 4188
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4200
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4212
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4225
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4238
     note: 77
     dur_frames: 15
+    ctrl: 32
   - frame: 4256
     note: 74
     dur_frames: 11
+    ctrl: 32
   - frame: 4275
     note: 74
     dur_frames: 10
+    ctrl: 32
   - frame: 4288
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 4306
     note: 72
     dur_frames: 11
+    ctrl: 32
   - frame: 4338
     note: 77
     dur_frames: 7
+    ctrl: 32
   - frame: 4350
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 4362
     note: 77
     dur_frames: 6
+    ctrl: 32
   - frame: 4375
     note: 77
     dur_frames: 8
+    ctrl: 32
   - frame: 4388
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4400
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 4412
     note: 76
     dur_frames: 5
+    ctrl: 32
   - frame: 4425
     note: 76
     dur_frames: 6
+    ctrl: 32
   - frame: 4438
     note: 77
     dur_frames: 14
+    ctrl: 32
   - frame: 4456
     note: 74
     dur_frames: 8
+    ctrl: 32
   - frame: 4475
     note: 74
     dur_frames: 9
+    ctrl: 32
   - frame: 4488
     note: 72
     dur_frames: 13
+    ctrl: 32
   - frame: 4506
     note: 72
     dur_frames: 15
+    ctrl: 32
   - frame: 4675
     note: 77
     dur_frames: 15
+    ctrl: 64
   - frame: 4694
     note: 74
     dur_frames: 12
+    ctrl: 64
   - frame: 4712
     note: 74
     dur_frames: 12
+    ctrl: 64
   - frame: 4725
     note: 72
     dur_frames: 14
+    ctrl: 64
   - frame: 4744
     note: 72
     dur_frames: 14
+    ctrl: 64
   - frame: 4775
     note: 77
     dur_frames: 7
+    ctrl: 64
   - frame: 4788
     note: 77
     dur_frames: 6
+    ctrl: 64
   - frame: 4800
     note: 77
     dur_frames: 6
+    ctrl: 64
   - frame: 4812
     note: 77
     dur_frames: 8
+    ctrl: 64
   - frame: 4825
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 4838
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 4850
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 4862
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 4875
     note: 77
     dur_frames: 15
+    ctrl: 64
   - frame: 4894
     note: 74
     dur_frames: 10
+    ctrl: 64
   - frame: 4912
     note: 74
     dur_frames: 12
+    ctrl: 64
   - frame: 4925
     note: 72
     dur_frames: 12
+    ctrl: 64
   - frame: 4944
     note: 72
     dur_frames: 13
+    ctrl: 64
   - frame: 4975
     note: 77
     dur_frames: 8
+    ctrl: 64
   - frame: 4988
     note: 77
     dur_frames: 7
+    ctrl: 64
   - frame: 5000
     note: 77
     dur_frames: 6
+    ctrl: 64
   - frame: 5012
     note: 77
     dur_frames: 8
+    ctrl: 64
   - frame: 5025
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5038
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5050
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5062
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5075
     note: 77
     dur_frames: 15
+    ctrl: 64
   - frame: 5094
     note: 74
     dur_frames: 11
+    ctrl: 64
   - frame: 5112
     note: 74
     dur_frames: 10
+    ctrl: 64
   - frame: 5125
     note: 72
     dur_frames: 11
+    ctrl: 64
   - frame: 5144
     note: 72
     dur_frames: 11
+    ctrl: 64
   - frame: 5175
     note: 77
     dur_frames: 7
+    ctrl: 64
   - frame: 5188
     note: 77
     dur_frames: 6
+    ctrl: 64
   - frame: 5200
     note: 77
     dur_frames: 6
+    ctrl: 64
   - frame: 5212
     note: 77
     dur_frames: 8
+    ctrl: 64
   - frame: 5225
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5238
     note: 76
     dur_frames: 5
+    ctrl: 64
   - frame: 5250
     note: 76
     dur_frames: 5
+    ctrl: 64
   - frame: 5262
     note: 76
     dur_frames: 6
+    ctrl: 64
   - frame: 5275
     note: 77
     dur_frames: 14
+    ctrl: 64
   - frame: 5294
     note: 74
     dur_frames: 8
+    ctrl: 64
   - frame: 5312
     note: 74
     dur_frames: 9
+    ctrl: 64
   - frame: 5325
     note: 72
     dur_frames: 13
+    ctrl: 64
   - frame: 5344
     note: 72
     dur_frames: 15
+    ctrl: 64
   drums:
   - kind: crash
     frame: 125

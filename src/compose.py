@@ -203,13 +203,29 @@ def main():
         fbeat_groove = beats_to_frames(1, play_bpm_groove)
 
         # ---- Vocal (V2 lead) -- T7 verbatim, remapped per segment ----
+        # V2 timbre per section: triangle in verses (vocal-like), sawtooth in
+        # choruses/na-na (HH hoover with filter envelope), pulse in the
+        # final chorus 3 (climactic). The filter envelope in synth.py opens
+        # on every note-on and closes over the note's life — the "wow".
+        SECTION_LEAD_CTRL = {
+            'intro':           0x10,  # triangle
+            'verse1':          0x10,
+            'prechorus1':      0x10,
+            'chorus1':         0x20,  # saw -> hoover with filter env
+            'postchorus_nana': 0x20,
+            'breathe1':        0x20,
+            'chorus2':         0x20,
+            'breathe2':        0x20,
+            'chorus3':         0x40,  # pulse -- different timbre for final reprise
+        }
         for s_b, d_b, pitch in layers['layers'].get('vocal', []):
             d = max(0.2, d_b)
-            for out_b, _label in remap(s_b):
+            for out_b, label in remap(s_b):
                 lead_events.append({
                     'frame': int(round(out_b * fbeat_lead)),
                     'note':  int(pitch),
                     'dur_frames': max(4, int(round(d * fbeat_lead))),
+                    'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
 
         # ---- Bass (V1) -- T11 4-note hook (-12) throughout for HH bounce.
