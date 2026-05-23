@@ -11,13 +11,18 @@
 .const SID_INIT = $1000
 .const SID_PLAY = $1003
 
-.var frame_lo = $02
-.var frame_hi = $03
-.var ly_lo    = $04
-.var ly_hi    = $05
-.var tmp_len  = $06
-.var tmp_col  = $07      // starting column (centred)
-.var end_col  = $08      // tmp_col + tmp_len (loop bound)
+// Zero-page is dangerous territory: the SID's PLAY routine (synth.py)
+// uses $02-$0F for its own counters/filter state, and $F7/$FB/$FD for
+// pointers. We must NOT collide — every IRQ would clobber our variables.
+// Use $90-$96 instead — KERNAL I/O scratch that's idle when we're not
+// using LOAD/SAVE, and not touched by the SID player.
+.var frame_lo = $90
+.var frame_hi = $91
+.var ly_lo    = $92
+.var ly_hi    = $93
+.var tmp_len  = $94
+.var tmp_col  = $95
+.var end_col  = $96
 
 // ---- BASIC stub: 10 SYS 2064 ------------------------------------------
 *=$0801
