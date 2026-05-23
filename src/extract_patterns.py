@@ -280,8 +280,13 @@ def main():
         for m in mid.tracks[2]:
             t += m.time
             if m.type == 'text' and hasattr(m, 'text') and m.text and not m.text.startswith('@'):
-                lyr_evs.append({'beat': round(t/tpb, 3),
-                                'syllable': m.text.lstrip('\\/').strip()})
+                # Strip only the section markers (\ for section, / for line) —
+                # preserve any leading space, which marks a word boundary in
+                # the karaoke convention ("My" then " love" then " has").
+                s = m.text
+                if s.startswith('\\') or s.startswith('/'):
+                    s = s[1:]
+                lyr_evs.append({'beat': round(t/tpb, 3), 'syllable': s})
         layers['lyrics'] = lyr_evs
 
     def dump_track_notes(ti):

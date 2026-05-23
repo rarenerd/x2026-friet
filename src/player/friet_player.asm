@@ -120,7 +120,10 @@ irq:
     inc frame_hi
 !nh:
     jsr maybe_show_lyric
-    jmp $EA31
+    // Exit via the simple IRQ-return ($EA81 = pull registers + RTI). Do NOT
+    // chain to $EA31 — that runs the full KERNAL IRQ which scans keyboard
+    // and updates the cursor, both of which clobber our screen RAM writes.
+    jmp $EA81
 
 maybe_show_lyric:
     // Sentinel: ($FFFF, *, ...) = end-of-table, stop ticking.
