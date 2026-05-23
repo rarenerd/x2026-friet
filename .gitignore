@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.wav
 *.prg
+!out/*.prg                     # release-quality .prg deliverables are tracked
 *.o65
 /tmp/
 .claude/

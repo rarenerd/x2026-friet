@@ -192,9 +192,9 @@ def main():
         with open(layers_path) as f:
             layers = yaml.safe_load(f)
         source_bpm = float(layers.get('source_bpm', 120))
-        # Tempo: source 130 BPM by default, optionally 170 BPM for the HH
-        # release variant (set HH_TEMPO=1). All voices use the same tempo so
-        # the layers stay locked in time.
+        # HH_TEMPO=1 picks the happy-hardcore variant: 175 BPM, plus
+        # arrangement changes downstream (off-beat 8th bass, denser drums,
+        # saw lead throughout). Default is the song-faithful clean build.
         HH_TEMPO = bool(os.environ.get('HH_TEMPO'))
         play_bpm = (HH_BPM if HH_TEMPO else source_bpm)
         play_bpm_lead = play_bpm
@@ -247,20 +247,25 @@ def main():
                     role = 'root' if int(n[2]) == 50 else 'third'  # 50 = D3 in src
                     unit.append((rel_b, n[1], role))
 
-                # Bass timbre per output section — gives "different
-                # instruments for different parts". Waveform constants must
-                # match synth.py's WF_TRI / WF_PULSE / WF_SAW.
-                SECTION_BASS_CTRL = {
-                    'intro':           0x10,  # triangle — soft pedal
-                    'verse1':          0x10,
-                    'prechorus1':      0x10,
-                    'chorus1':         0x40,  # pulse — punchy
-                    'postchorus_nana': 0x40,
-                    'breathe1':        0x40,
-                    'chorus2':         0x40,
-                    'breathe2':        0x40,
-                    'chorus3':         0x20,  # sawtooth — climactic final reprise
-                }
+                # Bass timbre per output section. HH variant goes punchy
+                # pulse everywhere (no soft triangles in verses); clean
+                # variant stays smooth in verses and climaxes on saw.
+                if HH_TEMPO:
+                    SECTION_BASS_CTRL = {k: 0x40 for k in (
+                        'intro','verse1','prechorus1','chorus1',
+                        'postchorus_nana','breathe1','chorus2','breathe2','chorus3')}
+                else:
+                    SECTION_BASS_CTRL = {
+                        'intro':           0x10,  # triangle — soft pedal
+                        'verse1':          0x10,
+                        'prechorus1':      0x10,
+                        'chorus1':         0x40,  # pulse — punchy
+                        'postchorus_nana': 0x40,
+                        'breathe1':        0x40,
+                        'chorus2':         0x40,
+                        'breathe2':        0x40,
+                        'chorus3':         0x20,  # sawtooth — climactic final
+                    }
 
                 # D-minor chord cycle (Dm - F - Bb - C). Notes are in bass
                 # register, kept inside ~9 semitones so the bass line doesn't
@@ -283,6 +288,19 @@ def main():
                     # the cycle is on at that beat.
                     bar = int((src_beat - CHORUS_ANCHOR) // 4) % 4
                     return CYCLE[bar]
+
+                # HH variant: replace the T11 hook rhythm with classic
+                # HH bouncy off-beat 8ths (a quarter-beat blip at the 'and'
+                # of every beat). Clean variant keeps the T11 shape so the
+                # song still sounds like FFD.
+                if HH_TEMPO:
+                    hh_unit = [
+                        (0.5,  0.3, 'root'),
+                        (1.5,  0.3, 'root'),
+                        (2.5,  0.3, 'root'),
+                        (3.5,  0.3, 'third'),
+                    ]
+                    unit = hh_unit
 
                 if unit:
                     max_src_end = max(src_e for _, src_e, _ in SEGMENTS)
@@ -318,20 +336,36 @@ def main():
             (280.0,  'chorus2'),     # full kit, reprise
             (309.5,  'outro_na'),    # full kit through the na-na outro
         ]
-        # Per-section drum-kit filter (which kinds survive)
-        SECTION_KIT = {
-            'intro':       set(),
-            'verse1':      {'kick'},
-            'prechorus1':  {'kick', 'snare'},
-            'chorus1':     {'kick', 'snare', 'hat'},
-            'postchorus1': {'kick', 'snare', 'hat'},
-            'break':       {'kick', 'snare'},
-            'instrumental':{'kick', 'snare'},
-            'verse2':      {'kick', 'snare'},     # one notch up from verse1
-            'prechorus2':  {'kick', 'snare', 'hat'},
-            'chorus2':     {'kick', 'snare', 'hat'},
-            'outro_na':    {'kick', 'snare', 'hat'},
-        }
+        # Per-section drum-kit filter (which kinds survive). HH variant
+        # is rave-loud everywhere except the intro swell.
+        if HH_TEMPO:
+            SECTION_KIT = {
+                'intro':       set(),
+                'verse1':      {'kick', 'snare', 'hat'},
+                'prechorus1':  {'kick', 'snare', 'hat'},
+                'chorus1':     {'kick', 'snare', 'hat'},
+                'postchorus1': {'kick', 'snare', 'hat'},
+                'break':       {'kick', 'snare', 'hat'},
+                'instrumental':{'kick', 'snare', 'hat'},
+                'verse2':      {'kick', 'snare', 'hat'},
+                'prechorus2':  {'kick', 'snare', 'hat'},
+                'chorus2':     {'kick', 'snare', 'hat'},
+                'outro_na':    {'kick', 'snare', 'hat'},
+            }
+        else:
+            SECTION_KIT = {
+                'intro':       set(),
+                'verse1':      {'kick'},
+                'prechorus1':  {'kick', 'snare'},
+                'chorus1':     {'kick', 'snare', 'hat'},
+                'postchorus1': {'kick', 'snare', 'hat'},
+                'break':       {'kick', 'snare'},
+                'instrumental':{'kick', 'snare'},
+                'verse2':      {'kick', 'snare'},
+                'prechorus2':  {'kick', 'snare', 'hat'},
+                'chorus2':     {'kick', 'snare', 'hat'},
+                'outro_na':    {'kick', 'snare', 'hat'},
+            }
         # Map GM drum codes to our kit
         GM_DRUMS = {
             35: 'kick', 36: 'kick', 28: 'kick',
