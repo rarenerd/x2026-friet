@@ -221,21 +221,50 @@ def main():
             if t11:
                 period_beats = 4.0
                 first_b = t11[0][0]
-                unit = [(n[0] - first_b, n[1], int(n[2]) - 12)
-                        for n in t11 if (n[0] - first_b) < period_beats]
+                # Original T11 hook = [D3,D3,D3,F3,D3,D3,D3,F3]. Strip the
+                # absolute pitches; keep only the RHYTHM + a "root or third"
+                # role tag. We'll fill in actual pitches per current chord.
+                unit = []
+                for n in t11:
+                    rel_b = n[0] - first_b
+                    if rel_b >= period_beats: continue
+                    role = 'root' if int(n[2]) == 50 else 'third'  # 50 = D3 in src
+                    unit.append((rel_b, n[1], role))
+
+                # D-minor chord cycle (Dm - F - Bb - C). Notes are in bass
+                # register, kept inside ~9 semitones so the bass line doesn't
+                # jump around too much.
+                CHORDS = {
+                    'Dm': {'root': 38, 'third': 41},  # D2, F2 (m3)
+                    'F':  {'root': 41, 'third': 45},  # F2, A2 (M3)
+                    'Bb': {'root': 34, 'third': 38},  # Bb1, D2 (M3)
+                    'C':  {'root': 36, 'third': 40},  # C2, E2 (M3)
+                }
+                CYCLE = ['Dm', 'F', 'Bb', 'C']
+                CHORUS_ANCHOR = 88.0    # source beat where chorus 1 starts
+                def chord_at(src_beat):
+                    # Verses + intro use a D pedal (matches the original song
+                    # description: verse holds D under the moving voicings).
+                    if src_beat < CHORUS_ANCHOR:
+                        return 'Dm'
+                    # Source-beat 149.5–153.5 is our "breathe" range. The
+                    # cycle keeps going; the breath inherits whatever chord
+                    # the cycle is on at that beat.
+                    bar = int((src_beat - CHORUS_ANCHOR) // 4) % 4
+                    return CYCLE[bar]
+
                 if unit:
-                    # Cover the union of all source ranges used by any segment
-                    # (not just the last segment) so the bass keeps going
-                    # through post-chorus and the breathing gaps too.
                     max_src_end = max(src_e for _, src_e, _ in SEGMENTS)
                     src_loop = 0.0
                     while src_loop < max_src_end + period_beats:
-                        for s_off, d_off, p_off in unit:
+                        for s_off, d_off, role in unit:
                             src_b = src_loop + s_off
+                            chord = chord_at(src_b)
+                            pitch = CHORDS[chord][role]
                             for out_b, _label in remap(src_b):
                                 bass_events.append({
                                     'frame': int(round(out_b * fbeat_groove)),
-                                    'note':  int(p_off),
+                                    'note':  pitch,
                                     'dur_frames': max(3, int(round(max(0.1, d_off) * fbeat_groove))),
                                 })
                         src_loop += period_beats
