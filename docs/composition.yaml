@@ -2659,191 +2659,429 @@ voices:
   - kind: kick
     frame: 3838
   - kind: hat
+    frame: 3838
+  - kind: crash
+    frame: 3838
+  - kind: hat
+    frame: 3844
+  - kind: hat
     frame: 3850
+  - kind: hat
+    frame: 3850
+  - kind: hat
+    frame: 3856
   - kind: snare
     frame: 3862
   - kind: hat
+    frame: 3862
+  - kind: hat
+    frame: 3869
+  - kind: hat
     frame: 3875
   - kind: hat
+    frame: 3875
+  - kind: hat
+    frame: 3881
+  - kind: hat
+    frame: 3888
+  - kind: hat
+    frame: 3894
+  - kind: hat
     frame: 3900
+  - kind: hat
+    frame: 3900
+  - kind: hat
+    frame: 3906
   - kind: snare
     frame: 3912
   - kind: hat
+    frame: 3912
+  - kind: hat
+    frame: 3919
+  - kind: hat
     frame: 3925
   - kind: hat
+    frame: 3925
+  - kind: hat
+    frame: 3931
+  - kind: hat
+    frame: 3938
+  - kind: hat
+    frame: 3944
+  - kind: hat
     frame: 3950
+  - kind: hat
+    frame: 3950
+  - kind: hat
+    frame: 3956
   - kind: snare
     frame: 3962
   - kind: hat
+    frame: 3962
+  - kind: hat
+    frame: 3969
+  - kind: hat
     frame: 3975
   - kind: hat
+    frame: 3975
+  - kind: hat
+    frame: 3981
+  - kind: hat
+    frame: 3988
+  - kind: hat
+    frame: 3994
+  - kind: hat
     frame: 4000
+  - kind: hat
+    frame: 4000
+  - kind: hat
+    frame: 4006
   - kind: snare
     frame: 4012
   - kind: hat
+    frame: 4012
+  - kind: hat
+    frame: 4019
+  - kind: hat
     frame: 4025
   - kind: hat
+    frame: 4025
+  - kind: hat
+    frame: 4031
+  - kind: hat
+    frame: 4038
+  - kind: hat
+    frame: 4044
+  - kind: hat
     frame: 4050
+  - kind: hat
+    frame: 4050
+  - kind: hat
+    frame: 4056
   - kind: snare
     frame: 4062
   - kind: hat
+    frame: 4062
+  - kind: hat
+    frame: 4069
+  - kind: hat
     frame: 4075
   - kind: hat
+    frame: 4075
+  - kind: hat
+    frame: 4081
+  - kind: hat
+    frame: 4088
+  - kind: hat
+    frame: 4094
+  - kind: hat
     frame: 4100
+  - kind: hat
+    frame: 4100
+  - kind: hat
+    frame: 4106
   - kind: snare
     frame: 4112
   - kind: hat
+    frame: 4112
+  - kind: hat
+    frame: 4119
+  - kind: hat
     frame: 4125
   - kind: hat
+    frame: 4125
+  - kind: hat
+    frame: 4131
+  - kind: hat
+    frame: 4138
+  - kind: hat
+    frame: 4144
+  - kind: hat
     frame: 4150
+  - kind: hat
+    frame: 4150
+  - kind: hat
+    frame: 4156
   - kind: snare
     frame: 4162
   - kind: hat
+    frame: 4162
+  - kind: hat
+    frame: 4169
+  - kind: hat
     frame: 4175
   - kind: hat
+    frame: 4175
+  - kind: hat
+    frame: 4181
+  - kind: hat
+    frame: 4188
+  - kind: hat
+    frame: 4194
+  - kind: hat
     frame: 4200
+  - kind: hat
+    frame: 4200
+  - kind: hat
+    frame: 4206
   - kind: snare
     frame: 4212
   - kind: hat
+    frame: 4212
+  - kind: hat
+    frame: 4219
+  - kind: hat
     frame: 4225
+  - kind: hat
+    frame: 4225
+  - kind: hat
+    frame: 4231
   - kind: kick
     frame: 4238
   - kind: snare
     frame: 4238
+  - kind: hat
+    frame: 4238
   - kind: snare
+    frame: 4244
+  - kind: hat
     frame: 4244
   - kind: snare
     frame: 4250
   - kind: hat
     frame: 4250
+  - kind: hat
+    frame: 4250
   - kind: snare
+    frame: 4256
+  - kind: hat
     frame: 4256
   - kind: snare
     frame: 4262
   - kind: snare
     frame: 4262
+  - kind: hat
+    frame: 4262
   - kind: snare
+    frame: 4269
+  - kind: hat
     frame: 4269
   - kind: snare
     frame: 4275
   - kind: hat
     frame: 4275
+  - kind: hat
+    frame: 4275
   - kind: snare
+    frame: 4281
+  - kind: hat
     frame: 4281
   - kind: snare
     frame: 4288
+  - kind: hat
+    frame: 4288
   - kind: snare
+    frame: 4294
+  - kind: hat
     frame: 4294
   - kind: snare
     frame: 4300
   - kind: hat
     frame: 4300
+  - kind: hat
+    frame: 4300
   - kind: snare
+    frame: 4306
+  - kind: hat
     frame: 4306
   - kind: snare
     frame: 4312
   - kind: snare
     frame: 4312
+  - kind: hat
+    frame: 4312
   - kind: snare
+    frame: 4319
+  - kind: hat
     frame: 4319
   - kind: snare
     frame: 4325
   - kind: hat
     frame: 4325
+  - kind: hat
+    frame: 4325
   - kind: snare
+    frame: 4331
+  - kind: hat
     frame: 4331
   - kind: snare
     frame: 4338
+  - kind: hat
+    frame: 4338
   - kind: snare
+    frame: 4344
+  - kind: hat
     frame: 4344
   - kind: snare
     frame: 4350
   - kind: hat
     frame: 4350
+  - kind: hat
+    frame: 4350
   - kind: snare
+    frame: 4356
+  - kind: hat
     frame: 4356
   - kind: snare
     frame: 4362
   - kind: snare
     frame: 4362
+  - kind: hat
+    frame: 4362
   - kind: snare
+    frame: 4369
+  - kind: hat
     frame: 4369
   - kind: snare
     frame: 4375
   - kind: hat
     frame: 4375
+  - kind: hat
+    frame: 4375
   - kind: snare
+    frame: 4381
+  - kind: hat
     frame: 4381
   - kind: snare
     frame: 4388
+  - kind: hat
+    frame: 4388
   - kind: snare
+    frame: 4394
+  - kind: hat
     frame: 4394
   - kind: snare
     frame: 4400
   - kind: hat
     frame: 4400
+  - kind: hat
+    frame: 4400
   - kind: snare
+    frame: 4406
+  - kind: hat
     frame: 4406
   - kind: snare
     frame: 4412
   - kind: snare
     frame: 4412
+  - kind: hat
+    frame: 4412
   - kind: snare
+    frame: 4419
+  - kind: hat
     frame: 4419
   - kind: snare
     frame: 4425
   - kind: hat
     frame: 4425
+  - kind: hat
+    frame: 4425
   - kind: snare
+    frame: 4431
+  - kind: hat
     frame: 4431
   - kind: snare
     frame: 4438
+  - kind: hat
+    frame: 4438
   - kind: snare
+    frame: 4444
+  - kind: hat
     frame: 4444
   - kind: snare
     frame: 4450
   - kind: hat
     frame: 4450
+  - kind: hat
+    frame: 4450
   - kind: snare
+    frame: 4456
+  - kind: hat
     frame: 4456
   - kind: snare
     frame: 4462
   - kind: snare
     frame: 4462
+  - kind: hat
+    frame: 4462
   - kind: snare
+    frame: 4469
+  - kind: hat
     frame: 4469
   - kind: snare
     frame: 4475
   - kind: hat
     frame: 4475
+  - kind: hat
+    frame: 4475
   - kind: snare
+    frame: 4481
+  - kind: hat
     frame: 4481
   - kind: snare
     frame: 4488
+  - kind: hat
+    frame: 4488
   - kind: snare
+    frame: 4494
+  - kind: hat
     frame: 4494
   - kind: snare
     frame: 4500
   - kind: hat
     frame: 4500
+  - kind: hat
+    frame: 4500
   - kind: snare
+    frame: 4506
+  - kind: hat
     frame: 4506
   - kind: snare
     frame: 4512
   - kind: snare
     frame: 4512
+  - kind: hat
+    frame: 4512
   - kind: snare
+    frame: 4519
+  - kind: hat
     frame: 4519
   - kind: snare
     frame: 4525
   - kind: hat
     frame: 4525
+  - kind: hat
+    frame: 4525
   - kind: snare
+    frame: 4531
+  - kind: hat
     frame: 4531
   - kind: kick
     frame: 4538
   - kind: snare
     frame: 4538
+  - kind: hat
+    frame: 4538
+  - kind: hat
+    frame: 4544
+  - kind: hat
+    frame: 4550
+  - kind: hat
+    frame: 4556
+  - kind: hat
+    frame: 4562
+  - kind: hat
+    frame: 4569
   - kind: snare
     frame: 4575
   - kind: snare
@@ -2883,188 +3121,426 @@ voices:
   - kind: kick
     frame: 4675
   - kind: hat
+    frame: 4675
+  - kind: crash
+    frame: 4675
+  - kind: hat
+    frame: 4681
+  - kind: hat
     frame: 4688
+  - kind: hat
+    frame: 4688
+  - kind: hat
+    frame: 4694
   - kind: snare
     frame: 4700
   - kind: hat
+    frame: 4700
+  - kind: hat
+    frame: 4706
+  - kind: hat
     frame: 4712
   - kind: hat
+    frame: 4712
+  - kind: hat
+    frame: 4719
+  - kind: hat
+    frame: 4725
+  - kind: hat
+    frame: 4731
+  - kind: hat
     frame: 4738
+  - kind: hat
+    frame: 4738
+  - kind: hat
+    frame: 4744
   - kind: snare
     frame: 4750
   - kind: hat
+    frame: 4750
+  - kind: hat
+    frame: 4756
+  - kind: hat
     frame: 4762
   - kind: hat
+    frame: 4762
+  - kind: hat
+    frame: 4769
+  - kind: hat
+    frame: 4775
+  - kind: hat
+    frame: 4781
+  - kind: hat
     frame: 4788
+  - kind: hat
+    frame: 4788
+  - kind: hat
+    frame: 4794
   - kind: snare
     frame: 4800
   - kind: hat
+    frame: 4800
+  - kind: hat
+    frame: 4806
+  - kind: hat
     frame: 4812
   - kind: hat
+    frame: 4812
+  - kind: hat
+    frame: 4819
+  - kind: hat
+    frame: 4825
+  - kind: hat
+    frame: 4831
+  - kind: hat
     frame: 4838
+  - kind: hat
+    frame: 4838
+  - kind: hat
+    frame: 4844
   - kind: snare
     frame: 4850
   - kind: hat
+    frame: 4850
+  - kind: hat
+    frame: 4856
+  - kind: hat
     frame: 4862
   - kind: hat
+    frame: 4862
+  - kind: hat
+    frame: 4869
+  - kind: hat
+    frame: 4875
+  - kind: hat
+    frame: 4881
+  - kind: hat
     frame: 4888
+  - kind: hat
+    frame: 4888
+  - kind: hat
+    frame: 4894
   - kind: snare
     frame: 4900
   - kind: hat
+    frame: 4900
+  - kind: hat
+    frame: 4906
+  - kind: hat
     frame: 4912
   - kind: hat
+    frame: 4912
+  - kind: hat
+    frame: 4919
+  - kind: hat
+    frame: 4925
+  - kind: hat
+    frame: 4931
+  - kind: hat
     frame: 4938
+  - kind: hat
+    frame: 4938
+  - kind: hat
+    frame: 4944
   - kind: snare
     frame: 4950
   - kind: hat
+    frame: 4950
+  - kind: hat
+    frame: 4956
+  - kind: hat
     frame: 4962
   - kind: hat
+    frame: 4962
+  - kind: hat
+    frame: 4969
+  - kind: hat
+    frame: 4975
+  - kind: hat
+    frame: 4981
+  - kind: hat
     frame: 4988
+  - kind: hat
+    frame: 4988
+  - kind: hat
+    frame: 4994
   - kind: snare
     frame: 5000
   - kind: hat
+    frame: 5000
+  - kind: hat
+    frame: 5006
+  - kind: hat
     frame: 5012
   - kind: hat
+    frame: 5012
+  - kind: hat
+    frame: 5019
+  - kind: hat
+    frame: 5025
+  - kind: hat
+    frame: 5031
+  - kind: hat
     frame: 5038
+  - kind: hat
+    frame: 5038
+  - kind: hat
+    frame: 5044
   - kind: snare
     frame: 5050
   - kind: hat
+    frame: 5050
+  - kind: hat
+    frame: 5056
+  - kind: hat
     frame: 5062
+  - kind: hat
+    frame: 5062
+  - kind: hat
+    frame: 5069
   - kind: kick
     frame: 5075
   - kind: snare
     frame: 5075
+  - kind: hat
+    frame: 5075
   - kind: snare
+    frame: 5081
+  - kind: hat
     frame: 5081
   - kind: snare
     frame: 5088
   - kind: hat
     frame: 5088
+  - kind: hat
+    frame: 5088
   - kind: snare
+    frame: 5094
+  - kind: hat
     frame: 5094
   - kind: snare
     frame: 5100
   - kind: snare
     frame: 5100
+  - kind: hat
+    frame: 5100
   - kind: snare
+    frame: 5106
+  - kind: hat
     frame: 5106
   - kind: snare
     frame: 5112
   - kind: hat
     frame: 5112
+  - kind: hat
+    frame: 5112
   - kind: snare
+    frame: 5119
+  - kind: hat
     frame: 5119
   - kind: snare
     frame: 5125
+  - kind: hat
+    frame: 5125
   - kind: snare
+    frame: 5131
+  - kind: hat
     frame: 5131
   - kind: snare
     frame: 5138
   - kind: hat
     frame: 5138
+  - kind: hat
+    frame: 5138
   - kind: snare
+    frame: 5144
+  - kind: hat
     frame: 5144
   - kind: snare
     frame: 5150
   - kind: snare
     frame: 5150
+  - kind: hat
+    frame: 5150
   - kind: snare
+    frame: 5156
+  - kind: hat
     frame: 5156
   - kind: snare
     frame: 5162
   - kind: hat
     frame: 5162
+  - kind: hat
+    frame: 5162
   - kind: snare
+    frame: 5169
+  - kind: hat
     frame: 5169
   - kind: snare
     frame: 5175
+  - kind: hat
+    frame: 5175
   - kind: snare
+    frame: 5181
+  - kind: hat
     frame: 5181
   - kind: snare
     frame: 5188
   - kind: hat
     frame: 5188
+  - kind: hat
+    frame: 5188
   - kind: snare
+    frame: 5194
+  - kind: hat
     frame: 5194
   - kind: snare
     frame: 5200
   - kind: snare
     frame: 5200
+  - kind: hat
+    frame: 5200
   - kind: snare
+    frame: 5206
+  - kind: hat
     frame: 5206
   - kind: snare
     frame: 5212
   - kind: hat
     frame: 5212
+  - kind: hat
+    frame: 5212
   - kind: snare
+    frame: 5219
+  - kind: hat
     frame: 5219
   - kind: snare
     frame: 5225
+  - kind: hat
+    frame: 5225
   - kind: snare
+    frame: 5231
+  - kind: hat
     frame: 5231
   - kind: snare
     frame: 5238
   - kind: hat
     frame: 5238
+  - kind: hat
+    frame: 5238
   - kind: snare
+    frame: 5244
+  - kind: hat
     frame: 5244
   - kind: snare
     frame: 5250
   - kind: snare
     frame: 5250
+  - kind: hat
+    frame: 5250
   - kind: snare
+    frame: 5256
+  - kind: hat
     frame: 5256
   - kind: snare
     frame: 5262
   - kind: hat
     frame: 5262
+  - kind: hat
+    frame: 5262
   - kind: snare
+    frame: 5269
+  - kind: hat
     frame: 5269
   - kind: snare
     frame: 5275
+  - kind: hat
+    frame: 5275
   - kind: snare
+    frame: 5281
+  - kind: hat
     frame: 5281
   - kind: snare
     frame: 5288
   - kind: hat
     frame: 5288
+  - kind: hat
+    frame: 5288
   - kind: snare
+    frame: 5294
+  - kind: hat
     frame: 5294
   - kind: snare
     frame: 5300
   - kind: snare
     frame: 5300
+  - kind: hat
+    frame: 5300
   - kind: snare
+    frame: 5306
+  - kind: hat
     frame: 5306
   - kind: snare
     frame: 5312
   - kind: hat
     frame: 5312
+  - kind: hat
+    frame: 5312
   - kind: snare
+    frame: 5319
+  - kind: hat
     frame: 5319
   - kind: snare
     frame: 5325
+  - kind: hat
+    frame: 5325
   - kind: snare
+    frame: 5331
+  - kind: hat
     frame: 5331
   - kind: snare
     frame: 5338
   - kind: hat
     frame: 5338
+  - kind: hat
+    frame: 5338
   - kind: snare
+    frame: 5344
+  - kind: hat
     frame: 5344
   - kind: snare
     frame: 5350
   - kind: snare
     frame: 5350
+  - kind: hat
+    frame: 5350
   - kind: snare
+    frame: 5356
+  - kind: hat
     frame: 5356
   - kind: snare
     frame: 5362
   - kind: hat
     frame: 5362
+  - kind: hat
+    frame: 5362
   - kind: snare
+    frame: 5369
+  - kind: hat
     frame: 5369
   - kind: kick
     frame: 5375
   - kind: snare
     frame: 5375
+  - kind: hat
+    frame: 5375
+  - kind: hat
+    frame: 5381
+  - kind: hat
+    frame: 5388
+  - kind: hat
+    frame: 5394
+  - kind: hat
+    frame: 5400
+  - kind: hat
+    frame: 5406

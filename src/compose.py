@@ -318,6 +318,23 @@ def main():
                     'kind': 'crash',
                     'frame': int(round(riser_b * fbeat_groove)),
                 })
+            # Drop crash on the first beat of reprise choruses so chorus2
+            # and chorus3 hit with an extra accent on top of the riser.
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label not in ('chorus2', 'chorus3'): continue
+                fx_events.append({
+                    'kind': 'crash',
+                    'frame': int(round(out_s * fbeat_groove)),
+                })
+            # 16th-note hats in reprise choruses for extra energy push.
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label not in ('chorus2', 'chorus3'): continue
+                dur = src_e - src_s
+                for step in range(int(dur * 4)):
+                    drum_events.append({
+                        'kind': 'hat',
+                        'frame': int(round((out_s + step / 4.0) * fbeat_groove)),
+                    })
 
         if MELODY_ONLY:
             bass_events.clear()
