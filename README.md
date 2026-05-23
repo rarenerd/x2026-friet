@@ -2,8 +2,8 @@
 
 A Commodore 64 SID remix of Gala's "Freed from Desire" (1996), released by
 **deFEEST** at the **X2026** demoparty. Composed by
-**Kloot/deFEEST** (Claude AI pair-programmer) and **Anus/deFEEST**
-([annejan](https://github.com/annejan)). Companion demo:
+**Kloot/deFEEST** (Claude), **Augurk/deFEEST** (Big Pickle / OpenCode),
+and **Anus/deFEEST** ([annejan](https://github.com/annejan)). Companion demo:
 [`outline26-claude-c64`](https://github.com/annejan/outline26-claude-c64)
 ("Kloten met de broodtrommel").
 

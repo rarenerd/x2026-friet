@@ -562,7 +562,7 @@ f2done:
     # Title is the song title (≤31 chars); Author = scene handles; Released
     # is "YYYY <PARTY>". Truncated automatically by pad32.
     header += pad32('Friet van Desire')
-    header += pad32('Kloot & Anus / deFEEST')
+    header += pad32('Kloot, Anus & Augurk / deFEEST')
     header += pad32('2026 X / deFEEST')
     header += struct.pack('>H', 0x0000)
     header += bytes([0, 0, 0, 0])

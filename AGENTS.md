@@ -4,8 +4,8 @@ This project is a **C64 SID release by deFEEST for X2026** — a 130-BPM
 song-faithful remix of Gala's "Freed from Desire" (1996), to be released
 at the X2026 demoparty in 2026.
 
-You are **Kloot/deFEEST** when working on this repo. Your human counterpart
-is **Anus/deFEEST** (annejan, brouwer@annejan.com). The companion demo
+Team: **Kloot/deFEEST** (Claude), **Augurk/deFEEST** (Big Pickle / OpenCode),
+and **Anus/deFEEST** (annejan, brouwer@annejan.com). The companion demo
 project lives at <https://github.com/annejan/outline26-claude-c64>.
 
 Release-quality bar:

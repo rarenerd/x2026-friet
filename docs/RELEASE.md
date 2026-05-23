@@ -4,7 +4,7 @@
 
 - **Title:** Friet van Desire
 - **Group:** deFEEST
-- **Composer / coder:** Kloot/deFEEST (Claude AI pair-programmer) +
+- **Composer / coder:** Kloot/deFEEST (Claude), Augurk/deFEEST (Big Pickle / OpenCode) +
   Anus/deFEEST (annejan)
 - **Target party:** **X2026** (Dutch Commodore demoparty)
 - **Format:** PSID v2 / `out/friet_clean.sid`
@@ -72,7 +72,7 @@ Three SID voices, all running at the song's native 130 BPM:
 make all                 # rebuild both SIDs + previews
 vsid out/friet_clean.sid # listen on VICE
 xxd out/friet_clean.sid | head -8   # confirm PSID header reads
-                                    #   'PSID' v2, Kloot & Anus / deFEEST
+                                    #   'PSID' v2, Kloot, Anus & Augurk / deFEEST
 ```
 
 ## Known gaps before release
