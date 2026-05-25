@@ -310,13 +310,6 @@ def main():
                     unit = hh_unit
 
                 if unit:
-                    # In chorus/na-na, boost the bass 2 octaves up so it
-                    # becomes the iconic D4/F4 organ punch (AUD ch 0/4
-                    # plays D5+A5 — we settle for D4 since V2 vocal is
-                    # at D5-F5 and we'd collide). Verse stays at D2/F2
-                    # for bass-register thump.
-                    ORGAN_PUNCH_LABELS = {'chorus1', 'postchorus_nana',
-                                          'chorus2', 'chorus3'}
                     max_src_end = max(src_e for _, src_e, _ in SEGMENTS)
                     src_loop = 0.0
                     while src_loop < max_src_end + period_beats:
@@ -325,10 +318,9 @@ def main():
                             chord = chord_at(src_b)
                             pitch = CHORDS[chord][role]
                             for out_b, label in remap(src_b):
-                                p = pitch + 24 if (FAST and label in ORGAN_PUNCH_LABELS) else pitch
                                 bass_events.append({
                                     'frame': int(round(out_b * fbeat_groove)),
-                                    'note':  p,
+                                    'note':  pitch,
                                     'dur_frames': max(3, int(round(max(0.1, d_off) * fbeat_groove))),
                                     'ctrl':  SECTION_BASS_CTRL.get(label, 0x40),
                                 })
