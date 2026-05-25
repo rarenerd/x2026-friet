@@ -1,0 +1,313 @@
+# Score transcription — Gala-freedfromdesire.mid (ossh)
+
+Source: `midi/Gala-freedfromdesire.mid` at 128.5 BPM.
+Grid: 16th notes per bar. `·` = silence.
+
+Voices: Vocal (T5 Flute), Organ (T8 PercOrgan), Bass (T2 5ths Bass),
+Drums (T10: K=kick, S=snare, C=clap, h=closed hat, H=open hat, X=crash)
+
+## VERSE 1 (beats 32–64)
+
+```
+  Bar 1 (beat 32):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+
+  Bar 2 (beat 36):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ?XS ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 3 (beat 40):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 4 (beat 44):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 5 (beat 48):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 6 (beat 52):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ?XS ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 7 (beat 56):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+  Bar 8 (beat 60):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  ·  ·  ?C ·  ·  · 
+
+```
+
+## PRE-CHORUS (beats 64–96)
+
+```
+  Bar 1 (beat 64):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  ·  ·  ·  ·  A4 ·  C5 D5 ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ·  ·  ·  ·  C? ·  ·  ·  ·  ·  XXX X  XC?X XXX XXX XXX
+
+  Bar 2 (beat 68):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : D5 ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  D5 ·  D5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?XS ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 3 (beat 72):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  D5 ·  D5 ·  C5 D5 ·  ·  A4 ·  C5 D5 ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 4 (beat 76):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  D5 ·  D5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 5 (beat 80):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  D5 ·  D5 ·  C5 D5 ·  ·  A4 ·  C5 D5 ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 6 (beat 84):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : D5 ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  D5 ·  D5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?XS ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 7 (beat 88):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : C5 ·  D5 ·  D5 ·  C5 D5 ·  ·  A4 ·  C5 D5 ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 8 (beat 92):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : D5 ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+```
+
+## CHORUS 1 (beats 96–128)
+
+```
+  Bar 1 (beat 96):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : C5 ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  h  ·  hC? ·  h  ·  h  ·  h  ·  h?C ·  h  · 
+
+  Bar 2 (beat 100):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  ·  A4 ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?XS ·  H  ·  hC? ·  H  ·  h  ·  H  ·  h?C ·  H  · 
+
+  Bar 3 (beat 104):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  E5 ·  E5 ·  E5 E5 ·  E5 ·  E5 E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  H  ·  hC? ·  H  ·  h  ·  H  ·  h?C ·  H  · 
+
+  Bar 4 (beat 108):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  ·  A4 ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  H  ·  hC? ·  H  ·  h  ·  H  ·  h?C ·  H  · 
+
+  Bar 5 (beat 112):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : E5 ·  E5 ·  E5 ·  E5 E5 ·  E5 ·  E5 E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h  ·  H  ·  hC? ·  H  ·  h  ·  H  ·  h?C ·  H  · 
+
+  Bar 6 (beat 116):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  ·  A4 ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?X ·  H  ·  hC? ·  H  S  Sh ·  SH ·  Sh?C ·  SH S 
+
+  Bar 7 (beat 120):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : E5 ·  E5 ·  E5 ·  E5 E5 ·  E5 ·  E5 E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : Sh S  SH S  ShC? S  SH S  Sh S  SH S  Sh?C S  SH S 
+
+  Bar 8 (beat 124):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : Sh S  SH S  ShC? S  SH S  Sh S  SH S  Sh?C S  SH S 
+
+```
+
+## POST-CHORUS (beats 128–160)
+
+```
+  Bar 1 (beat 128):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : ShKX ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+
+  Bar 2 (beat 132):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : K?X ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 3 (beat 136):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 4 (beat 140):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?K? ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 5 (beat 144):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A# ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 6 (beat 148):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : K?X ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 7 (beat 152):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : A4 ·  ·  ·  ·  ·  E5 ·  E5 ·  E5 ·  E5 ·  E5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 8 (beat 156):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : F5 ·  ·  D5 ·  ·  D5 ·  C5 ·  ·  C5 ·  ·  C5 · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Drums : h?K? ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+```
+
+## INSTRUMENTAL (beats 160–192)
+
+```
+  Bar 1 (beat 160):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : F2 E2 D2 C2 B1 C2 D2 E2 F2 G2 A2 B2 C3 D3 E3 F3
+  Drums : SK?X S  SH S  CSK?h S  SH S  SK?h S  SH S  CSK?h S? S?H S 
+
+  Bar 2 (beat 164):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : K?X ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 3 (beat 168):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 4 (beat 172):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : h?K? ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 5 (beat 176):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 6 (beat 180):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : K?X ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 7 (beat 184):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : K??h ?  ?H ?  CK???h ?  ?H ?? K??h ?? ?H ?  CK???h ?? ??H ??
+
+  Bar 8 (beat 188):
+  16th:   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+  Vocal : ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  · 
+  Organ : D6 ·  ·  ·  D6 ·  ·  D4 ·  ·  D6 ·  ·  ·  D4 · 
+  Bass  : D2 ·  D3 D2 ·  ·  F3 ·  D2 ·  D3 D2 ·  ·  F3 · 
+  Drums : h?K? ?  ?H ?  CK???h ?  ?H ?  K??h ?? ?H ?  CK???h ?? ??H ??
+
+```
+
