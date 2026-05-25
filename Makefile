@@ -34,7 +34,7 @@ LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
 PREVIEW_SECONDS ?= 90
-LAB_SECONDS     ?= 15
+LAB_SECONDS     ?= 30
 
 all: clean-pipeline melody-only friet preview-clean preview-melody preview-friet
 

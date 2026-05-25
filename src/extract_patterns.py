@@ -306,11 +306,43 @@ def main():
         out.sort()
         return out
 
-    layers['layers']['bass']  = dump_track_notes(5)
-    layers['layers']['vocal'] = dump_track_notes(7)
-    layers['layers']['hook']  = dump_track_notes(11)
-    layers['layers']['sfx']   = dump_track_notes(12)
-    layers['layers']['drums'] = dump_track_notes(13)
+    # Find tracks by GM program number (not index — different MIDIs use
+    # different track ordering). Channel 9 = drums regardless of program.
+    def find_track_by_prog(prog):
+        for ti, trk in enumerate(mid.tracks):
+            for msg in trk:
+                if msg.type == 'program_change' and msg.program == prog:
+                    return ti
+        return None
+    def find_drum_track():
+        for ti, trk in enumerate(mid.tracks):
+            for msg in trk:
+                if msg.type == 'note_on' and msg.velocity > 0 and msg.channel == 9:
+                    return ti
+        return None
+
+    # Role → GM program mapping (verified across all our source MIDIs):
+    #   bass  = prog 87 (5ths Bass / Lead 8)
+    #   vocal = prog 68 (Oboe) OR prog 73 (Flute) — both used as vocal substitutes
+    #   hook  = prog 81 (Lead 1 Square) — the "na-na" counter-melody
+    #   sfx   = prog 119 (Reverse Cymbal)
+    #   organ = prog 17 (Drawbar Organ) OR prog 18 (Percussive Organ)
+    ti_bass  = find_track_by_prog(87)
+    ti_vocal = find_track_by_prog(68) or find_track_by_prog(73)
+    ti_hook  = find_track_by_prog(81)
+    ti_sfx   = find_track_by_prog(119)
+    ti_drums = find_drum_track()
+    ti_organ = find_track_by_prog(18) or find_track_by_prog(17)
+
+    layers['layers']['bass']  = dump_track_notes(ti_bass)  if ti_bass  is not None else []
+    layers['layers']['vocal'] = dump_track_notes(ti_vocal) if ti_vocal is not None else []
+    layers['layers']['hook']  = dump_track_notes(ti_hook)  if ti_hook  is not None else []
+    layers['layers']['sfx']   = dump_track_notes(ti_sfx)   if ti_sfx   is not None else []
+    layers['layers']['drums'] = dump_track_notes(ti_drums) if ti_drums is not None else []
+    if ti_organ is not None:
+        layers['layers']['organ'] = dump_track_notes(ti_organ)
+    print(f"Track map: bass=T{ti_bass} vocal=T{ti_vocal} hook=T{ti_hook} "
+          f"sfx=T{ti_sfx} drums=T{ti_drums} organ=T{ti_organ}")
     with open(layers_path, 'w') as f:
         f.write("# Verified ground-truth note lists for each named layer.\n")
         f.write("# Each entry: [start_beat, duration_beats, midi_pitch].\n\n")

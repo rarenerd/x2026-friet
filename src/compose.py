@@ -232,24 +232,31 @@ def main():
                     'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
 
-        # ---- Bass (V1) -- T11 4-note hook (-12) throughout for rave bounce.
-        # Generated from source-beat positions and remapped. T5's full
-        # bassline is dropped here — too dense for the rave vibe; the
-        # iconic 4-note pattern carries every section.
+        # ---- Bass (V1) -- T6/T8 organ stab rhythm, chord-following.
+        # Uses the T11 hook rhythm if available, otherwise falls back to
+        # the T6 stab pattern (0, 1, 1.75, 2.5, 3.5) which was verified
+        # against AUD_HO1152.mid and the ossh transcription.
         if not MELODY_ONLY:
             t11 = layers['layers'].get('hook', [])
             if t11:
                 period_beats = 4.0
                 first_b = t11[0][0]
-                # Original T11 hook = [D3,D3,D3,F3,D3,D3,D3,F3]. Strip the
-                # absolute pitches; keep only the RHYTHM + a "root or third"
-                # role tag. We'll fill in actual pitches per current chord.
                 unit = []
                 for n in t11:
                     rel_b = n[0] - first_b
                     if rel_b >= period_beats: continue
-                    role = 'root' if int(n[2]) == 50 else 'third'  # 50 = D3 in src
+                    role = 'root' if int(n[2]) == 50 else 'third'
                     unit.append((rel_b, n[1], role))
+            else:
+                # No hook track — use the lab-verified T6 stab pattern
+                period_beats = 4.0
+                unit = [
+                    (0.0,  0.4, 'root'),
+                    (1.0,  0.4, 'root'),
+                    (1.75, 0.4, 'root'),
+                    (2.5,  0.4, 'root'),
+                    (3.5,  0.4, 'root'),
+                ]
 
                 # Bass timbre per output section. Fast variant goes punchy
                 # pulse everywhere (no soft triangles in verses); clean
