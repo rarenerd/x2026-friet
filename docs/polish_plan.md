@@ -82,16 +82,17 @@ straight through. We can:
 4. ✅ **Source vocal timing preserved** — done. The chorus tresillo IS
    the song's rhythmic identity; vocal is NOT quantized to an 8th grid.
    See `docs/rhythm_research.md` and `docs/melody_understanding.md`.
-5. 🟡 **Vibrato on V2 vocal** — TODO. The triangle vocal is dead-pan.
-   Re-enable apply_vibrato with subtle depth (±$06 on freq) so syllables
-   feel sung. Was disabled when we ripped out the filter; bring it back
-   safely with the "skip when V2BASE = 0" guard.
+5. ✅ **Vibrato on V2 vocal** — done. LFO depth set to ±12 SID freq
+   units (~0.16% pitch deviation, ~3 Hz cycle). Was ±6 (inaudible);
+   now perceptible as a gentle "sung" wobble. Guard for V2BASE=0
+   (the beep bug) is in place.
 6. ✅ **Fast tempo variant** — done. `FAST=1 compose.py` renders the
    same data at 175 BPM into `out/friet.sid` (the release); the
    workstage `friet_clean.sid` stays at the song-faithful 130 BPM.
-7. 🟡 **Reprise / dynamics push** — TODO. Once verses are light and
-   choruses heavy, see if Chorus 2 should hit even harder than Chorus 1
-   (e.g. crash swell preceding it, hat density up).
+7. ✅ **Reprise / dynamics push** — done. Breathe1/2 bars get 8th-note
+   snare-roll fills as build-up before chorus2/3. Chorus2/3 get full
+   8th-note hats (on+off-beat) vs off-beat-only elsewhere. Crash risers
+   and drop crashes already in place from earlier work.
 8. 🟡 **TL-Buis lyrics in the standalone .prg ticker** — TODO. The
    ticker in `out/friet.prg` currently reads the English Soft-Karaoke
    syllables from `docs/song_layers.yaml` (verbatim source MIDI). The

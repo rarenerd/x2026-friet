@@ -1,0 +1,64 @@
+# TL-Buis/deFEEST Dutch parody lyrics mapped to the OUTPUT timeline.
+# One entry per displayed lyric line. Beat positions are OUTPUT beats
+# (after the SEGMENTS remap in compose.py), NOT source-MIDI beats.
+#
+# Used by build_player.py for the standalone .prg lyric ticker.
+# The ticker replaces whatever's on screen row 12 at each beat.
+
+lyrics:
+  # ---- Verse 1 (output beats 21.5–54.5, 8 bars, 1 line per bar) ----
+  - {beat: 21.5,  text: "Mijn crew die heeft geen centen"}
+  - {beat: 25.5,  text: "maar wel een zieke scroll"}
+  - {beat: 29.5,  text: "Mijn crew die heeft geen shaders"}
+  - {beat: 33.5,  text: "maar wel een rasterrol"}
+  - {beat: 37.5,  text: "Mijn crew die heeft geen sponsors"}
+  - {beat: 41.5,  text: "maar wel respect in de zaal"}
+  - {beat: 45.5,  text: "Mijn crew die heeft geen centen"}
+  - {beat: 49.5,  text: "maar wel kabaal totaal"}
+
+  # ---- Pre-chorus 1 (output beats 54.5–88, 8 bars) ----
+  - {beat: 54.5,  text: "Meer en meer"}
+  - {beat: 58.5,  text: "iedereen wil meer en meer"}
+  - {beat: 62.5,  text: "frames en effect"}
+  - {beat: 66.5,  text: "tot de deadline implodeert"}
+  - {beat: 70.5,  text: "Meer en meer"}
+  - {beat: 74.5,  text: "iedereen wil meer en meer"}
+  - {beat: 78.5,  text: "bier en geweld"}
+  - {beat: 82.5,  text: "uit een speaker veel te schel"}
+
+  # ---- Chorus 1 (output beats 88–117.5, ~7 bars) ----
+  - {beat: 88.0,  text: "Friet van Desire"}
+  - {beat: 92.0,  text: "SID en VIC slaan door"}
+  - {beat: 96.0,  text: "Friet van Desire"}
+  - {beat: 100.0, text: "alle sprites zwaar ontspoord"}
+  - {beat: 104.0, text: "Friet van Desire"}
+  - {beat: 108.0, text: "scanlines vol met storing"}
+  - {beat: 112.0, text: "Friet van Desire"}
+
+  # ---- Post-chorus na-na (output beats 117.5–149.5, 8 bars) ----
+  - {beat: 117.5, text: "Na-na-na-na-na-na-na"}
+  - {beat: 121.5, text: "na-na-na door de zaal"}
+  - {beat: 125.5, text: "Na-na-na-na-na-na-na"}
+  - {beat: 129.5, text: "heel de beamrace loopt fataal"}
+  - {beat: 133.5, text: "Na-na-na-na-na-na-na"}
+  - {beat: 137.5, text: "iemand trekt de stekker los"}
+  - {beat: 141.5, text: "Na-na-na-na-na-na-na"}
+  - {beat: 145.5, text: "maar de demo loopt alsnog"}
+
+  # ---- Chorus 2 reprise (output beats 153.5–183) ----
+  - {beat: 153.5, text: "Friet van Desire"}
+  - {beat: 157.5, text: "SID en VIC staan rood"}
+  - {beat: 161.5, text: "Friet van Desire"}
+  - {beat: 165.5, text: "heel de sporthal sloopt zichzelf"}
+  - {beat: 169.5, text: "Friet van Desire"}
+  - {beat: 173.5, text: "alle scanlines zwaar verstoord"}
+  - {beat: 177.5, text: "Friet van Desire"}
+
+  # ---- Chorus 3 reprise (output beats 187–216.5) ----
+  - {beat: 187.0, text: "Friet van Desire"}
+  - {beat: 191.0, text: "SID en VIC slaan door"}
+  - {beat: 195.0, text: "Friet van Desire"}
+  - {beat: 199.0, text: "alle sprites zwaar ontspoord"}
+  - {beat: 203.0, text: "Friet van Desire"}
+  - {beat: 207.0, text: "scanlines vol met storing"}
+  - {beat: 211.0, text: "groetjes van TL-Buis"}

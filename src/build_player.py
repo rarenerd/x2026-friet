@@ -68,38 +68,46 @@ def remap(src_beat):
         if s <= src_beat < e:
             yield out_s + (src_beat - s)
 
-with open(LAYERS_PATH) as f:
-    ly = yaml.safe_load(f)
-syls = [{'beat': l['beat'], 'syllable': l['syllable']}
-        for l in ly.get('lyrics', [])]
+# ---- Lyrics source: TL-Buis Dutch parody (if available), else karaoke ----
+TL_BUIS_PATH = os.path.join(BASE, 'docs', 'tl_buis_lyrics.yaml')
 
 # The standalone .prg embeds the FAST release SID; lyric frames must match
 # that tempo. Keep in sync with FAST_BPM in src/compose.py.
 FAST_BPM = 175
 FRAMES_PER_BEAT = 50.0 * 60 / FAST_BPM   # ≈ 17.14 fr/beat at 175 BPM
 
-# Group syllables into lines. A syllable is a line-start if it has no
-# leading space AND begins with a capital — Soft-Karaoke encodes word
-# starts as " word" but mid-word continuations as "ey" (lowercase), so
-# capital-without-space cleanly distinguishes "Na" (new line) from "ey"
-# (still inside "money"). Large beat gaps also force a break, to catch
-# silences between phrases.
-LINE_GAP_BEATS = 2.0
-lines = []
-cur_syls, cur_start, last_beat = [], None, None
-for s in syls:
-    syl = s['syllable']
-    is_line_start = (not syl.startswith(' ')) and syl[:1].isupper()
-    big_gap = last_beat is not None and (s['beat'] - last_beat) > LINE_GAP_BEATS
-    if (is_line_start or big_gap) and cur_syls:
-        lines.append((cur_start, cur_syls))
-        cur_syls, cur_start = [], None
-    if not cur_syls:
-        cur_start = s['beat']
-    cur_syls.append(s)
-    last_beat = s['beat']
-if cur_syls:
-    lines.append((cur_start, cur_syls))
+if os.path.exists(TL_BUIS_PATH):
+    # TL-Buis lyrics: pre-mapped to OUTPUT beats, one text per entry.
+    # No syllable grouping needed — each entry is a display line.
+    with open(TL_BUIS_PATH) as f:
+        tl = yaml.safe_load(f)
+    lines = [(l['beat'], l['text']) for l in tl.get('lyrics', [])]
+    print(f"Using TL-Buis lyrics: {len(lines)} lines")
+else:
+    # Fallback: karaoke English syllables from song_layers.yaml
+    with open(LAYERS_PATH) as f:
+        ly = yaml.safe_load(f)
+    syls = [{'beat': l['beat'], 'syllable': l['syllable']}
+            for l in ly.get('lyrics', [])]
+    LINE_GAP_BEATS = 2.0
+    raw_lines = []
+    cur_syls, cur_start, last_beat = [], None, None
+    for s in syls:
+        syl = s['syllable']
+        is_line_start = (not syl.startswith(' ')) and syl[:1].isupper()
+        big_gap = last_beat is not None and (s['beat'] - last_beat) > LINE_GAP_BEATS
+        if (is_line_start or big_gap) and cur_syls:
+            raw_lines.append((cur_start, cur_syls))
+            cur_syls, cur_start = [], None
+        if not cur_syls:
+            cur_start = s['beat']
+        cur_syls.append(s)
+        last_beat = s['beat']
+    if cur_syls:
+        raw_lines.append((cur_start, cur_syls))
+    lines = [(beat, ''.join(s['syllable'] for s in ss).strip())
+             for beat, ss in raw_lines]
+    print(f"Using karaoke lyrics: {len(lines)} lines")
 
 # Word-wrap any line still > 40 cols. The screen row is 40 cols wide; the
 # .asm centres each event by `(40 - len) / 2`, which underflows for >40
@@ -127,18 +135,17 @@ def wrap_text(text, width):
     return chunks
 
 events = []   # (frame, text)
-for line_beat, ss in lines:
-    text = ''.join(s['syllable'] for s in ss).strip()
+for line_beat, text in lines:
     chunks = wrap_text(text, MAX_LINE_COLS)
-    for out_beat in remap(line_beat):
-        for i, chunk in enumerate(chunks):
-            events.append((
-                int(round((out_beat + i * WRAP_BEAT_STEP) * FRAMES_PER_BEAT)),
-                chunk,
-            ))
+    # TL-Buis lyrics are already in OUTPUT beats; karaoke lyrics need
+    # remap(). TL-Buis always has the file, so we just use beat directly.
+    for i, chunk in enumerate(chunks):
+        events.append((
+            int(round((line_beat + i * WRAP_BEAT_STEP) * FRAMES_PER_BEAT)),
+            chunk,
+        ))
 events.sort()
-print(f"{len(syls)} syllables -> {len(lines)} lyric lines -> "
-      f"{len(events)} on-screen lyric updates @ {FAST_BPM} BPM")
+print(f"{len(lines)} lyric lines -> {len(events)} on-screen updates @ {FAST_BPM} BPM")
 
 # ---- Text -> C64 screen codes -----------------------------------------
 def to_screen(s, width=40):
