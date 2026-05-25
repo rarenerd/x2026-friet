@@ -35,12 +35,16 @@ DRUM_KIT = {
     'kick':  (2,  6, 0x09, 0x00),   # decay 720 ms — full "boom" body
     'snare': (36, 5, 0x07, 0x00),   # decay 168 ms — sharp snap
     'hat':   (78, 2, 0x02, 0x00),   # decay  24 ms — tick
-    'crash': (40, 130, 0x0D, 0x08),  # ATTACK $D=3s but gated for 2.6s so the
-                                     # envelope only climbs to ~50% — quieter
-                                     # than the previous $F peak. Pitch index
-                                     # 40 (≈ MIDI 64) is lower-frequency noise
-                                     # (less "sssss", more "wwwoosh").
-                                     # Release $8 = 240 ms = clean tail.
+    'crash': (28, 200, 0xD0, 0xF8),  # Reverse-cymbal swell.
+                                     #   Attack $D = ~3 s (slow rise).
+                                     #   Decay  $0 = 6 ms (skipped — sustain at peak).
+                                     #   Sustain $F = full (peak holds at the impact).
+                                     #   Release $8 = 240 ms (clean tail).
+                                     # Gated for 200 frames = 4 s, so the
+                                     # envelope reaches full peak before
+                                     # release. Pitch index 28 (≈ MIDI 52)
+                                     # is darker noise — more "wwoosh", less
+                                     # "ssss" than the previous 40.
 }
 
 NOTE_LO, NOTE_HI = 12, 119

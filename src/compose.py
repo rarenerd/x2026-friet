@@ -219,6 +219,9 @@ def main():
             'breathe2':        0x20,
             'chorus3':         0x40,  # pulse -- different timbre for final reprise
         }
+        # Vocal: source timing preserved. The chorus Phrase A tresillo
+        # (0, 0.75, 1.5, 2, 2.75) IS the song's signature — quantising
+        # it to 8ths flattens the anthem. Per docs/melody_understanding.md.
         for s_b, d_b, pitch in layers['layers'].get('vocal', []):
             d = max(0.2, d_b)
             for out_b, label in remap(s_b):
@@ -290,16 +293,19 @@ def main():
                     bar = int((src_beat - CHORUS_ANCHOR) // 4) % 4
                     return CYCLE[bar]
 
-                # Fast variant: replace the T11 hook rhythm with classic
-                # rave bouncy off-beat 8ths (a quarter-beat blip at the 'and'
-                # of every beat). Clean variant keeps the T11 shape so the
-                # song still sounds like FFD.
+                # Fast variant: T6's iconic stab rhythm (4-3-3-4
+                # sixteenths = positions 0, 1, 1.75, 2.5, 3.5 per bar).
+                # Chord-following: verse stays on D-pedal (chord_at
+                # returns Dm pre-chorus), chorus follows Dm-F-Bb-C.
+                # Lab-verified: this groove + 4-on-floor kick + off-beat
+                # hat = the working FFD HH recipe.
                 if FAST:
                     hh_unit = [
-                        (0.5,  0.3, 'root'),
-                        (1.5,  0.3, 'root'),
-                        (2.5,  0.3, 'root'),
-                        (3.5,  0.3, 'third'),
+                        (0.0,  0.4, 'root'),
+                        (1.0,  0.4, 'root'),
+                        (1.75, 0.4, 'root'),
+                        (2.5,  0.4, 'root'),
+                        (3.5,  0.4, 'root'),
                     ]
                     unit = hh_unit
 
@@ -382,18 +388,52 @@ def main():
                 else:
                     break
             return cur
-        if not MELODY_ONLY:
+        if not MELODY_ONLY and not FAST:
+            # Workstage: T13 verbatim, filtered per source-section. The
+            # original drummer's pattern carries the song-faithful
+            # 130-BPM build.
             for s_b, _d_b, pitch in layers['layers'].get('drums', []):
                 kind = GM_DRUMS.get(int(pitch))
                 if not kind: continue
                 sec_name = section_at(s_b)
                 if kind not in SECTION_KIT.get(sec_name, set()): continue
-                # Remap source beat onto each output segment that contains it
                 for out_b, _label in remap(s_b):
                     drum_events.append({
                         'kind':  kind,
                         'frame': int(round(out_b * fbeat_groove)),
                     })
+        if not MELODY_ONLY and FAST:
+            # FAST: synthetic HH kit, lab-verified per section.
+            # T13 is dropped — its half-time feel fights the vocal
+            # syncope at 175 BPM.
+            #
+            # Per-bar foundation:
+            #   kick:  4-on-the-floor       [0, 1, 2, 3]
+            #   hat:   off-beat 8ths        [0.5, 1.5, 2.5, 3.5]
+            #   snare: backbeat [1, 3] — chorus / na-na only
+            #
+            # Verse has no snare (the T6 bass stab owns the rhythmic
+            # accent). Chorus adds snare for "drop" energy.
+            KICK_SEGMENTS  = {'verse1', 'prechorus1', 'chorus1',
+                              'postchorus_nana', 'chorus2', 'chorus3'}
+            SNARE_SEGMENTS = {'chorus1', 'postchorus_nana',
+                              'chorus2', 'chorus3'}
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label not in KICK_SEGMENTS: continue
+                seg_dur_beats = src_e - src_s
+                n_bars = int(seg_dur_beats // 4)
+                for bar in range(n_bars):
+                    bar_start = out_s + bar * 4.0
+                    for off in (0, 1, 2, 3):
+                        drum_events.append({'kind': 'kick',
+                            'frame': int(round((bar_start + off) * fbeat_groove))})
+                    for off in (0.5, 1.5, 2.5, 3.5):
+                        drum_events.append({'kind': 'hat',
+                            'frame': int(round((bar_start + off) * fbeat_groove))})
+                    if label in SNARE_SEGMENTS:
+                        for off in (1, 3):
+                            drum_events.append({'kind': 'snare',
+                                'frame': int(round((bar_start + off) * fbeat_groove))})
 
         # ---- T12 reverse-cymbal swells (intro AND section transitions) ----
         if not MELODY_ONLY:
@@ -422,15 +462,10 @@ def main():
                     'kind': 'crash',
                     'frame': int(round(out_s * fbeat_groove)),
                 })
-            # 16th-note hats in reprise choruses for extra energy push.
-            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
-                if label not in ('chorus2', 'chorus3'): continue
-                dur = src_e - src_s
-                for step in range(int(dur * 4)):
-                    drum_events.append({
-                        'kind': 'hat',
-                        'frame': int(round((out_s + step / 4.0) * fbeat_groove)),
-                    })
+            # (Reprise hat-overlay removed — the synth bed already
+            # supplies 4 off-beat hats/bar consistently; doubling them
+            # in chorus2/3 only made the mix denser without raising
+            # perceived energy.)
 
         if MELODY_ONLY:
             bass_events.clear()

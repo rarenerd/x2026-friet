@@ -6,59 +6,76 @@
 
 ---
 
+## FRIET
+
 Mijn crew die heeft geen centen
-maar wel een plasma-scroll
+maar wel een zieke scroll
 Mijn crew die heeft geen shaders
-maar wel een rasterroll
+maar wel een rasterrol
 Mijn crew die heeft geen sponsors
-maar wel een dikke scroller
+maar wel respect in de zaal
 Mijn crew die heeft geen centen
-maar wel een flinke bolder
+maar wel kabaal totaal
 
-Meer and more
+Meer en meer
 iedereen wil meer en meer
-frames en respect
-da's waar wij compile'n voor
+frames en effect
+tot de deadline implodeert
 
-Meer and more
+Meer en meer
 iedereen wil meer en meer
-bier en effect
-tot de deadline ons verstoort
+bier en geweld
+uit een speaker veel te schel
 
-**Refrein**
-
-Friet van Desire
-mind en VIC-II on fire
-Friet van Desire
-alle sprites staan hoger
+### Hook
 
 Friet van Desire
-mind en SID-chip purifier
+SID en VIC slaan door
+Friet van Desire
+alle sprites zwaar ontspoord
+
+Friet van Desire
+scanlines vol met storing
 Friet van Desire
 
 Na-na-na-na-na-na-na
-na-na-na in de zaal
+na-na-na door de zaal
 Na-na-na-na-na-na-na
-de beamrace gaat totaal
+heel de beamrace loopt fataal
 
 Na-na-na-na-na-na-na
-de jurering weer corrupt
+iemand trekt de stekker los
 Na-na-na-na-na-na-na
-maar de party die ontploft
+maar de demo loopt alsnog
 
 Mijn code draait op floppies
-uw engine op krediet
-Gij koopt AI op Steam nog
-wij tunen badlines niet
+jouw engine op geleend geld
+Jij koopt AI en shaders
+wij persen cycles uit geweld
 
 Geen slaap en geen relaties
 wel drie dagen Assembly
 De frituur ruikt naar soldeerflux
-de timetable loopt weer scheef
+en naar lauw energiedrankbier
 
-**Hook**
+Meer en meer
+iedereen wil meer en meer
+meer MHz
+maar die code compileert niet eens
+
+Meer en meer
+iedereen wil meer en meer
+nog één laatste fix
+vlak voor de compo ingestuurd
+
+### Hook
 
 Friet van Desire
-alle scanlines lopen schever
+SID en VIC staan rood
 Friet van Desire
-VIC en Paula worden heter
+heel de sporthal sloopt zichzelf
+
+Friet van Desire
+alle scanlines zwaar verstoord
+Friet van Desire
+                           groetjes van TL-Buis

@@ -7,8 +7,8 @@
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet \
-        preview preview-clean preview-melody preview-friet player
+        clean-pipeline melody-only friet lab \
+        preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
 .ONESHELL:
@@ -30,8 +30,11 @@ MELODY_MP3 := $(OUT_DIR)/friet_melody_only.mp3
 FRIET_SID  := $(OUT_DIR)/friet.sid
 FRIET_MP3  := $(OUT_DIR)/friet.mp3
 FRIET_PRG  := $(OUT_DIR)/friet.prg
+LAB_SID    := $(OUT_DIR)/lab.sid
+LAB_MP3    := $(OUT_DIR)/lab.mp3
 
 PREVIEW_SECONDS ?= 90
+LAB_SECONDS     ?= 15
 
 all: clean-pipeline melody-only friet preview-clean preview-melody preview-friet
 
@@ -89,6 +92,15 @@ preview-friet: $(FRIET_MP3)
 $(FRIET_MP3): $(FRIET_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
 
+# Experimental sandbox — short loop of a fragment + hand-written
+# beat/bass pattern. Tweak src/lab.py SETTINGS and re-run `make lab`.
+lab: $(LAB_MP3)
+$(LAB_SID): $(SRC_DIR)/lab.py $(SRC_DIR)/synth.py $(LAYERS)
+	$(PYTHON) $(SRC_DIR)/lab.py
+$(LAB_MP3): $(LAB_SID)
+	$(TOOLS_DIR)/render-preview.sh $< $@ $(LAB_SECONDS)
+preview-lab: $(LAB_MP3)
+
 # Stand-alone C64 .prg that plays the release SID with a lyric ticker.
 # Build with KickAssembler (kickass/KickAss.jar). Run with `x64sc out/friet.prg`.
 player: $(FRIET_PRG)
@@ -101,4 +113,5 @@ preview: preview-clean preview-melody preview-friet
 
 clean:
 	rm -f $(OUT_DIR)/*.sid $(OUT_DIR)/*.wav $(OUT_DIR)/*.mp3 $(OUT_DIR)/*.prg
+	rm -f docs/lab_composition.yaml
 	rm -f /tmp/freed*.s /tmp/freed*.prg
