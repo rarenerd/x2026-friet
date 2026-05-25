@@ -21,8 +21,8 @@ PAL_CLK = 985248.0
 PAL_HZ  = 50.0
 
 WF_TRI, WF_SAW, WF_PULSE, WF_NOISE = 0x10, 0x20, 0x40, 0x80
-# Bass: instant attack, hold sustain so each stab has body, fast release
-V1_AD, V1_SR = 0x08, 0xC4
+# Bass: instant attack, sustain $A (slightly behind the vocal), fast release
+V1_AD, V1_SR = 0x08, 0xA4
 # Lead (triangle = vocal-ish tone): gentle 24 ms attack so legato pitch
 # changes don't click, full sustain, medium release for breathy phrase tails.
 V2_AD, V2_SR = 0x12, 0xF6
@@ -34,7 +34,7 @@ V2_AD, V2_SR = 0x12, 0xF6
 DRUM_KIT = {
     'kick':  (2,  6, 0x09, 0x00),   # decay 720 ms — full "boom" body
     'snare': (36, 5, 0x07, 0x00),   # decay 168 ms — sharp snap
-    'hat':   (78, 2, 0x02, 0x00),   # decay  24 ms — tick
+    'hat':   (78, 1, 0x02, 0x00),   # decay  24 ms — crisp tick (dur=1 frame)
     'crash': (28, 200, 0xD0, 0xF8),  # Reverse-cymbal swell.
                                      #   Attack $D = ~3 s (slow rise).
                                      #   Decay  $0 = 6 ms (skipped — sustain at peak).
@@ -265,10 +265,10 @@ init_clr:
     sta SID+12
     lda #${V2_SR:02X}
     sta SID+13
-    ; V1 pulse width — wider for fatter bass body
+    ; V1 pulse width — 25% duty for synthy bass (differs from V2's 50%)
     lda #$00
     sta SID+2
-    lda #$08
+    lda #$04
     sta SID+3
     ; V2 pulse width — 50% duty for a chirpy square-wave chiptune lead
     lda #$00
@@ -283,7 +283,8 @@ init_clr:
     sta SID+21          ; FC LO
     lda #$80
     sta SID+22          ; FC HI -- mid cutoff (so verses pass through)
-    lda #$42            ; resonance $4, V2 routed (bit 1)
+    lda #$62            ; resonance $6, V2 routed (bit 1) -- higher res for a
+                        ; more pronounced phaser-like sweep with the LFO wobble
     sta SID+23
     lda #$1F            ; LP mode + volume max
     sta SID+24
@@ -347,10 +348,15 @@ vib_active:
     sta SID+8
     rts
 
+; Modulate filter cutoff each frame: decay sweep + LFO wobble.
+; The LFO shares the free-running ZP_VIB_IDX phase with the vibrato,
+; adding a subtle phaser-like wobble to the filter cutoff.
+; The wobble is small (±4 on HI byte, ~±25 Hz at the filter's range)
+; so it shimmers rather than swoops.
 filter_env:
     lda ZP_FILT_CUR
     cmp ZP_FILT_TGT
-    beq fe_done
+    beq fe_lfo          ; skip decay if at target, but still wobble
     bcc fe_up
     sec
     sbc #2
@@ -363,8 +369,22 @@ fe_up:
     adc #1
 fe_store:
     sta ZP_FILT_CUR
+fe_lfo:
+    lda ZP_VIB_IDX
+    and #$0F
+    tay
+    lda ZP_FILT_CUR
+    clc
+    adc filt_lfo,y
+    bmi fe_clamp_lo
+    cmp #$F0
+    bcc fe_final
+    lda #$EF
+    jmp fe_final
+fe_clamp_lo:
+    lda #$40
+fe_final:
     sta SID+22
-fe_done:
     rts
 
 tick0:
@@ -597,6 +617,9 @@ f2done:
 ; vib_hi is the sign-extended high byte so the 16-bit add carries correctly.
 {bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
 {bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
+; Filter LFO: 16-step triangle, ±4 on cutoff HI byte.
+; Shares ZP_VIB_IDX phase with the vibrato for a synchronised wobble.
+{bytes_to_asm('filt_lfo', [(v & 0xFF) for v in [0,1,2,3,4,3,2,1,0,-1,-2,-3,-4,-3,-2,-1]])}
 {bytes_to_asm('v0_data', v1_data)}
 {bytes_to_asm('v1_data', v2_data)}
 {bytes_to_asm('v2_data', v3_data)}
