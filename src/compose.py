@@ -310,6 +310,13 @@ def main():
                     unit = hh_unit
 
                 if unit:
+                    # In chorus/na-na, boost the bass 2 octaves up so it
+                    # becomes the iconic D4/F4 organ punch (AUD ch 0/4
+                    # plays D5+A5 — we settle for D4 since V2 vocal is
+                    # at D5-F5 and we'd collide). Verse stays at D2/F2
+                    # for bass-register thump.
+                    ORGAN_PUNCH_LABELS = {'chorus1', 'postchorus_nana',
+                                          'chorus2', 'chorus3'}
                     max_src_end = max(src_e for _, src_e, _ in SEGMENTS)
                     src_loop = 0.0
                     while src_loop < max_src_end + period_beats:
@@ -318,9 +325,10 @@ def main():
                             chord = chord_at(src_b)
                             pitch = CHORDS[chord][role]
                             for out_b, label in remap(src_b):
+                                p = pitch + 24 if (FAST and label in ORGAN_PUNCH_LABELS) else pitch
                                 bass_events.append({
                                     'frame': int(round(out_b * fbeat_groove)),
-                                    'note':  pitch,
+                                    'note':  p,
                                     'dur_frames': max(3, int(round(max(0.1, d_off) * fbeat_groove))),
                                     'ctrl':  SECTION_BASS_CTRL.get(label, 0x40),
                                 })
@@ -462,10 +470,30 @@ def main():
                     'kind': 'crash',
                     'frame': int(round(out_s * fbeat_groove)),
                 })
-            # (Reprise hat-overlay removed — the synth bed already
-            # supplies 4 off-beat hats/bar consistently; doubling them
-            # in chorus2/3 only made the mix denser without raising
-            # perceived energy.)
+            # Reprise energy push: fill the BREATHE bars before chorus2/3
+            # with a snare roll (8th-note snares) so the reprises hit
+            # as proper "second/third drops" instead of just repeats.
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label not in ('breathe1', 'breathe2'): continue
+                dur = src_e - src_s
+                for step in range(int(dur * 2)):
+                    drum_events.append({
+                        'kind': 'snare',
+                        'frame': int(round((out_s + step / 2.0) * fbeat_groove)),
+                    })
+            # Chorus2/3 also get on-beat hats (= full 8th hat pattern
+            # vs off-beat-only in verse/chorus1). Subtle density boost.
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label not in ('chorus2', 'chorus3'): continue
+                seg_dur = src_e - src_s
+                n_bars = int(seg_dur // 4)
+                for bar in range(n_bars):
+                    bar_start = out_s + bar * 4.0
+                    for off in (0, 1, 2, 3):  # on-beat hats (supplements off-beat)
+                        drum_events.append({
+                            'kind': 'hat',
+                            'frame': int(round((bar_start + off) * fbeat_groove)),
+                        })
 
         if MELODY_ONLY:
             bass_events.clear()
