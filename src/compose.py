@@ -243,36 +243,37 @@ def main():
                     'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
 
-        # ---- Bass (V1) — T11 hook pattern LOOPED through all segments.
-        # Extract the 4-bar rhythmic unit from T11, transpose -12 for
-        # bass register, and repeat it across the full output timeline.
-        # When T5's real bassline enters (beat 120+), it takes over.
-        # This is the approach from the original "working" version.
+        # ---- Bass (V1) — interleaving organ stab (T6 grid positions
+        # that DON'T collide with vocal in each bar).
+        # Per voice_essence.md + score_transcription.md: the FFD organ
+        # stab plays at sixteenths 0, 4, 7, 10, 14 (= beats 0, 1, 1.75,
+        # 2.5, 3.5) and INTERLEAVES with the vocal — it fills the gaps
+        # where the singer ISN'T. We compute this per output bar.
         if not MELODY_ONLY:
-            t11 = layers['layers'].get('hook', [])
-            if t11:
-                period_beats = 4.0
-                first_b = t11[0][0]
-                unit = []
-                for n in t11:
-                    rel_b = n[0] - first_b
-                    if rel_b >= period_beats: break
-                    unit.append((rel_b, n[1], int(n[2]) - 12))
-                max_src_end = max(src_e for _, src_e, _ in SEGMENTS)
-                src_loop = 0.0
-                while src_loop < max_src_end + period_beats:
-                    for s_off, d_off, pitch in unit:
-                        src_b = src_loop + s_off
-                        d = max(0.1, d_off)
-                        for out_b, label in remap(src_b):
-                            if label in ('intro', 'breathe1', 'breathe2'):
-                                continue
-                            bass_events.append({
-                                'frame': int(round(out_b * fbeat_groove)),
-                                'note':  pitch,
-                                'dur_frames': max(3, int(round(d * fbeat_groove))),
-                            })
-                    src_loop += period_beats
+            STAB_POSITIONS = [0, 1, 1.75, 2.5, 3.5]  # T6 pattern in beats
+            D2 = 38  # D pedal for bass register
+
+            # Index all vocal onset frames for collision detection.
+            vocal_frames = set()
+            for ev in lead_events:
+                vocal_frames.add(ev['frame'])
+
+            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
+                if label in ('intro', 'breathe1', 'breathe2'):
+                    continue
+                seg_dur = src_e - src_s
+                n_bars = int(seg_dur // 4)
+                for bar in range(n_bars):
+                    bar_out = out_s + bar * 4
+                    for off in STAB_POSITIONS:
+                        f = int(round((bar_out + off) * fbeat_groove))
+                        if f in vocal_frames:
+                            continue  # skip — vocal owns this position
+                        bass_events.append({
+                            'frame': f,
+                            'note':  D2,
+                            'dur_frames': max(3, int(round(0.4 * fbeat_groove))),
+                        })
 
         # ---- Drums (V3) verbatim from T13, filtered for dynamics ----
         # Section boundaries (source beats) from the lyric markers in T2:
