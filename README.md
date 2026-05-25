@@ -69,21 +69,33 @@ friet/
 ├── docs/
 │   ├── song_analysis.md    music theory: key/chords/structure (with sources)
 │   ├── melody_analysis.md  phrase-by-phrase analysis of the T7 vocal
-│   ├── chorus_melody.md    notation of the iconic chorus hook
 │   ├── song_spec.yaml      patterns: BPM, key, 1-bar rhythm grids, contour
 │   ├── song_layers.yaml    verbatim T5 / T7 / T11 / T12 / T13 note lists
 │   ├── melody_lyrics.yaml  every syllable aligned to its T7 pitch
-│   ├── composition.yaml    phase-2 output (event lists per voice)
-│   ├── lab_composition.yaml lab sandbox composition output
-│   ├── melody_understanding.md  musicology: why the melody works
-│   ├── midi_sources.md     notes on the karaoke MIDI provenance
-│   ├── rhythm_research.md  analysis of FFD's rhythmic identity
+│   ├── melody_understanding.md  canonical melody theory (why the FFD melody works)
+│   ├── midi_sources.md     MIDI source comparison + provenance
+│   ├── rhythm_research.md  drums/bass coupling research
 │   └── polish_plan.md      remaining work, priority-ordered
 ├── tools/
 │   └── render-preview.sh   headless vsid -> WAV -> MP3
 ├── out/                    generated .sid + .mp3 (gitignored .wav)
 └── .venv/                  Python venv (mido, numpy, pyyaml) — gitignored
 ```
+
+## Research docs
+
+Three research documents capture the musicology work that informed the
+arrangement decisions:
+
+- **[`docs/melody_understanding.md`](docs/melody_understanding.md)** --
+  canonical theory of why the FFD melody works: 4-pitch vocabulary, tresillo
+  rhythm in Phrase A vs straight 8ths in Phrase B, chord colour underneath.
+- **[`docs/midi_sources.md`](docs/midi_sources.md)** -- comparison of the
+  four karaoke MIDIs in `midi/`, what each contains, and which tracks are
+  authoritative for which musical question.
+- **[`docs/rhythm_research.md`](docs/rhythm_research.md)** -- analysis of
+  the drums/bass coupling that gives FFD its dance-floor feel, and why the
+  chorus tresillo must not be quantized.
 
 ## Source-MIDI map (verified against lyrics — see `docs/melody_analysis.md`)
 
@@ -169,8 +181,10 @@ are a rights-holder and object, open an issue and we'll remove it.
   sections. T13 verbatim is NOT used in FAST mode.
 - ✅ **Lab sandbox** — `src/lab.py` / `make lab` for experimental
   composition work; separate from the release pipeline.
-- 🟡 **Polish pending** — see `docs/polish_plan.md`:
-  1. Vibrato on V2 so the vocal feels human
-  2. Possible bigger Chorus 2 hit (extra crash, more hats)
-- 🟡 Pads / chord rendering with only 3 voices remains unsolved — V3 is
-  drums only. Possible: ring-modulate V1 against V3 for "chord shimmer".
+- ✅ **All polish items complete** — vibrato, filter LFO, reprise dynamics,
+  TL-Buis Dutch lyrics in the `.prg` ticker. See `docs/polish_plan.md`.
+- ✅ **Standalone .prg player** — `out/friet.prg` embeds the SID + a
+  scrolling lyric ticker with TL-Buis Dutch parody text.
+- Pads / chord rendering with only 3 voices remains unsolved — V3 is
+  drums only. Possible future work: ring-modulate V1 against V3 for
+  "chord shimmer".

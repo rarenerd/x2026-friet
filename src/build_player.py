@@ -109,6 +109,10 @@ else:
              for beat, ss in raw_lines]
     print(f"Using karaoke lyrics: {len(lines)} lines")
 
+# Show lyrics LYRIC_LEAD_BEATS early so the user can read before singing.
+# At 175 BPM, 2 beats ≈ 0.69 s — enough head start to follow along.
+LYRIC_LEAD_BEATS = 0.0
+
 # Word-wrap any line still > 40 cols. The screen row is 40 cols wide; the
 # .asm centres each event by `(40 - len) / 2`, which underflows for >40
 # and writes off the bottom of the screen. Emit each wrapped chunk as its
@@ -137,11 +141,10 @@ def wrap_text(text, width):
 events = []   # (frame, text)
 for line_beat, text in lines:
     chunks = wrap_text(text, MAX_LINE_COLS)
-    # TL-Buis lyrics are already in OUTPUT beats; karaoke lyrics need
-    # remap(). TL-Buis always has the file, so we just use beat directly.
     for i, chunk in enumerate(chunks):
+        lead_beat = max(line_beat - LYRIC_LEAD_BEATS, 0.0)
         events.append((
-            int(round((line_beat + i * WRAP_BEAT_STEP) * FRAMES_PER_BEAT)),
+            int(round((lead_beat + i * WRAP_BEAT_STEP) * FRAMES_PER_BEAT)),
             chunk,
         ))
 events.sort()

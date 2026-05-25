@@ -78,12 +78,19 @@ xxd out/friet.sid | head -8   # confirm PSID header reads
 
 ## Known gaps before release
 
-See [`polish_plan.md`](polish_plan.md). Open items:
+All polish items from [`polish_plan.md`](polish_plan.md) are complete.
+The release SID (`out/friet.sid`), standalone player (`out/friet.prg`
+with Dutch lyric ticker), and both workstage builds are ready.
 
-1. Vibrato on V2 (vocal currently dead-pan).
-2. Possible bigger Chorus 2 hit relative to Chorus 1 (extra crash, more
-   hats) to give the song a proper "second drop" reprise.
-3. TL-Buis Dutch parody lyrics in the standalone .prg ticker.
+### Polish items since initial release notes
+
+- ✅ Vibrato on V2 (±12 SID freq units, ~3 Hz LFO)
+- ✅ Chorus 2/3 reprises hit harder (breathe sections with snare rolls,
+    full 8th-note hats, crash risers before each drop)
+- ✅ TL-Buis Dutch parody lyrics in the standalone .prg ticker
+- ✅ Filter LFO wobble (phaser-like modulation of cutoff HI, ±4 steps,
+    synchronised to the vibrato LFO)
+- ✅ Lyrics appear 1 beat early so the user can read before singing
 
 ## Sources used
 

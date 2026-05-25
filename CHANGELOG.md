@@ -3,6 +3,37 @@
 All notable changes to **Friet van Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-25 — Timbre polish, repo cleanup
+
+- **Timbre tweaks**: V1 bass pulse width narrowed to 25% for a sharper stab
+  feel; sustain lowered to $A for a snappier envelope. Hat duration shortened
+  to 1 frame for a tighter tick.
+- **Bass silent in intro/breathe bars**: V1 rests during intro and breathe
+  sections so the swell + vocal have room.
+- **MP4 video recording** added: `make mp4` captures a VICE screen recording
+  of the `.prg` player into `out/friet.mp4` (gitignored -- regeneratable).
+- **Intro title card timing fix**: credit line delayed to 2.4s so the title
+  card is readable before scrolling starts.
+- **Repo cleanup**: removed superseded docs (`chorus_melody.md`,
+  `melody_theory.md`); gitignored generated files (`composition.yaml`,
+  `lab_composition.yaml`, `friet.mp4`); updated README with research docs
+  section.
+
+## 2026-05-25 — Filter LFO, TL-Buis ticker, polish items closed
+
+- **Filter LFO wobble** added: triangle-wave LFO (±4 on cutoff HI) creates a
+  subtle phaser-like shimmer on V2. Resonance raised from $4 to $6 for a more
+  pronounced sweep. LFO shares the free-running ZP_VIB_IDX phase with vibrato.
+- **TL-Buis Dutch lyrics** fully wired into the standalone `.prg` ticker via
+  `docs/tl_buis_lyrics.yaml`. Lyrics appear as full lines mapped to the
+  OUTPUT timeline; English karaoke fallback kept when the yaml is absent.
+  Timing: 0.0s title card → 2.4s credit → 7.4s verse (synced to vocal).
+- **Polish plan items 1–8 marked ✅** — arrangement, drums, vibrato, reprise
+  dynamics, TL-Buis lyrics all closed.
+- **Docs cleaned up**: `polish_plan.md`, `RELEASE.md` updated with completed
+  item lists. `Makefile` dependency added for `tl_buis_lyrics.yaml`.
+- **Reproducible build**: `make all` builds release + workstage + previews.
+
 ## 2026-05-25 — T6 stab bass, clean HH drums, source vocal timing, lab sandbox
 
 - **V1 bass reworked**: replaced T5 verbatim / T11 loop with T6-derived

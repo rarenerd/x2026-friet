@@ -105,7 +105,7 @@ preview-lab: $(LAB_MP3)
 # Build with KickAssembler (kickass/KickAss.jar). Run with `x64sc out/friet.prg`.
 player: $(FRIET_PRG)
 $(FRIET_PRG): $(SRC_DIR)/build_player.py $(SRC_DIR)/player/friet.asm \
-              $(FRIET_SID) docs/melody_lyrics.yaml
+              $(FRIET_SID) docs/tl_buis_lyrics.yaml
 	$(PYTHON) $(SRC_DIR)/build_player.py
 
 # --- previews ----
