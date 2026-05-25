@@ -63,6 +63,7 @@ friet/
 │   ├── extract_patterns.py phase 1: MIDI -> docs/song_spec.yaml + song_layers.yaml
 │   ├── compose.py          phase 2: spec + layers -> docs/composition.yaml
 │   ├── synth.py            phase 3: composition -> out/friet_clean.sid
+│   ├── lab.py              experimental composition sandbox (make lab)
 │   ├── build_player.py     bundles SID + lyric ticker -> out/friet.prg
 │   └── player/             KickAssembler source for the standalone .prg
 ├── docs/
@@ -73,6 +74,10 @@ friet/
 │   ├── song_layers.yaml    verbatim T5 / T7 / T11 / T12 / T13 note lists
 │   ├── melody_lyrics.yaml  every syllable aligned to its T7 pitch
 │   ├── composition.yaml    phase-2 output (event lists per voice)
+│   ├── lab_composition.yaml lab sandbox composition output
+│   ├── melody_understanding.md  musicology: why the melody works
+│   ├── midi_sources.md     notes on the karaoke MIDI provenance
+│   ├── rhythm_research.md  analysis of FFD's rhythmic identity
 │   └── polish_plan.md      remaining work, priority-ordered
 ├── tools/
 │   └── render-preview.sh   headless vsid -> WAV -> MP3
@@ -123,6 +128,9 @@ make preview                        # render all .mp3 previews
 
 # Research:
 make analyze                        # dump per-track stems + a textual report
+
+# Lab sandbox — experimental composition playground:
+make lab                            # -> out/lab.sid + out/lab.mp3 (src/lab.py)
 ```
 
 Listen interactively: `vsid out/friet.sid`.
@@ -147,15 +155,22 @@ are a rights-holder and object, open an issue and we'll remove it.
 
 ## Status
 
-- ✅ **Melody recognisable** as "Freed from Desire" — T7 verbatim vocal +
-  T5 verbatim bass + drums + intro noise swell, all at source 130 BPM.
+- ✅ **Melody recognisable** as "Freed from Desire" — T7 vocal (preserving
+  source timing, including tresillo in chorus) + T6 stab-rhythm bass
+  (4-3-3-4 sixteenths, chord-following) + synthetic HH drums + intro noise
+  swell.
 - ✅ Lyrics aligned to T7 notes (every syllable has a verified pitch in
   `docs/song_layers.yaml` and `docs/melody_lyrics.yaml`).
+- ✅ **T6 stab bass** — V1 plays a T6-derived stab rhythm (positions 0,
+  1, 1.75, 2.5, 3.5 in each bar) with D-pedal in verses and Dm-F-Bb-C
+  chord following in choruses.
+- ✅ **Clean HH drums** — V3 in FAST mode uses synthetic kick 4-on-floor
+  + off-beat 8th hat everywhere, snare backbeat only in chorus/na-na
+  sections. T13 verbatim is NOT used in FAST mode.
+- ✅ **Lab sandbox** — `src/lab.py` / `make lab` for experimental
+  composition work; separate from the release pipeline.
 - 🟡 **Polish pending** — see `docs/polish_plan.md`:
-  1. T13 drums verbatim (replace generated kick + clap)
-  2. T11 saw-lead "na-na" hook layered during the instrumental break
-  3. Vibrato on V2 so the vocal feels human
-  4. Tempo split — produce both a 130-BPM "song-faithful" build and a
-     170-BPM "happy hardcore" build from the same source data
+  1. Vibrato on V2 so the vocal feels human
+  2. Possible bigger Chorus 2 hit (extra crash, more hats)
 - 🟡 Pads / chord rendering with only 3 voices remains unsolved — V3 is
   drums only. Possible: ring-modulate V1 against V3 for "chord shimmer".

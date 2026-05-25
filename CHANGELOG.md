@@ -3,6 +3,28 @@
 All notable changes to **Friet van Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-25 — T6 stab bass, clean HH drums, source vocal timing, lab sandbox
+
+- **V1 bass reworked**: replaced T5 verbatim / T11 loop with T6-derived
+  stab rhythm (4-3-3-4 sixteenths, positions 0, 1, 1.75, 2.5, 3.5 per
+  bar). D-pedal in verses, chord-following Dm-F-Bb-C in choruses.
+- **V3 drums reworked (FAST mode)**: synthetic HH kit replaces T13
+  verbatim. Kick 4-on-floor + off-beat 8th hat everywhere, snare
+  backbeat only in chorus/na-na sections. Cleaner and more appropriate
+  for the happy-hardcore feel.
+- **Vocal timing preserved**: T7 source timing is kept as-is, including
+  the tresillo feel in the chorus. The syncope is the song's rhythmic
+  identity, not a transcription artefact -- no 8th-grid quantization.
+- **Lab sandbox**: added `src/lab.py` + `make lab` for experimental
+  composition work, outputs `out/lab.sid` / `out/lab.mp3` with its own
+  `docs/lab_composition.yaml`. Separate from the release pipeline.
+- **Musicology research docs** added:
+  - `docs/melody_understanding.md` — why the FFD melody works
+  - `docs/midi_sources.md` — provenance of the karaoke MIDIs
+  - `docs/rhythm_research.md` — analysis of FFD's rhythmic identity
+- Documentation updated (README, AGENTS, RELEASE, polish_plan) to
+  reflect the new arrangement.
+
 ## 2026-05-23 — Pipeline cleanup + release-name rename
 
 - Deleted legacy direct-conversion scripts `src/midi2sid.py` and

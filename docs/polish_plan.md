@@ -1,8 +1,9 @@
 # Polish plan — Friet van Desire
 
-**Status:** the underlying composition (T5 verbatim bass + T7 verbatim vocal +
-T12 intro swell + 4-on-floor drums, all at source 130 BPM) is finally
-recognisable as "Freed from Desire". From here it's polish.
+**Status:** the arrangement is mature: T6 stab-rhythm bass (4-3-3-4 sixteenths,
+chord-following), T7 vocal with source timing preserved, clean synthetic HH
+drums (kick 4-on-floor + off-beat 8th hat + snare backbeat in chorus), T12
+intro swell. 175 BPM release build at `out/friet.sid`. From here it's polish.
 
 ## Five axes to push, in priority order
 
@@ -28,15 +29,12 @@ sustain ≈ $F. Try:
 - vocal sustain $F (front)
 - drum sustain (decay-only envelopes) — already in shape
 
-### 3. Drums (groove)
+### 3. Drums (groove) -- DONE
 
-Currently kick + clap (from compose's spec-driven 1-bar grid). Options:
-
-- **3a**: Use **T13 verbatim** kick/snare/clap events (more authentic).
-- **3b**: Keep generated 4-on-floor; add open-hat on offbeats during chorus
-  (was disabled to reduce density).
-- **3c**: Cymbal swells at section transitions (T12 already does this for the
-  intro — replicate at the chorus drop).
+FAST mode uses **synthetic HH drums**: kick 4-on-floor + off-beat 8th hat
+everywhere, snare backbeat only in chorus/na-na sections. T13 verbatim is
+NOT used in FAST mode (it was too dense / noisy for the happy-hardcore
+feel). T12 cymbal swells fire at intro + section transitions.
 
 ### 4. Tempo
 
@@ -65,27 +63,25 @@ straight through. We can:
 - Sound: `src/synth.py` — `V1_AD/V2_AD/V3_AD` constants and the player asm.
 - Balance: same file, envelope sustain nibbles.
 - Drums: `src/compose.py` — section loop's `drum_events.append(...)` paths.
-  T13 verbatim path is not implemented yet; would need extending
-  `extract_patterns.py` to dump T13 events to `song_layers.yaml`.
+  FAST mode generates synthetic kick/hat/snare; clean mode reads T13
+  verbatim from `song_layers.yaml`.
 - Tempo: `src/compose.py` — `FAST_BPM` / `play_bpm_*` and the MELODY_ONLY env.
 - Structure: `src/compose.py` — `sections` template + the bar loop.
 
 ## Suggested order
 
-1. ✅ **Drums verbatim from T13** (axis 3a) — done. `compose.py` now reads
-   T13 events from `song_layers.yaml`, maps GM drum codes to our kit
-   (kick/snare/hat — snare 38/40 and clap 39 both map onto our "snare"),
-   and filters per section.
-2. ✅ **T11 4-note hook as bass before T5 enters** (axis 5 variant) —
-   done. V1 plays T11 (−12) looped from beat 5 until T5 takes over at
-   beat 120, then T11 again at its natural octave during the instrumental
-   break.
+1. ✅ **T6 stab-rhythm bass** — done. V1 plays a 4-3-3-4 sixteenth
+   pattern (positions 0, 1, 1.75, 2.5, 3.5 per bar) derived from T6
+   chord stabs. D-pedal in verses, chord-following Dm-F-Bb-C in
+   choruses. Replaces earlier T5 verbatim / T11 loop approaches.
+2. ✅ **Clean synthetic HH drums** — done. FAST mode uses kick
+   4-on-floor + off-beat 8th hat everywhere, snare backbeat only in
+   chorus/na-na. T13 verbatim is NOT used in FAST mode.
 3. ✅ **Audible noise swell** — done. Crash envelope rewritten as a slow
    800 ms attack with held sustain so the rise is heard.
-4. ✅ **Section-based drum dynamics** — done. Verses are kick-only,
-   pre-choruses add snare, choruses go full kit (kick + snare + hat).
-   The section boundaries come from T2's `\` markers, so the dynamics
-   align to the song's actual structure.
+4. ✅ **Source vocal timing preserved** — done. The chorus tresillo IS
+   the song's rhythmic identity; vocal is NOT quantized to an 8th grid.
+   See `docs/rhythm_research.md` and `docs/melody_understanding.md`.
 5. 🟡 **Vibrato on V2 vocal** — TODO. The triangle vocal is dead-pan.
    Re-enable apply_vibrato with subtle depth (±$06 on freq) so syllables
    feel sung. Was disabled when we ripped out the filter; bring it back

@@ -51,13 +51,13 @@ happy-hardcore form factor.
 
 ## Arrangement (current build)
 
-Three SID voices, all running at the song's native 130 BPM:
+Three SID voices:
 
 | Voice | What it plays                                                       |
 |-------|---------------------------------------------------------------------|
-| V1    | T11 "na-na" 4-note hook (D2/F2, octave-down) looped from beat 5 until T5's real synth bassline takes over at beat 120. T11 returns at its natural octave during the instrumental break (~beat 184) before T5 resumes for the outro. |
-| V2    | T7 vocal melody verbatim — Oboe substitute, verified by aligning T2's `\My`, `\Freed`, `\Na` syllable markers note-for-note to T7 pitches. The actual singer. |
-| V3    | T13 drums verbatim, mapped to a SID kick/snare/hat kit and **filtered per section** so verses are kick-only, pre-choruses add snare, choruses go full kit. Plus T12's reverse-cymbal swells at the intro and at each section transition. |
+| V1    | **T6 stab-rhythm bass** — 4-3-3-4 sixteenth pattern (positions 0, 1, 1.75, 2.5, 3.5 per bar). D-pedal in verses, chord-following Dm-F-Bb-C in choruses. |
+| V2    | T7 vocal melody with **source timing preserved** — the tresillo feel in the chorus IS the song's rhythmic identity, not a transcription artefact. Verified by aligning T2's syllable markers to T7 pitches. |
+| V3    | **Synthetic HH drums** (FAST mode): kick 4-on-floor + off-beat 8th hat everywhere, snare backbeat only in chorus/na-na sections. T13 verbatim is NOT used in the release build. Plus T12's reverse-cymbal swells at the intro and section transitions. |
 
 ## Tones
 
@@ -83,6 +83,7 @@ See [`polish_plan.md`](polish_plan.md). Open items:
 1. Vibrato on V2 (vocal currently dead-pan).
 2. Possible bigger Chorus 2 hit relative to Chorus 1 (extra crash, more
    hats) to give the song a proper "second drop" reprise.
+3. TL-Buis Dutch parody lyrics in the standalone .prg ticker.
 
 ## Sources used
 

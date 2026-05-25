@@ -8,7 +8,7 @@ it must not open any MIDI file. It only consumes the composition.
 The player code mirrors the happy-hardcore design:
   V1 bass  : pulse stabs, short envelope, narrow pulse width
   V2 lead  : sawtooth, per-note filter cutoff envelope ("hoover" sweep),
-             vibrato off (the filter wow does the work)
+             vibrato ±12 SID-freq units (~3 Hz LFO, ~0.16% pitch)
   V3 drums : noise hits with per-event ADSR; kick/snare/hat/crash
 """
 import yaml, struct, subprocess, os, sys
@@ -595,8 +595,8 @@ f2done:
 
 ; Vibrato LFO: 16-step zigzag, ±$06 freq units (~quarter-tone wobble at A4)
 ; vib_hi is the sign-extended high byte so the 16-bit add carries correctly.
-{bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,2,4,6,6,4,2,0,0,-2,-4,-6,-6,-4,-2,0]])}
-{bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,2,4,6,6,4,2,0,0,-2,-4,-6,-6,-4,-2,0]])}
+{bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
+{bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
 {bytes_to_asm('v0_data', v1_data)}
 {bytes_to_asm('v1_data', v2_data)}
 {bytes_to_asm('v2_data', v3_data)}

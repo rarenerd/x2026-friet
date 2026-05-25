@@ -47,9 +47,9 @@ The clean pipeline (`extract_patterns` → `compose` → `synth`) uses:
 
 | Voice | Source                 | Tone                                     |
 |-------|------------------------|------------------------------------------|
-| V1    | T5 verbatim (5ths Bass)| Pulse, PW=$0800, sustained envelope      |
-| V2    | T7 verbatim (Oboe)     | Triangle, gentle attack, full sustain    |
-| V3    | drums + T12 swell      | Noise per-hit ADSR; reverse-cymbal at intro |
+| V1    | T6 stab-rhythm bass    | Pulse, PW=$0800, sustained envelope. 4-3-3-4 sixteenth pattern (positions 0, 1, 1.75, 2.5, 3.5 per bar). D-pedal in verse, chord-following Dm-F-Bb-C in chorus. |
+| V2    | T7 vocal (source timing) | Triangle, gentle attack, full sustain. Preserves original timing including tresillo in chorus — no 8th-quantize. |
+| V3    | synthetic HH drums + T12 swell | FAST mode: kick 4-on-floor + off-beat 8th hat everywhere, snare backbeat in chorus/na-na only. T13 verbatim is NOT used in FAST mode. Reverse-cymbal at intro + section transitions. |
 
 Plus the verified ground truth in `docs/song_layers.yaml`:
 syllable markers from T2 align note-for-note to T7's pitches — that's how
@@ -114,3 +114,19 @@ make preview-friet PREVIEW_SECONDS=60 # render an MP3 preview
 The user prefers iterative feedback: build → render → listen → ask. Don't
 batch many speculative tweaks; deliver something playable, ask "where does it
 hurt?", iterate.
+
+## Lab sandbox
+
+`src/lab.py` + `make lab` is an experimental composition sandbox that
+outputs `out/lab.sid` / `out/lab.mp3`. Use it for trying out ideas
+(new patterns, timbres, arrangements) without touching the release
+pipeline. Its composition is written to `docs/lab_composition.yaml`.
+
+## Musicology research docs
+
+- `docs/melody_understanding.md` — why the FFD melody works
+- `docs/midi_sources.md` — provenance notes on the karaoke MIDIs
+- `docs/rhythm_research.md` — analysis of FFD's rhythmic identity (tresillo etc.)
+
+These inform arrangement decisions. Key takeaway: the chorus vocal's
+tresillo feel IS the song — do not quantize it to an 8th grid.
