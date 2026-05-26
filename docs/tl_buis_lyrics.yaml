@@ -1,13 +1,14 @@
-# TL-Buis/deFEEST Dutch parody lyrics mapped to the OUTPUT timeline.
-# Capitalisation matches docs/lyrics.md exactly.
+# Demo credits + greetings mapped to the OUTPUT timeline.
+# Timed to the musical sections so text changes feel natural.
 
 lyrics:
-  # Intro title cards
-  - {beat: 0.0,  text: "--- Friet van Desire ---"}
-  - {beat: 4.0,  text: "TL-Buis / deFEEST"}
-  - {beat: 8.0,  text: "X2026 / deFEEST"}
+  # Intro — title + credits
+  - {beat: 0.0,  text: "Friet van Desire"}
+  - {beat: 4.0,  text: "deFEEST at X2026"}
+  - {beat: 8.0,  text: "code: Kloot  gfx: Anus"}
+  - {beat: 14.0, text: "lyrics: TL-Buis  ai: Augurk"}
 
-  # Couplet 1
+  # Couplet 1 — the song
   - {beat: 21.5, text: "Mijn crew die heeft geen centen"}
   - {beat: 25.5, text: "maar wel een zieke scroll"}
   - {beat: 29.5, text: "Mijn crew die heeft geen shaders"}
@@ -36,30 +37,30 @@ lyrics:
   - {beat: 108.0, text: "scanlines vol met storing"}
   - {beat: 112.0, text: "Friet van Desire"}
 
-  # Na-na
+  # Na-na — greetings
   - {beat: 117.5, text: "Na-na-na-na-na-na-na"}
-  - {beat: 121.5, text: "na-na-na door de zaal"}
+  - {beat: 121.5, text: "greetings to Revision"}
   - {beat: 125.5, text: "Na-na-na-na-na-na-na"}
-  - {beat: 129.5, text: "heel de beamrace loopt fataal"}
+  - {beat: 129.5, text: "greetings to Outline"}
   - {beat: 133.5, text: "Na-na-na-na-na-na-na"}
-  - {beat: 137.5, text: "iemand trekt de stekker los"}
+  - {beat: 137.5, text: "greetings to Evoke"}
   - {beat: 141.5, text: "Na-na-na-na-na-na-na"}
-  - {beat: 145.5, text: "maar de demo loopt alsnog"}
+  - {beat: 145.5, text: "met MAYO natuurlijk"}
 
-  # Refrein 2
+  # Refrein 2 — tech credits
   - {beat: 153.5, text: "Friet van Desire"}
-  - {beat: 157.5, text: "SID en VIC staan rood"}
+  - {beat: 157.5, text: "MOS 6581 SID chip"}
   - {beat: 161.5, text: "Friet van Desire"}
-  - {beat: 165.5, text: "heel de sporthal sloopt zichzelf"}
+  - {beat: 165.5, text: "3 voices  1 filter  0 regrets"}
   - {beat: 169.5, text: "Friet van Desire"}
-  - {beat: 173.5, text: "alle scanlines zwaar verstoord"}
+  - {beat: 173.5, text: "xa + KickAssembler + Python"}
   - {beat: 177.5, text: "Friet van Desire"}
 
-  # Refrein 3
+  # Refrein 3 — outro
   - {beat: 187.0, text: "Friet van Desire"}
-  - {beat: 191.0, text: "SID en VIC slaan door"}
+  - {beat: 191.0, text: "Claude + OpenCode + annejan"}
   - {beat: 195.0, text: "Friet van Desire"}
-  - {beat: 199.0, text: "alle sprites zwaar ontspoord"}
+  - {beat: 199.0, text: "source: github.com/annejan"}
   - {beat: 203.0, text: "Friet van Desire"}
-  - {beat: 207.0, text: "scanlines vol met storing"}
+  - {beat: 207.0, text: "met MAYO - deFEEST 2026"}
   - {beat: 211.0, text: "groetjes van TL-Buis"}
