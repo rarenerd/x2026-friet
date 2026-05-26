@@ -1,4 +1,4 @@
-# Friet van Desire — build SID remixes from MIDI research material
+# Friet met Desire — build SID remixes from MIDI research material
 #
 # Pipeline: extract -> compose -> synth.
 #   make friet           the release SID (175 BPM, hoover lead)
@@ -96,7 +96,7 @@ $(FRIET_MP3): $(FRIET_SID)
 # Competition deliverable — clean PSID, no .prg, no ticker.
 # Identical audio to friet.sid but as a separate tracked file for
 # compo organisers. HVSC-ready metadata inside.
-COMPO_SID := $(OUT_DIR)/Friet_van_Desire-deFEEST.sid
+COMPO_SID := $(OUT_DIR)/Friet_met_Desire-deFEEST.sid
 compo: $(COMPO_SID)
 $(COMPO_SID): $(FRIET_SID)
 	cp $< $@

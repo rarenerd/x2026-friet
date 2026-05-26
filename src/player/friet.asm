@@ -1,4 +1,4 @@
-// Friet van Desire -- C64 player with synchronised lyrics ticker
+// Friet met Desire -- C64 player with synchronised lyrics ticker
 //
 // Build:    java -jar kickass/KickAss.jar src/player/friet.asm
 // Run:      x64sc out/friet.prg

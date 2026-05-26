@@ -1,4 +1,4 @@
-# Bladmuziek — Friet van Desire
+# Bladmuziek — Friet met Desire
 
 **Toonsoort:** D mineur (Aeolisch) — geen kruisen of mollen buiten de toonsoort.
 **Tempo:** 175 BPM (happy hardcore) / origineel 130 BPM.
@@ -129,7 +129,7 @@ A4  ●───── la  (5,  alleen in pre-chorus)
 Let op: maat 1, 3, 5, 7 hebben het **tresillo-ritme** (3-3-2-3 zestienden).
 Dit is NIET op de tel — dat is de bedoeling. Het is de "swing" van het liedje.
 
-**Maat 1** (Dm) ⚡TRESILLO: _Friet van Desire_
+**Maat 1** (Dm) ⚡TRESILLO: _Friet met Desire_
 ```
   16e:  1       +       2       +       3       +       4       +
   noot: fa  ·   ·   re  ·   ·   re  ·   do  ·   ·   do  ·   ·   ·   ·  
@@ -141,7 +141,7 @@ Dit is NIET op de tel — dat is de bedoeling. Het is de "swing" van het liedje.
   noot: fa  fa  fa  fa  mi  mi  mi  mi 
 ```
 
-**Maat 3** (B♭) ⚡TRESILLO: _Friet van Desire_
+**Maat 3** (B♭) ⚡TRESILLO: _Friet met Desire_
 ```
   16e:  1       +       2       +       3       +       4       +
   noot: fa  ·   ·   re  ·   ·   re  ·   do  ·   ·   do  ·   ·   ·   ·  
@@ -153,7 +153,7 @@ Dit is NIET op de tel — dat is de bedoeling. Het is de "swing" van het liedje.
   noot: fa  fa  fa  fa  mi  mi  mi  mi 
 ```
 
-**Maat 5** (Dm) ⚡TRESILLO: _Friet van Desire_
+**Maat 5** (Dm) ⚡TRESILLO: _Friet met Desire_
 ```
   16e:  1       +       2       +       3       +       4       +
   noot: fa  ·   ·   re  ·   ·   re  ·   do  ·   ·   do  ·   ·   ·   ·  
@@ -165,7 +165,7 @@ Dit is NIET op de tel — dat is de bedoeling. Het is de "swing" van het liedje.
   noot: fa  fa  fa  fa  mi  mi  mi  mi 
 ```
 
-**Maat 7** (B♭) ⚡TRESILLO: _Friet van Desire_
+**Maat 7** (B♭) ⚡TRESILLO: _Friet met Desire_
 ```
   16e:  1       +       2       +       3       +       4       +
   noot: fa  ·   ·   re  ·   ·   re  ·   do  ·   ·   do  ·   ·   ·   ·  
@@ -244,7 +244,7 @@ Je hoeft maar **vier melodische patronen** te kennen:
    _"maar wel een zieke scroll"_
 
 3. **Refrein-swing** (C-A): **fa**-re-re-do-do ↘ (TRESILLO!)
-   _"Friet van Desire"_ — de **fa** is de hoogste noot, KNALLEN!
+   _"Friet met Desire"_ — de **fa** is de hoogste noot, KNALLEN!
 
 4. **Refrein-recht** (C-B): fa-fa-fa-fa-mi-mi-mi-mi →↘
    _"SID en VIC slaan door"_ — gewoon op de tel

@@ -654,7 +654,7 @@ f2done:
     # PSID metadata for the deFEEST / X2026 release.
     # Title is the song title (≤31 chars); Author = scene handles; Released
     # is "YYYY <PARTY>". Truncated automatically by pad32.
-    header += pad32('Friet van Desire')
+    header += pad32('Friet met Desire')
     header += pad32('Kloot, Anus & Augurk / deFEEST')
     header += pad32('2026 X / deFEEST + MAYO')
     header += struct.pack('>H', 0x0000)

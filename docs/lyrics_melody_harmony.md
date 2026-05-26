@@ -15,7 +15,7 @@ as the original English:
 | Verse line B (×4)  | "He's got his strong beliefs" | "maar wel een zieke scroll" | V-Y: D5 → C5 stutter → B♭4 |
 | Pre-chorus A (×4)  | "Want more and more" | "Meer en meer" | PC-X: A4 → C5 → D5 pickup |
 | Pre-chorus B (×4)  | "People just want more..." | "iedereen wil meer en meer" | PC-Y: D5-C5 weaving |
-| Chorus A (×4)      | "Freed from desire" | "Friet van Desire" | C-A: F5 → D5 → C5 **tresillo** |
+| Chorus A (×4)      | "Freed from desire" | "Friet met Desire" | C-A: F5 → D5 → C5 **tresillo** |
 | Chorus B (×3)      | "Mind and senses purified" | "SID en VIC slaan door" | C-B: F5×4 → E5×4 straight 8ths |
 | Na-na A (×4)       | "Na na na na na..." | "Na-na-na-na-na-na-na" | V-X (same as verse!) |
 | Na-na B (×4)       | "na na na na na..." | "na-na-na door de zaal" | V-Y (same as verse!) |
@@ -33,7 +33,7 @@ as the original English:
 - "iedereen wil meer en meer" = 7 syllables on 7 notes. ✓
 
 ### Chorus — excellent fit
-- "Friet van Desire" = 4 syllables on 5 notes (F5 + D5 + D5 + C5 + C5).
+- "Friet met Desire" = 4 syllables on 5 notes (F5 + D5 + D5 + C5 + C5).
   "De-si-re" maps to D5-C5-C5 with the last C5 as sustain. ✓
   **Pun alignment**: "Friet" hits on F5 (the peak) just like "Freed". 🍟
 - "SID en VIC slaan door" = 5 syllables on 8 notes (F5×4 + E5×4).
@@ -51,7 +51,7 @@ as the original English:
 
 ### Chorus 3 — callback + greeting
 - Reuses chorus 1 lyrics for bars 1-6.
-- Final bar: "groetjes van TL-Buis" replaces "Friet van Desire" —
+- Final bar: "groetjes van TL-Buis" replaces "Friet met Desire" —
   4 syllables on 5 notes, same fit. The C-A tresillo carries the greet.
 
 ## Chord context per section

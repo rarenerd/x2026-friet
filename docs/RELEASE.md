@@ -1,8 +1,8 @@
-# Release notes — *Friet van Desire*
+# Release notes — *Friet met Desire*
 
 ## Scene metadata
 
-- **Title:** Friet van Desire
+- **Title:** Friet met Desire
 - **Group:** deFEEST
 - **Composer / coder:** Kloot/deFEEST (Claude), Augurk/deFEEST (Big Pickle / OpenCode) +
   Anus/deFEEST (annejan)

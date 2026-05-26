@@ -1,4 +1,4 @@
-# Lyrics — Friet van Desire
+# Lyrics — Friet met Desire
 
 > Parody of Gala's "Freed from Desire" (1996).
 > Dutch demoscene lyrics by **TL-Buis/deFEEST** (ChatGPT).
@@ -29,14 +29,14 @@ uit een speaker veel te schel
 
 ### Hook
 
-Friet van Desire
+Friet met Desire
 SID en VIC slaan door
-Friet van Desire
+Friet met Desire
 alle sprites zwaar ontspoord
 
-Friet van Desire
+Friet met Desire
 scanlines vol met storing
-Friet van Desire
+Friet met Desire
 
 Na-na-na-na-na-na-na
 na-na-na door de zaal
@@ -70,12 +70,12 @@ vlak voor de compo ingestuurd
 
 ### Hook
 
-Friet van Desire
+Friet met Desire
 SID en VIC staan rood
-Friet van Desire
+Friet met Desire
 heel de sporthal sloopt zichzelf
 
-Friet van Desire
+Friet met Desire
 alle scanlines zwaar verstoord
-Friet van Desire
+Friet met Desire
                            groetjes van TL-Buis

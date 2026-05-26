@@ -173,7 +173,7 @@ def to_screen(s, width=40):
 
 # Banners
 with open(os.path.join(PLAYER_DIR, 'banner_top.bin'), 'wb') as f:
-    f.write(to_screen("Friet van Desire -- deFEEST at X2026"))
+    f.write(to_screen("Friet met Desire -- deFEEST at X2026"))
 with open(os.path.join(PLAYER_DIR, 'banner_bottom.bin'), 'wb') as f:
     f.write(to_screen("Kloot & Anus / deFEEST / met MAYO"))
 

@@ -1,4 +1,4 @@
-# Friet van Desire
+# Friet met Desire
 
 A Commodore 64 SID remix of Gala's "Freed from Desire" (1996), released by
 **deFEEST** at the **X2026** demoparty. Composed by

@@ -139,7 +139,7 @@ def main():
                     'frame': int(round((bs + off) * fbeat))})
 
     composition = {
-        'title': 'Friet van Desire — Lab (ossh)',
+        'title': 'Friet met Desire — Lab (ossh)',
         'derived_from': 'Gala-freedfromdesire.mid T5+T8',
         'bpm': BPM,
         'key': {'root': 'D', 'mode': 'minor'},

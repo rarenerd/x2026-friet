@@ -3,7 +3,7 @@
 
 lyrics:
   # Intro — title + credits
-  - {beat: 0.0,  text: "Friet van Desire"}
+  - {beat: 0.0,  text: "Friet met Desire"}
   - {beat: 4.0,  text: "deFEEST at X2026"}
   - {beat: 8.0,  text: "code: Kloot  gfx: Anus"}
   - {beat: 14.0, text: "lyrics: TL-Buis  ai: Augurk"}
@@ -29,13 +29,13 @@ lyrics:
   - {beat: 82.5,  text: "uit een speaker veel te schel"}
 
   # Refrein 1
-  - {beat: 88.0,  text: "Friet van Desire"}
+  - {beat: 88.0,  text: "Friet met Desire"}
   - {beat: 92.0,  text: "SID en VIC slaan door"}
-  - {beat: 96.0,  text: "Friet van Desire"}
+  - {beat: 96.0,  text: "Friet met Desire"}
   - {beat: 100.0, text: "alle sprites zwaar ontspoord"}
-  - {beat: 104.0, text: "Friet van Desire"}
+  - {beat: 104.0, text: "Friet met Desire"}
   - {beat: 108.0, text: "scanlines vol met storing"}
-  - {beat: 112.0, text: "Friet van Desire"}
+  - {beat: 112.0, text: "Friet met Desire"}
 
   # Na-na — greetings
   - {beat: 117.5, text: "Na-na-na-na-na-na-na"}
@@ -48,19 +48,19 @@ lyrics:
   - {beat: 145.5, text: "met MAYO natuurlijk"}
 
   # Refrein 2 — tech credits
-  - {beat: 153.5, text: "Friet van Desire"}
+  - {beat: 153.5, text: "Friet met Desire"}
   - {beat: 157.5, text: "MOS 6581 SID chip"}
-  - {beat: 161.5, text: "Friet van Desire"}
+  - {beat: 161.5, text: "Friet met Desire"}
   - {beat: 165.5, text: "3 voices  1 filter  0 regrets"}
-  - {beat: 169.5, text: "Friet van Desire"}
+  - {beat: 169.5, text: "Friet met Desire"}
   - {beat: 173.5, text: "xa + KickAssembler + Python"}
-  - {beat: 177.5, text: "Friet van Desire"}
+  - {beat: 177.5, text: "Friet met Desire"}
 
   # Refrein 3 — outro
-  - {beat: 187.0, text: "Friet van Desire"}
+  - {beat: 187.0, text: "Friet met Desire"}
   - {beat: 191.0, text: "Claude + OpenCode + annejan"}
-  - {beat: 195.0, text: "Friet van Desire"}
+  - {beat: 195.0, text: "Friet met Desire"}
   - {beat: 199.0, text: "source: github.com/annejan"}
-  - {beat: 203.0, text: "Friet van Desire"}
+  - {beat: 203.0, text: "Friet met Desire"}
   - {beat: 207.0, text: "met MAYO - deFEEST 2026"}
   - {beat: 211.0, text: "groetjes van TL-Buis"}

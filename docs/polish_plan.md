@@ -1,4 +1,4 @@
-# Polish plan — Friet van Desire
+# Polish plan — Friet met Desire
 
 **Status:** ✅ All polish items complete — ready for X2026 release.
 The arrangement is final: V1 interleaving organ stab (T6 grid, zero

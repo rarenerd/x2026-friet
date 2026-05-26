@@ -1,4 +1,4 @@
-# Liedtekst-schrijfgids — Friet van Desire
+# Liedtekst-schrijfgids — Friet met Desire
 
 Hoe schrijf je tekst die past op deze melodie? Deze gids beschrijft
 het **ritme**, de **klemtonen** en de **melodische lijn** per frase.
@@ -156,7 +156,7 @@ TA!..-ta..-ta-ta..-ta
 ```
 
 **Voorbeelden:**
-- "Friet van Desire" (4 lettergrepen, "Friet" = PIEK ✓)
+- "Friet met Desire" (4 lettergrepen, "Friet" = PIEK ✓)
 - "Code in het vuur" (4 ✓)
 
 **Belangrijk:** De eerste lettergreep MOET het sterkste woord zijn.
@@ -199,7 +199,7 @@ Couplet:   A  (frase A: stijgend)
            B  (rijmt)
            ...
 
-Refrein:   E  (PIEK — altijd dezelfde tekst = "Friet van Desire")
+Refrein:   E  (PIEK — altijd dezelfde tekst = "Friet met Desire")
            F  (vrij — kan variëren per herhaling)
            E  (herhaling)
            F  (variatie)

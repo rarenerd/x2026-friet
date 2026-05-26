@@ -56,7 +56,7 @@ the original copyrighted recording.
 
 If you are a rights-holder and object to any material in this
 repository, please open an issue at
-`https://github.com/annejan/friet-van-desire/issues` and the offending
+`https://github.com/annejan/friet-met-desire/issues` and the offending
 material will be removed.
 
 ## Generated SID files

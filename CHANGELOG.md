@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **Friet van Desire** are recorded here.
+All notable changes to **Friet met Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
 ## 2026-05-26 — Verbatim source layers, per-section waveform, interleaving bass
@@ -94,7 +94,7 @@ Dates are local (Europe/Amsterdam).
 
 ## 2026-05-23 — Release target: X2026 / deFEEST
 
-- PSID metadata updated: title "Friet van Desire",
+- PSID metadata updated: title "Friet met Desire",
   author "Kloot & Anus / deFEEST", released "2026 X / deFEEST".
 - Added `docs/RELEASE.md` with scene-release metadata, arrangement
   description, and known gaps before the party.
@@ -151,4 +151,4 @@ Dates are local (Europe/Amsterdam).
 - README + AGENTS.md + Makefile + render-preview.sh.
 - Legacy direct-conversion scripts (`midi2sid.py`, `midi2sid_hh.py`)
   for comparison; not on the maintained pipeline.
-- Pushed to `git@github.com:annejan/friet-van-desire.git`.
+- Pushed to `git@github.com:annejan/friet-met-desire.git`.
