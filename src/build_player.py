@@ -152,16 +152,20 @@ print(f"{len(lines)} lyric lines -> {len(events)} on-screen updates @ {FAST_BPM}
 
 # ---- Text -> C64 screen codes -----------------------------------------
 def to_screen(s, width=40):
+    """Convert text to C64 screen codes (lowercase charset mode).
+    In lowercase mode: a-z = $01-$1A, A-Z = $41-$5A."""
     out = []
-    for c in s.upper()[:width]:
+    for c in s[:width]:
         o = ord(c)
-        if 0x41 <= o <= 0x5A:
-            out.append(o - 0x40)            # A-Z -> $01-$1A
+        if 0x61 <= o <= 0x7A:               # a-z -> $01-$1A
+            out.append(o - 0x60)
+        elif 0x41 <= o <= 0x5A:             # A-Z -> $41-$5A (shifted)
+            out.append(o)
         elif o == 0x20:
             out.append(0x20)
-        elif 0x30 <= o <= 0x39:
+        elif 0x30 <= o <= 0x39:             # 0-9
             out.append(o)
-        elif o in (44, 46, 33, 39, 47, 45):  # , . ! ' / -
+        elif o in (44, 46, 33, 39, 47, 45): # , . ! ' / -
             out.append(o)
         else:
             out.append(0x20)
@@ -169,9 +173,9 @@ def to_screen(s, width=40):
 
 # Banners
 with open(os.path.join(PLAYER_DIR, 'banner_top.bin'), 'wb') as f:
-    f.write(to_screen("FRIET VAN DESIRE -- DEFEEST AT X2026"))
+    f.write(to_screen("Friet van Desire -- deFEEST at X2026"))
 with open(os.path.join(PLAYER_DIR, 'banner_bottom.bin'), 'wb') as f:
-    f.write(to_screen("KLOOT & ANUS / DEFEEST / MET MAYO"))
+    f.write(to_screen("Kloot & Anus / deFEEST / met MAYO"))
 
 # Lyric table — sequence of (frame_lo, frame_hi, len, screen_bytes...)
 buf = bytearray()

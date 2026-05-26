@@ -42,6 +42,10 @@ entry:
     lda #>lyric_table
     sta ly_hi
 
+    // Switch to lowercase character set
+    lda #$17
+    sta $D018
+
     // Border + background black
     lda #$00
     sta $D020
