@@ -34,7 +34,18 @@
 *=$0810
 entry:
     sei
+    // Zero SID player's ZP work area ($02-$0F). SID_INIT doesn't
+    // touch these — they're expected at $00 on first SID_PLAY call.
+    // Clean BASIC boot has them zeroed by CLR, but when loaded as an
+    // easter egg from inside a demo (copier at $0200), residue from
+    // the demo's ZP causes the SID player's counters to start at
+    // wrong values → lyrics desync.
     lda #0
+    ldx #$0d
+!zpclr:
+    sta $02,x
+    dex
+    bpl !zpclr-
     sta frame_lo
     sta frame_hi
     lda #<lyric_table
