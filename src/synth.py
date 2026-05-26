@@ -21,8 +21,9 @@ PAL_CLK = 985248.0
 PAL_HZ  = 50.0
 
 WF_TRI, WF_SAW, WF_PULSE, WF_NOISE = 0x10, 0x20, 0x40, 0x80
-# Bass: instant attack, sustain $A (slightly behind the vocal), fast release
-V1_AD, V1_SR = 0x08, 0xA4
+# Bass: matched attack with vocal (8ms) so they breathe together.
+# Sustain $F (full) — PW 25% + pulse waveform provides timbral separation.
+V1_AD, V1_SR = 0x12, 0xF4
 # Lead (triangle = vocal-ish tone): gentle 24 ms attack so legato pitch
 # changes don't click, full sustain, medium release for breathy phrase tails.
 V2_AD, V2_SR = 0x12, 0xF6

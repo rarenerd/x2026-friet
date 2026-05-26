@@ -219,44 +219,71 @@ def main():
             'breathe2':        0x20,
             'chorus3':         0x40,  # pulse -- different timbre for final reprise
         }
-        # Vocal (V2): T7 verbatim + per-section waveform for timbre
-        # variation. Triangle in verse (soft vocal feel), sawtooth in
-        # chorus (hoover with filter sweep), pulse in final reprise.
+        # ---- Master frame grid (Bresenham) --------------------------------
+        # 175 BPM = 120/7 frames per beat = 30/7 frames per 16th.
+        # Independent int(round(beat * fbeat)) per voice causes ±0.5
+        # frame drift that accumulates. Instead, build ONE grid using
+        # integer accumulation — zero drift, all voices share it.
+        # See ADHD analysis: hardware engineer frame.
+        from math import gcd
+        _num = int(round(PAL_HZ * 60 * 4))   # 12000
+        _den = int(round(play_bpm * 4))       # 700 at 175 BPM
+        _g = gcd(_num, _den)
+        _num //= _g; _den //= _g             # 120/7
+        _grid_size = int(song_out_beats * 4) + 64
+        _master_grid = [0] * _grid_size
+        _frame = 0; _rem = 0
+        for _i in range(_grid_size):
+            _master_grid[_i] = _frame
+            _rem += _num
+            _frame += _rem // _den
+            _rem %= _den
+
+        def grid_frame(beat):
+            """Beat → frame via the shared Bresenham grid (snap to 16th)."""
+            idx = round(beat * 4)
+            if 0 <= idx < len(_master_grid):
+                return _master_grid[idx]
+            return int(round(beat * fbeat_lead))
+
+        # Vocal (V2): T7 verbatim + per-section waveform.
         SECTION_LEAD_CTRL = {
-            'intro':           0x10,  # triangle
+            'intro':           0x10,
             'verse1':          0x10,
             'prechorus1':      0x10,
-            'chorus1':         0x20,  # saw → hoover with filter env
+            'chorus1':         0x20,
             'postchorus_nana': 0x20,
             'breathe1':        0x20,
             'chorus2':         0x20,
             'breathe2':        0x20,
-            'chorus3':         0x40,  # pulse — climactic final reprise
+            'chorus3':         0x40,
         }
         for s_b, d_b, pitch in layers['layers'].get('vocal', []):
             d = max(0.2, d_b)
             for out_b, label in remap(s_b):
                 lead_events.append({
-                    'frame': int(round(out_b * fbeat_lead)),
+                    'frame': grid_frame(out_b),
                     'note':  int(pitch),
                     'dur_frames': max(4, int(round(d * fbeat_lead))),
                     'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
 
-        # ---- Bass (V1) — interleaving organ stab (T6 grid positions
-        # that DON'T collide with vocal in each bar).
-        # Per voice_essence.md + score_transcription.md: the FFD organ
-        # stab plays at sixteenths 0, 4, 7, 10, 14 (= beats 0, 1, 1.75,
-        # 2.5, 3.5) and INTERLEAVES with the vocal — it fills the gaps
-        # where the singer ISN'T. We compute this per output bar.
+        # ---- Bass (V1) — interleaving organ stab with ANTICIPATION.
+        # T6 grid (0, 1, 1.75, 2.5, 3.5 beats/bar) interleaves with
+        # vocal. Collision detection in BEAT domain (16th indices) not
+        # frame domain — eliminates false collisions from rounding.
+        # Bass shifted 2 frames EARLY (anacrusis) so it leads into
+        # vocal entries instead of just avoiding them.
+        BASS_ANTICIPATION_FRAMES = 2
         if not MELODY_ONLY:
-            STAB_POSITIONS = [0, 1, 1.75, 2.5, 3.5]  # T6 pattern in beats
-            D2 = 38  # D pedal for bass register
+            STAB_POSITIONS = [0, 1, 1.75, 2.5, 3.5]
+            D2 = 38
 
-            # Index all vocal onset frames for collision detection.
-            vocal_frames = set()
-            for ev in lead_events:
-                vocal_frames.add(ev['frame'])
+            # Collision detection in beat-domain (16th indices).
+            vocal_16ths = set()
+            for s_b, d_b, pitch in layers['layers'].get('vocal', []):
+                for out_b, label in remap(s_b):
+                    vocal_16ths.add(round(out_b * 4))
 
             for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
                 if label in ('intro', 'breathe1', 'breathe2'):
@@ -266,13 +293,16 @@ def main():
                 for bar in range(n_bars):
                     bar_out = out_s + bar * 4
                     for off in STAB_POSITIONS:
-                        f = int(round((bar_out + off) * fbeat_groove))
-                        if f in vocal_frames:
-                            continue  # skip — vocal owns this position
+                        beat = bar_out + off
+                        beat_16th = round(beat * 4)
+                        if beat_16th in vocal_16ths:
+                            continue
+                        f = grid_frame(beat) - BASS_ANTICIPATION_FRAMES
+                        if f < 0: f = 0
                         bass_events.append({
                             'frame': f,
                             'note':  D2,
-                            'dur_frames': max(3, int(round(0.4 * fbeat_groove))),
+                            'dur_frames': max(3, grid_frame(0.4) - grid_frame(0)),
                         })
 
         # ---- Drums (V3) verbatim from T13, filtered for dynamics ----
