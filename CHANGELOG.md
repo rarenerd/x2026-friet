@@ -3,6 +3,26 @@
 All notable changes to **Friet van Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-26 — Verbatim source layers, per-section waveform, interleaving bass
+
+- **Back to verbatim source layers**: V2 plays T7 vocal verbatim, V3 plays
+  T13 drums verbatim (section-filtered). No more synthetic HH patterns —
+  the real source data is richer.
+- **Per-section V2 waveform**: triangle in verse, sawtooth+hoover in chorus,
+  pulse in final reprise. Each section has its own timbre character.
+- **Interleaving bass**: V1 plays T6 grid positions (0, 1, 1.75, 2.5, 3.5
+  beats per bar) computed per output bar so the bass **never collides with
+  any V2 vocal note**. D2 pedal. Silent in intro/breathes. Call-and-response
+  with the vocal — zero collisions per bar.
+- **V3 section filtering**: verse=kick only, prechorus=kick+snare,
+  chorus=full kit. Snare fills in breathe sections. Hat boost (8th on+off)
+  in chorus2/3. Crash swell: long attack ($D), dark pitch (28), 4s gate.
+- **ossh MIDI analysis**: added `Gala-freedfromdesire.mid` (128.5 BPM,
+  15 tracks, 473 vocal notes). Full score transcription
+  (`docs/score_transcription.md`) and voice essence (`docs/voice_essence.md`)
+  documenting Pattern A (4-3-3-4) and Pattern B (3-3-2) engines.
+- **Multiple source MIDIs analyzed**: karaoke, ossh, AUD_HO1152, AUD_RC5718.
+
 ## 2026-05-25 — Timbre polish, repo cleanup
 
 - **Timbre tweaks**: V1 bass pulse width narrowed to 25% for a sharper stab

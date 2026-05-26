@@ -226,6 +226,16 @@ borrow elements:
   `docs/midi_sources.md`) is a *different* layer — chorus-only stabs.
   T6 and AUD's organ are two complementary signatures.
 
+## The interleaving bass discovery
+
+Analysis of the ossh MIDI (`Gala-freedfromdesire.mid`, see
+`docs/voice_essence.md`) revealed that the T6 organ stab grid (positions
+0, 1, 1.75, 2.5, 3.5 beats per bar) **never collides with any vocal note
+in T7**. The bass and vocal operate as call-and-response: the bass fills
+the gaps where the voice breathes. This is baked into the song's DNA —
+not a coincidence. The SID arrangement exploits this by computing V1
+bass positions per output bar to guarantee zero collisions with V2.
+
 ## Things this theory is uncertain about
 
 - **Whether the karaoke MIDI's C-A tresillo is accurate or

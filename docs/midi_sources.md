@@ -1,8 +1,7 @@
 # Source MIDI files — musicological inventory
 
-We have **four** MIDIs in `midi/`. Until now we only used one
-(`Gala_Freed_From_Desire.mid`). Below is what each actually contains
-and what's authoritative for which question.
+We have **five** MIDIs in `midi/`. Below is what each contains and
+what's authoritative for which question.
 
 ## Summary table
 
@@ -12,6 +11,7 @@ and what's authoritative for which question.
 | `Gala_Free_From_Desire.mid` | 120 | 204 s | 12 | no | yes (Oboe) | yes | yes (3065 hits) | same notes as above — **duplicate** |
 | `GALA_Free_from_desire.mid` | 127 | 195 s | 12 | no | yes (Flute) | yes | yes (3065 hits) | same notes, faster tempo, **redundant** |
 | `AUD_RC5718.mid` | **130** | 30 s | **1** (multi-channel) | no | no | no (organ stabs only) | sparse (25 hits) | the **actual song tempo**, iconic organ stabs |
+| `Gala-freedfromdesire.mid` | **128.5** | ~210 s | **15** | no | yes (Flute) | yes (3 bass tracks) | yes (3118 hits) | ossh transcription — richest source, score transcription + voice essence analysis |
 
 The three `Gala_*.mid` files are byte-for-byte the same arrangement —
 they differ only in tempo (120 vs 127 BPM) and the lead instrument
@@ -103,6 +103,36 @@ core groove element — *and it lines up with the vocal chorus's 16th
 syncope* (0, 0.75, 1.5, 2, 2.75). The 3-against-4 feel between this
 bass-and-vocal layer and a 4-on-the-floor kick is the song's
 signature, not a transcription artefact.
+
+## Gala-freedfromdesire.mid (ossh) — 128.5 BPM, 15 tracks
+
+The richest source MIDI. 128.5 BPM (close to the real recording's
+~129 BPM). Contains three distinct bass tracks, full organ layers, and
+a 473-note vocal on Flute (T5). Full analysis in
+`docs/score_transcription.md` (beat-by-beat 16th grid) and
+`docs/voice_essence.md` (pattern engines).
+
+| Track | Prog | Notes | Range | Role |
+|-------|------|-------|-------|------|
+| T5 Flute | 73 | 473 | A4–F5 | Vocal melody |
+| T8 PercOrgan | 18 | 240 | D4–D6 | Organ stabs (Pattern A) |
+| T7 DrawbarOrgan | 17 | 260 | D4–D7 | Organ stabs (Pattern A) |
+| T2 5ths Bass | 87 | 208 | B1–F3 | Bass (late entry) |
+| T3 Fretless Bass | 35 | 222 | C2–C3 | Bass (tresillo, Pattern B) |
+| T6 Acoustic Bass | 32 | 163 | D2–D4 | Bass (Pattern A) |
+| T4 ElGrand Piano | 3 | 897 | A2–A4 | Chord comp |
+| T9 Synth Strings | 50 | 213 | C4–D5 | Pad |
+| T14 Lead Synth | 80 | 414 | C2–F3 | Lead synth (Pattern B) |
+| T10 Drums | ch9 | 3118 | — | Full kit |
+| T11 Sweep Pad | 95 | 29 | D4–D5 | Transition pad |
+| T12 Metallic Pad | 94 | 27 | C4–D5 | Transition pad |
+| T13 Rev Cymbal | 119 | 15 | F3–C6 | Section swells |
+
+Key discovery from this MIDI: the organ stab grid (Pattern A: positions
+0, 4, 7, 10, 14 sixteenths per bar) **interleaves with the vocal** —
+zero collisions per bar. The bass and vocal are call-and-response by
+design, not coincidence. This insight drove the V1 interleaving bass
+in the release build.
 
 ## What to do with this
 

@@ -75,6 +75,8 @@ friet/
 │   ├── melody_understanding.md  canonical melody theory (why the FFD melody works)
 │   ├── midi_sources.md     MIDI source comparison + provenance
 │   ├── rhythm_research.md  drums/bass coupling research
+│   ├── score_transcription.md  beat-by-beat 16th-grid transcription (ossh MIDI)
+│   ├── voice_essence.md    DNA of each instrument layer (Pattern A/B engines)
 │   └── polish_plan.md      remaining work, priority-ordered
 ├── tools/
 │   └── render-preview.sh   headless vsid -> WAV -> MP3
@@ -84,18 +86,24 @@ friet/
 
 ## Research docs
 
-Three research documents capture the musicology work that informed the
+Five research documents capture the musicology work that informed the
 arrangement decisions:
 
 - **[`docs/melody_understanding.md`](docs/melody_understanding.md)** --
   canonical theory of why the FFD melody works: 4-pitch vocabulary, tresillo
   rhythm in Phrase A vs straight 8ths in Phrase B, chord colour underneath.
-- **[`docs/midi_sources.md`](docs/midi_sources.md)** -- comparison of the
-  four karaoke MIDIs in `midi/`, what each contains, and which tracks are
+- **[`docs/midi_sources.md`](docs/midi_sources.md)** -- comparison of all
+  five source MIDIs in `midi/`, what each contains, and which tracks are
   authoritative for which musical question.
 - **[`docs/rhythm_research.md`](docs/rhythm_research.md)** -- analysis of
   the drums/bass coupling that gives FFD its dance-floor feel, and why the
   chorus tresillo must not be quantized.
+- **[`docs/score_transcription.md`](docs/score_transcription.md)** --
+  beat-by-beat 16th-grid transcription from the ossh MIDI
+  (`Gala-freedfromdesire.mid`, 128.5 BPM, 15 tracks).
+- **[`docs/voice_essence.md`](docs/voice_essence.md)** -- DNA of each
+  instrument layer: the two rhythmic engines (Pattern A "4-3-3-4" organ stab,
+  Pattern B "3-3-2" tresillo) and what each voice contributes.
 
 ## Source-MIDI map (verified against lyrics — see `docs/melody_analysis.md`)
 
@@ -167,24 +175,27 @@ are a rights-holder and object, open an issue and we'll remove it.
 
 ## Status
 
-- ✅ **Melody recognisable** as "Freed from Desire" — T7 vocal (preserving
-  source timing, including tresillo in chorus) + T6 stab-rhythm bass
-  (4-3-3-4 sixteenths, chord-following) + synthetic HH drums + intro noise
-  swell.
+- ✅ **Melody recognisable** as "Freed from Desire" — T7 vocal verbatim
+  with per-section waveform + interleaving bass + section-filtered drums.
+- ✅ **Interleaving bass** — V1 plays T6 grid positions (0, 1, 1.75, 2.5,
+  3.5 beats per bar) computed per output bar so the bass **never collides
+  with any vocal note**. D2 pedal. Silent in intro/breathes. Call-and-response
+  with the vocal melody.
+- ✅ **Per-section V2 waveform** — triangle in verse, sawtooth+hoover in
+  chorus, pulse in final reprise. Vibrato ±12.
+- ✅ **T13 verbatim drums** — section-filtered (verse=kick, prechorus=kick+snare,
+  chorus=full kit). Snare fills in breathe sections. Hat boost in chorus2/3.
+  Crash swell with long attack ($D), dark pitch (28), 4s gate.
 - ✅ Lyrics aligned to T7 notes (every syllable has a verified pitch in
   `docs/song_layers.yaml` and `docs/melody_lyrics.yaml`).
-- ✅ **T6 stab bass** — V1 plays a T6-derived stab rhythm (positions 0,
-  1, 1.75, 2.5, 3.5 in each bar) with D-pedal in verses and Dm-F-Bb-C
-  chord following in choruses.
-- ✅ **Clean HH drums** — V3 in FAST mode uses synthetic kick 4-on-floor
-  + off-beat 8th hat everywhere, snare backbeat only in chorus/na-na
-  sections. T13 verbatim is NOT used in FAST mode.
 - ✅ **Lab sandbox** — `src/lab.py` / `make lab` for experimental
   composition work; separate from the release pipeline.
 - ✅ **All polish items complete** — vibrato, filter LFO, reprise dynamics,
   TL-Buis Dutch lyrics in the `.prg` ticker. See `docs/polish_plan.md`.
 - ✅ **Standalone .prg player** — `out/friet.prg` embeds the SID + a
-  scrolling lyric ticker with TL-Buis Dutch parody text.
+  scrolling lyric ticker with TL-Buis Dutch parody text (48 lines).
+- ✅ **Score transcription + voice essence docs** — full ossh MIDI analysis
+  in `docs/score_transcription.md` and `docs/voice_essence.md`.
 - Pads / chord rendering with only 3 voices remains unsolved — V3 is
   drums only. Possible future work: ring-modulate V1 against V3 for
   "chord shimmer".

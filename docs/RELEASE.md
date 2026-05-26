@@ -55,17 +55,18 @@ Three SID voices:
 
 | Voice | What it plays                                                       |
 |-------|---------------------------------------------------------------------|
-| V1    | **T6 stab-rhythm bass** — 4-3-3-4 sixteenth pattern (positions 0, 1, 1.75, 2.5, 3.5 per bar). D-pedal in verses, chord-following Dm-F-Bb-C in choruses. |
-| V2    | T7 vocal melody with **source timing preserved** — the tresillo feel in the chorus IS the song's rhythmic identity, not a transcription artefact. Verified by aligning T2's syllable markers to T7 pitches. |
-| V3    | **Synthetic HH drums** (FAST mode): kick 4-on-floor + off-beat 8th hat everywhere, snare backbeat only in chorus/na-na sections. T13 verbatim is NOT used in the release build. Plus T12's reverse-cymbal swells at the intro and section transitions. |
+| V1    | **Interleaving organ stab** — T6 grid positions (0, 1, 1.75, 2.5, 3.5 beats per bar) computed per output bar so the bass **never collides with any V2 vocal note**. D2 pedal. Silent in intro/breathe sections. Call-and-response with the vocal. |
+| V2    | T7 vocal **VERBATIM** with per-section waveform: **triangle** in verse, **sawtooth+hoover** in chorus, **pulse** in final reprise. Vibrato ±12. Source timing preserved (tresillo intact). |
+| V3    | T13 drums **VERBATIM**, section-filtered: verse=kick, prechorus=kick+snare, chorus=full kit. Snare fills in breathe sections. Hat boost (8th on+off) in chorus2/3. Crash swell: long attack ($D), dark pitch (28), 4s gate. |
 
 ## Tones
 
-- V1 bass: pulse waveform, PW $0800, sustained envelope.
-- V2 vocal: triangle waveform, slow attack so syllables phrase, full
-  sustain.
-- V3 drums: noise with per-kit-piece ADSR; reverse-cymbal has an 800 ms
-  slow attack so the swell is *heard*, not ticked.
+- V1 bass: pulse waveform, PW $0800 (25% duty), sustained envelope.
+  Silent in intro/breathe — swell + vocal have room.
+- V2 vocal: per-section waveform switching (triangle / sawtooth+hoover /
+  pulse). Vibrato ±12 SID freq units (~3 Hz LFO).
+- V3 drums: noise with per-kit-piece ADSR; crash swell has long attack
+  ($D), dark pitch (28), 4s gate for a proper *whoosh*.
 
 ## How to verify before the party
 
@@ -80,7 +81,11 @@ xxd out/friet.sid | head -8   # confirm PSID header reads
 
 All polish items from [`polish_plan.md`](polish_plan.md) are complete.
 The release SID (`out/friet.sid`), standalone player (`out/friet.prg`
-with Dutch lyric ticker), and both workstage builds are ready.
+with Dutch lyric ticker, 48 lines), and both workstage builds are ready.
+
+Remaining open question: pads / chord rendering with only 3 voices.
+V3 is drums-only. Possible future work: ring-modulate V1 against V3
+for "chord shimmer".
 
 ### Polish items since initial release notes
 
@@ -96,6 +101,10 @@ with Dutch lyric ticker), and both workstage builds are ready.
 
 - Karaoke MIDI: `midi/Gala_Freed_From_Desire.mid` — T2 lyric markers
   cross-validated against T7 to establish that T7 is the vocal melody.
+- ossh MIDI: `midi/Gala-freedfromdesire.mid` — 128.5 BPM, 15 tracks,
+  473 vocal notes. Source for score transcription and voice essence
+  analysis. See `docs/score_transcription.md`, `docs/voice_essence.md`.
+- AUD partial: `midi/AUD_RC5718.mid` — 130 BPM, iconic D5+A5 organ pump.
 - [Hooktheory](https://www.hooktheory.com/theorytab/view/gala/freed-from-desire):
   key D minor, i-III-VI-VII chord progression.
 - [ChordU](https://chordu.com/chords-tabs-gala-freed-from-desire-official-video--id_p3l7fgvrEKM):

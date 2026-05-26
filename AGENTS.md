@@ -47,9 +47,9 @@ The clean pipeline (`extract_patterns` → `compose` → `synth`) uses:
 
 | Voice | Source                 | Tone                                     |
 |-------|------------------------|------------------------------------------|
-| V1    | T6 stab-rhythm bass    | Pulse, PW=$0800, sustained envelope. 4-3-3-4 sixteenth pattern (positions 0, 1, 1.75, 2.5, 3.5 per bar). D-pedal in verse, chord-following Dm-F-Bb-C in chorus. |
-| V2    | T7 vocal (source timing) | Triangle, gentle attack, full sustain. Preserves original timing including tresillo in chorus — no 8th-quantize. |
-| V3    | synthetic HH drums + T12 swell | FAST mode: kick 4-on-floor + off-beat 8th hat everywhere, snare backbeat in chorus/na-na only. T13 verbatim is NOT used in FAST mode. Reverse-cymbal at intro + section transitions. |
+| V1    | T6 grid — INTERLEAVING organ stab | Pulse, PW=$0800, sustained envelope. Grid positions (0, 1, 1.75, 2.5, 3.5 beats per bar) computed per output bar to **never collide with any V2 vocal note**. D2 pedal. Silent in intro/breathe sections. Call-and-response with the vocal. |
+| V2    | T7 vocal VERBATIM | Per-section waveform: **triangle** in verse, **sawtooth+hoover** in chorus, **pulse** in final reprise. Vibrato ±12. Source timing preserved (tresillo intact). |
+| V3    | T13 drums VERBATIM | Section-filtered: verse=kick only, prechorus=kick+snare, chorus=full kit. **Snare fills** in breathe sections. **Hat boost** (8th-note on+off) in chorus2/3. Crash swell: long attack ($D), dark pitch (28), 4s gate. |
 
 Plus the verified ground truth in `docs/song_layers.yaml`:
 syllable markers from T2 align note-for-note to T7's pitches — that's how
@@ -106,10 +106,14 @@ we know T7 is genuinely the vocal melody and not a counter-line.
 
 ```sh
 source .venv/bin/activate
-make analyze                          # research dump
 make friet                            # build the release SID (out/friet.sid)
 make preview-friet PREVIEW_SECONDS=60 # render an MP3 preview
+make player                           # standalone .prg with lyric ticker
+make analyze                          # research dump (if exploring MIDIs)
 ```
+
+Read `docs/score_transcription.md` and `docs/voice_essence.md` to
+understand the source material before touching the arrangement.
 
 The user prefers iterative feedback: build → render → listen → ask. Don't
 batch many speculative tweaks; deliver something playable, ask "where does it
@@ -125,8 +129,11 @@ pipeline. Its composition is written to `docs/lab_composition.yaml`.
 ## Musicology research docs
 
 - `docs/melody_understanding.md` — why the FFD melody works
-- `docs/midi_sources.md` — provenance notes on the karaoke MIDIs
+- `docs/midi_sources.md` — provenance notes on all five source MIDIs
 - `docs/rhythm_research.md` — analysis of FFD's rhythmic identity (tresillo etc.)
+- `docs/score_transcription.md` — beat-by-beat 16th-grid transcription from the ossh MIDI
+- `docs/voice_essence.md` — DNA of each instrument layer (Pattern A / Pattern B engines)
 
-These inform arrangement decisions. Key takeaway: the chorus vocal's
-tresillo feel IS the song — do not quantize it to an 8th grid.
+These inform arrangement decisions. Key takeaway: bass interleaves
+with vocal (call-and-response) — zero collisions per bar. The chorus
+vocal's tresillo feel IS the song — do not quantize it to an 8th grid.
