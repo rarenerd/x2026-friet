@@ -2,11 +2,11 @@
 
 > Parody of Gala's "Freed from Desire" (1996).
 > Dutch demoscene lyrics by **TL-Buis/deFEEST** (ChatGPT).
-> Not yet final — may change before release.
+> Work in progress — "ofzo".
 
 ---
 
-## FRIET
+## Couplet 1
 
 Mijn crew die heeft geen centen
 maar wel een zieke scroll
@@ -16,6 +16,8 @@ Mijn crew die heeft geen sponsors
 maar wel respect in de zaal
 Mijn crew die heeft geen centen
 maar wel kabaal totaal
+
+## Pre-refrein 1
 
 Meer en meer
 iedereen wil meer en meer
@@ -27,7 +29,7 @@ iedereen wil meer en meer
 bier en geweld
 uit een speaker veel te schel
 
-### Hook
+## Refrein 1
 
 Friet met Desire
 SID en VIC slaan door
@@ -37,6 +39,8 @@ alle sprites zwaar ontspoord
 Friet met Desire
 scanlines vol met storing
 Friet met Desire
+
+## Na-na 1
 
 Na-na-na-na-na-na-na
 na-na-na door de zaal
@@ -48,34 +52,57 @@ iemand trekt de stekker los
 Na-na-na-na-na-na-na
 maar de demo loopt alsnog
 
+## Couplet 2
+
 Mijn code draait op floppies
 jouw engine op geleend geld
 Jij koopt AI en shaders
 wij persen cycles uit geweld
 
-Geen slaap en geen relaties
-wel drie dagen Assembly
 De frituur ruikt naar soldeerflux
-en naar lauw energiedrankbier
+en naar lauwe energiedrank
+Iemand ligt onder een tafel
+naast een warme transformator
+
+## Pre-refrein 2
 
 Meer en meer
 iedereen wil meer en meer
 meer MHz
-maar die code compileert niet eens
+tot de voeding explodeert
 
 Meer en meer
 iedereen wil meer en meer
 nog één laatste fix
 vlak voor de compo ingestuurd
 
-### Hook
+## Refrein 2
 
 Friet met Desire
-SID en VIC staan rood
+iemand trekt de stekker los
 Friet met Desire
-heel de sporthal sloopt zichzelf
+maar die demo loopt alsnog
 
 Friet met Desire
-alle scanlines zwaar verstoord
+scanlines zwaar verstoord
 Friet met Desire
+
+## Pre-refrein 3
+
+Meer en meer
+iedereen wil meer en meer
+meer volume
+tot de limiter protesteert
+
+Meer en meer
+iedereen wil meer en meer
+nog één reboot
+voor de finale van de compo
+
+## Refrein 3
+
+Friet met Desire
+scanlines zwaar verstoord
+Friet met Desire
+
                            groetjes van TL-Buis
