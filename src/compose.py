@@ -226,8 +226,8 @@ def main():
         # integer accumulation — zero drift, all voices share it.
         # See ADHD analysis: hardware engineer frame.
         from math import gcd
-        _num = int(round(PAL_HZ * 60 * 4))   # 12000
-        _den = int(round(play_bpm * 4))       # 700 at 175 BPM
+        _num = int(round(PAL_HZ * 60))        # 3000 (frames per minute)
+        _den = int(round(play_bpm * 4))       # 700 (16ths per minute at 175 BPM)
         _g = gcd(_num, _den)
         _num //= _g; _den //= _g             # 120/7
         _grid_size = int(song_out_beats * 4) + 64
