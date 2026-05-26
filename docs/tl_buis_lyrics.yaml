@@ -1,17 +1,13 @@
 # TL-Buis/deFEEST Dutch parody lyrics mapped to the OUTPUT timeline.
-# One entry per displayed lyric line. Beat positions are OUTPUT beats
-# (after the SEGMENTS remap in compose.py), NOT source-MIDI beats.
-#
-# Used by build_player.py for the standalone .prg lyric ticker.
-# The ticker replaces whatever's on screen row 12 at each beat.
+# Capitalisation matches docs/lyrics.md exactly.
 
 lyrics:
-  # Intro title cards — quick cycle before the crash swell gets loud
-  - {beat: 0.0,  text: "--- FRIET VAN DESIRE ---"}
+  # Intro title cards
+  - {beat: 0.0,  text: "--- Friet van Desire ---"}
   - {beat: 4.0,  text: "TL-Buis / deFEEST"}
   - {beat: 8.0,  text: "X2026 / deFEEST"}
 
-  # Verse 1 — starts at beat 21.5 (when vocal enters)
+  # Couplet 1
   - {beat: 21.5, text: "Mijn crew die heeft geen centen"}
   - {beat: 25.5, text: "maar wel een zieke scroll"}
   - {beat: 29.5, text: "Mijn crew die heeft geen shaders"}
@@ -21,7 +17,7 @@ lyrics:
   - {beat: 45.5, text: "Mijn crew die heeft geen centen"}
   - {beat: 49.5, text: "maar wel kabaal totaal"}
 
-  # Pre-chorus 1
+  # Pre-refrein 1
   - {beat: 54.5,  text: "Meer en meer"}
   - {beat: 58.5,  text: "iedereen wil meer en meer"}
   - {beat: 62.5,  text: "frames en effect"}
@@ -31,7 +27,7 @@ lyrics:
   - {beat: 78.5,  text: "bier en geweld"}
   - {beat: 82.5,  text: "uit een speaker veel te schel"}
 
-  # Chorus 1
+  # Refrein 1
   - {beat: 88.0,  text: "Friet van Desire"}
   - {beat: 92.0,  text: "SID en VIC slaan door"}
   - {beat: 96.0,  text: "Friet van Desire"}
@@ -40,7 +36,7 @@ lyrics:
   - {beat: 108.0, text: "scanlines vol met storing"}
   - {beat: 112.0, text: "Friet van Desire"}
 
-  # Post-chorus na-na
+  # Na-na
   - {beat: 117.5, text: "Na-na-na-na-na-na-na"}
   - {beat: 121.5, text: "na-na-na door de zaal"}
   - {beat: 125.5, text: "Na-na-na-na-na-na-na"}
@@ -50,7 +46,7 @@ lyrics:
   - {beat: 141.5, text: "Na-na-na-na-na-na-na"}
   - {beat: 145.5, text: "maar de demo loopt alsnog"}
 
-  # Chorus 2 reprise
+  # Refrein 2
   - {beat: 153.5, text: "Friet van Desire"}
   - {beat: 157.5, text: "SID en VIC staan rood"}
   - {beat: 161.5, text: "Friet van Desire"}
@@ -59,7 +55,7 @@ lyrics:
   - {beat: 173.5, text: "alle scanlines zwaar verstoord"}
   - {beat: 177.5, text: "Friet van Desire"}
 
-  # Chorus 3 reprise
+  # Refrein 3
   - {beat: 187.0, text: "Friet van Desire"}
   - {beat: 191.0, text: "SID en VIC slaan door"}
   - {beat: 195.0, text: "Friet van Desire"}

@@ -4,10 +4,11 @@
 #   make friet           the release SID (175 BPM, hoover lead)
 #   make preview-friet   .mp3 preview of the release
 #   make player          standalone C64 .prg (embeds friet.sid + lyric ticker)
+#   make compo           clean competition .sid (same as friet.sid, separate file)
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet lab \
+        clean-pipeline melody-only friet lab compo \
         preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
@@ -91,6 +92,15 @@ $(FRIET_SID): $(SRC_DIR)/compose.py $(SRC_DIR)/synth.py $(SPEC) $(LAYERS)
 preview-friet: $(FRIET_MP3)
 $(FRIET_MP3): $(FRIET_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
+
+# Competition deliverable — clean PSID, no .prg, no ticker.
+# Identical audio to friet.sid but as a separate tracked file for
+# compo organisers. HVSC-ready metadata inside.
+COMPO_SID := $(OUT_DIR)/Friet_van_Desire-deFEEST.sid
+compo: $(COMPO_SID)
+$(COMPO_SID): $(FRIET_SID)
+	cp $< $@
+	@echo "Competition SID: $@"
 
 # Experimental sandbox — short loop of a fragment + hand-written
 # beat/bass pattern. Tweak src/lab.py SETTINGS and re-run `make lab`.
