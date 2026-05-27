@@ -146,10 +146,10 @@ irq:
     bne !nh+
     inc frame_hi
 !nh:
-    // After one full play-through (frame_hi >= 15 = ~76.8s at 175 BPM),
-    // silence SID and cold-reset to clean BASIC.
+    // After one full play-through + a few loops for good measure.
+    // frame_hi >= 60 = ~5 min. Song is ~74s so this is ~4 loops.
     lda frame_hi
-    cmp #15
+    cmp #60
     bcc !continue+
     sei
     ldx #$18
