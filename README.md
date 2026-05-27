@@ -96,7 +96,8 @@ friet/
 │   ├── rhythm_research.md       drums/bass coupling research
 │   ├── song_analysis.md         music theory: key/chords/structure
 │   ├── melody_analysis.md       phrase-by-phrase T7 vocal analysis
-│   ├── tl_buis_lyrics.yaml      lyric timing for the .prg ticker
+│   ├── nul_bytes_vrij_lyrics.yaml constraint-war lyrics (primary)
+│   ├── tl_buis_lyrics.yaml      TL-Buis Dutch parody lyrics (fallback)
 │   ├── polish_plan.md           completed work log
 │   └── RELEASE.md               scene-release metadata
 ├── tools/

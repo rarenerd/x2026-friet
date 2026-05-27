@@ -92,7 +92,8 @@ for "chord shimmer".
 - ✅ Vibrato on V2 (±12 SID freq units, ~3 Hz LFO)
 - ✅ Chorus 2/3 reprises hit harder (breathe sections with snare rolls,
     full 8th-note hats, crash risers before each drop)
-- ✅ TL-Buis Dutch parody lyrics in the standalone .prg ticker
+- ✅ NulBytesVrij constraint-war lyrics (`docs/nul_bytes_vrij_lyrics.yaml`)
+  in the standalone .prg ticker (fallback: TL-Buis → karaoke)
 - ✅ Filter LFO wobble (phaser-like modulation of cutoff HI, ±4 steps,
     synchronised to the vibrato LFO)
 - ✅ Lyrics appear 1 beat early so the user can read before singing

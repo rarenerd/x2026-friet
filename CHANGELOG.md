@@ -3,6 +3,20 @@
 All notable changes to **Friet met Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-27 — ADHD lyrics: "Nul bytes vrij" constraint-war lyrics
+
+- **ADHD divergence loop** (5 frames × 6 ideas → 30 → score/cluster → top 3
+  deepened): generated constraint-war, raster-interrupt, and NFO-cult lyric
+  angles. Documented in `docs/lyrics_adhd.md`.
+- **"Nul bytes vrij" lyrics** written (`docs/nul_bytes_vrij_lyrics.yaml`):
+  constraint-war stories over the existing T7 melody — 1K intro, zeropage
+  starvation, cycle-counting. Refrein: "nul bytes vrij / maar het moet
+  steeds kleiner / geen raster telt voor niks / geen cycle is te mager".
+  Na-na section reworked as raster-interrupt ticking.
+- **Lyric file priority** in `build_player.py`: nul_bytes_vrij.yaml →
+  tl_buis_lyrics.yaml → karaoke fallback. Makefile dependency updated.
+- **Temp files cleaned**, polish_plan/RELEASE.md/README updated.
+
 ## 2026-05-26 — Verbatim source layers, per-section waveform, interleaving bass
 
 - **Back to verbatim source layers**: V2 plays T7 vocal verbatim, V3 plays

@@ -1,0 +1,66 @@
+# Nul bytes vrij — deFEEST X2026
+# Constraint-war lyrics voor Friet van Desire
+# Elke regel past op de T7 melodie (zelfde beat-positie als tl_buis).
+
+lyrics:
+  # Intro
+  - {beat: 0.0,  text: "Nul bytes vrij"}
+  - {beat: 4.0,  text: "deFEEST — X2026"}
+  - {beat: 8.0,  text: "Drie kanalen, een waarheid"}
+
+  # Couplet 1 — 1K intro / zeropage
+  - {beat: 21.5, text: "Een kilobyte aan code"}
+  - {beat: 25.5, text: "meer past er niet in"}
+  - {beat: 29.5, text: "Geen scroller, geen plaatje"}
+  - {beat: 33.5, text: "alleen een kale SID"}
+  - {beat: 37.5, text: "Geen tweedes page voor data"}
+  - {beat: 41.5, text: "de zeropage is vol"}
+  - {beat: 45.5, text: "Geen cycle om te ademen"}
+  - {beat: 49.5, text: "maar de demo draait door"}
+
+  # Pre-refrein — honger naar optimalisatie
+  - {beat: 54.5,  text: "Nog meer crush"}
+  - {beat: 58.5,  text: "alles moet eruit wat weg kan"}
+  - {beat: 62.5,  text: "Nog meer ram"}
+  - {beat: 66.5,  text: "tot de CPU het begeeft"}
+  - {beat: 70.5,  text: "Nog meer speed"}
+  - {beat: 74.5,  text: "cycle-counten tot je sterft"}
+  - {beat: 78.5,  text: "Eén cycle over"}
+  - {beat: 82.5,  text: "dus propeer ik er een effect in"}
+
+  # Refrein 1 — Nul bytes vrij
+  - {beat: 88.0,  text: "Nul bytes vrij"}
+  - {beat: 92.0,  text: "maar het moet steeds kleiner"}
+  - {beat: 96.0,  text: "Nul bytes vrij"}
+  - {beat: 100.0, text: "geen raster telt voor niks"}
+  - {beat: 104.0, text: "Nul bytes vrij"}
+  - {beat: 108.0, text: "geen cycle is te mager"}
+  - {beat: 112.0, text: "Nul bytes vrij"}
+
+  # Na-na — raster interrupts
+  - {beat: 117.5, text: "De raster tikt en tikt maar"}
+  - {beat: 121.5, text: "vreet mijn cycles en mijn tijd"}
+  - {beat: 125.5, text: "De raster tikt en tikt maar"}
+  - {beat: 129.5, text: "laat me nooit meer met rust"}
+  - {beat: 133.5, text: "De raster tikt en tikt maar"}
+  - {beat: 137.5, text: "niks ontkomt aan deze klok"}
+  - {beat: 141.5, text: "De raster tikt en tikt maar"}
+  - {beat: 145.5, text: "tot de demo is voltooid"}
+
+  # Refrein 2
+  - {beat: 153.5, text: "Nul bytes vrij"}
+  - {beat: 157.5, text: "maar het moet steeds kleiner"}
+  - {beat: 161.5, text: "Nul bytes vrij"}
+  - {beat: 165.5, text: "geen raster telt voor niks"}
+  - {beat: 169.5, text: "Nul bytes vrij"}
+  - {beat: 173.5, text: "geen cycle is te mager"}
+  - {beat: 177.5, text: "Nul bytes vrij"}
+
+  # Refrein 3 — climax
+  - {beat: 187.0, text: "Nul bytes vrij"}
+  - {beat: 191.0, text: "maar het moet steeds kleiner"}
+  - {beat: 195.0, text: "Nul bytes vrij"}
+  - {beat: 199.0, text: "geen raster telt voor niks"}
+  - {beat: 203.0, text: "Nul bytes vrij"}
+  - {beat: 207.0, text: "nul bytes — deFEEST dwingt"}
+  - {beat: 211.0, text: "stroom valt uit"}

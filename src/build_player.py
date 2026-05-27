@@ -68,22 +68,29 @@ def remap(src_beat):
         if s <= src_beat < e:
             yield out_s + (src_beat - s)
 
-# ---- Lyrics source: TL-Buis Dutch parody (if available), else karaoke ----
-TL_BUIS_PATH = os.path.join(BASE, 'docs', 'tl_buis_lyrics.yaml')
+# ---- Lyrics source: pref order = NulBytesVrij > TL-Buis > karaoke ----
+NUL_BYTES_PATH = os.path.join(BASE, 'docs', 'nul_bytes_vrij_lyrics.yaml')
+TL_BUIS_PATH    = os.path.join(BASE, 'docs', 'tl_buis_lyrics.yaml')
 
 # The standalone .prg embeds the FAST release SID; lyric frames must match
 # that tempo. Keep in sync with FAST_BPM in src/compose.py.
 FAST_BPM = 175
 FRAMES_PER_BEAT = 50.0 * 60 / FAST_BPM   # ≈ 17.14 fr/beat at 175 BPM
 
-if os.path.exists(TL_BUIS_PATH):
-    # TL-Buis lyrics: pre-mapped to OUTPUT beats, one text per entry.
-    # No syllable grouping needed — each entry is a display line.
-    with open(TL_BUIS_PATH) as f:
-        tl = yaml.safe_load(f)
-    lines = [(l['beat'], l['text']) for l in tl.get('lyrics', [])]
-    print(f"Using TL-Buis lyrics: {len(lines)} lines")
-else:
+lyric_sources = [
+    ('NulBytesVrij', NUL_BYTES_PATH),
+    ('TL-Buis',      TL_BUIS_PATH),
+]
+lines = None
+for name, path in lyric_sources:
+    if os.path.exists(path):
+        with open(path) as f:
+            tl = yaml.safe_load(f)
+        lines = [(l['beat'], l['text']) for l in tl.get('lyrics', [])]
+        print(f"Using lyrics: {name} ({len(lines)} lines)")
+        break
+
+if lines is None:
     # Fallback: karaoke English syllables from song_layers.yaml
     with open(LAYERS_PATH) as f:
         ly = yaml.safe_load(f)
