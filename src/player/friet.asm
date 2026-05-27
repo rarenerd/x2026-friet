@@ -146,20 +146,6 @@ irq:
     bne !nh+
     inc frame_hi
 !nh:
-    // After one full play-through + a few loops for good measure.
-    // frame_hi >= 60 = ~5 min. Song is ~74s so this is ~4 loops.
-    lda frame_hi
-    cmp #60
-    bcc !continue+
-    sei
-    ldx #$18
-!sidclr:
-    lda #0
-    sta $D400,x
-    dex
-    bpl !sidclr-
-    jmp $FCE2          // KERNAL cold start
-!continue:
     jmp $EA81
 
 maybe_show_lyric:
