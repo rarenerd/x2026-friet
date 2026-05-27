@@ -162,9 +162,21 @@ def build_drum_timeline(drum_events, total_frames):
         if kind not in DRUM_KIT: continue
         pitch, dur, ad, sr = DRUM_KIT[kind]
         f = ev['frame']
-        for i in range(dur):
-            if f + i < total_frames:
-                timeline[f + i] = (pitch, 0x81, ad, sr)
+        if kind == 'kick':
+            # Kick pitch-sweep: 2 frames triangle at high pitch (thump),
+            # then noise body (boom). Classic SID kick technique.
+            KICK_TRI_FRAMES = 2
+            KICK_TRI_PITCH = 20  # high-ish triangle for the "thump"
+            for i in range(min(KICK_TRI_FRAMES, dur)):
+                if f + i < total_frames:
+                    timeline[f + i] = (KICK_TRI_PITCH, 0x11, ad, sr)  # $11 = triangle + gate
+            for i in range(KICK_TRI_FRAMES, dur):
+                if f + i < total_frames:
+                    timeline[f + i] = (pitch, 0x81, ad, sr)  # $81 = noise + gate
+        else:
+            for i in range(dur):
+                if f + i < total_frames:
+                    timeline[f + i] = (pitch, 0x81, ad, sr)
         if f + dur < total_frames:
             timeline[f + dur] = (pitch, 0x80, ad, sr)
     # RLE
@@ -325,6 +337,21 @@ play_routine:
     jsr tick2
     jsr filter_env
     jsr apply_vibrato
+    jsr pwm_sweep
+    rts
+
+; PWM sweep on V1 bass — cycle pulse width continuously for a thick
+; chorus-like movement. Costs 3 bytes + 6 cycles per frame. The
+; classic Hubbard/Galway trick that separates pro from amateur SID.
+pwm_sweep:
+    clc
+    lda SID+2          ; V1 PW LO
+    adc #$80
+    sta SID+2
+    lda SID+3          ; V1 PW HI
+    adc #$01
+    and #$0F           ; keep in 0-F range
+    sta SID+3
     rts
 
 ; Add a small LFO to V2's base freq each frame so the vocal feels SUNG
