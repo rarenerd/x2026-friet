@@ -382,7 +382,7 @@ def main():
                 for out_b, _label in remap(s_b):
                     drum_events.append({
                         'kind':  kind,
-                        'frame': int(round(out_b * fbeat_groove)),
+                        'frame': grid_frame(out_b),
                     })
 
         # ---- T12 reverse-cymbal swells (intro AND section transitions) ----
@@ -391,7 +391,7 @@ def main():
                 for out_b, _label in remap(s_b):
                     fx_events.append({
                         'kind': 'crash',
-                        'frame': int(round(out_b * fbeat_groove)),
+                        'frame': grid_frame(out_b),
                     })
             # Reprise swells: a riser into each OUTPUT chorus segment so each
             # one (chorus1, chorus2, chorus3) hits with the same "drop" energy.
@@ -402,7 +402,7 @@ def main():
                 if riser_b < 0: continue
                 fx_events.append({
                     'kind': 'crash',
-                    'frame': int(round(riser_b * fbeat_groove)),
+                    'frame': grid_frame(riser_b),
                 })
             # Drop crash on the first beat of reprise choruses so chorus2
             # and chorus3 hit with an extra accent on top of the riser.
@@ -410,7 +410,7 @@ def main():
                 if label not in ('chorus2', 'chorus3'): continue
                 fx_events.append({
                     'kind': 'crash',
-                    'frame': int(round(out_s * fbeat_groove)),
+                    'frame': grid_frame(out_s),
                 })
             # Reprise energy push: fill the BREATHE bars before chorus2/3
             # with a snare roll (8th-note snares) so the reprises hit
@@ -421,7 +421,7 @@ def main():
                 for step in range(int(dur * 2)):
                     drum_events.append({
                         'kind': 'snare',
-                        'frame': int(round((out_s + step / 2.0) * fbeat_groove)),
+                        'frame': grid_frame(out_s + step / 2.0),
                     })
             # Chorus2/3 also get on-beat hats (= full 8th hat pattern
             # vs off-beat-only in verse/chorus1). Subtle density boost.
@@ -434,7 +434,7 @@ def main():
                     for off in (0, 1, 2, 3):  # on-beat hats (supplements off-beat)
                         drum_events.append({
                             'kind': 'hat',
-                            'frame': int(round((bar_start + off) * fbeat_groove)),
+                            'frame': grid_frame(bar_start + off),
                         })
 
         if MELODY_ONLY:
