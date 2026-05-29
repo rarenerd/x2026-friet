@@ -21,9 +21,11 @@ PAL_CLK = 985248.0
 PAL_HZ  = 50.0
 
 WF_TRI, WF_SAW, WF_PULSE, WF_NOISE = 0x10, 0x20, 0x40, 0x80
-# Bass: matched attack with vocal (8ms) so they breathe together.
-# Sustain $F (full) — PW 25% + pulse waveform provides timbral separation.
-V1_AD, V1_SR = 0x12, 0xF4
+# Bass: aggressive pluck. Attack $0 (2 ms, instant transient on every note),
+# decay $8 (~300 ms) down to sustain $6 (~40%) so each note really THWACKS
+# then drops to a lean body — driving and rave-y. Release $8 for a clean tail.
+# PW 25% + pulse waveform keeps timbral separation from the lead.
+V1_AD, V1_SR = 0x08, 0x68
 # Lead (triangle = vocal-ish tone): gentle 24 ms attack so legato pitch
 # changes don't click, full sustain, medium release for breathy phrase tails.
 V2_AD, V2_SR = 0x12, 0xF6
@@ -296,8 +298,9 @@ init_clr:
     sta SID+21          ; FC LO
     lda #$80
     sta SID+22          ; FC HI -- mid cutoff (so verses pass through)
-    lda #$62            ; resonance $6, V2 routed (bit 1) -- higher res for a
-                        ; more pronounced phaser-like sweep with the LFO wobble
+    lda #$82            ; resonance $8, V2 routed (bit 1) -- enough ring for a
+                        ; flangey sweep WITHOUT masking the note fundamentals
+                        ; ($A muddied the melody / ate notes)
     sta SID+23
     lda #$1F            ; LP mode + volume max
     sta SID+24
@@ -646,9 +649,10 @@ f2done:
 ; vib_hi is the sign-extended high byte so the 16-bit add carries correctly.
 {bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
 {bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
-; Filter LFO: 16-step triangle, ±4 on cutoff HI byte.
+; Filter LFO: 16-step triangle, ±10 on cutoff HI byte — a flangey/phasey
+; sweep that's audible but doesn't smear the melody (±16 was too wah-y).
 ; Shares ZP_VIB_IDX phase with the vibrato for a synchronised wobble.
-{bytes_to_asm('filt_lfo', [(v & 0xFF) for v in [0,1,2,3,4,3,2,1,0,-1,-2,-3,-4,-3,-2,-1]])}
+{bytes_to_asm('filt_lfo', [(v & 0xFF) for v in [0,3,5,8,10,8,5,3,0,-3,-5,-8,-10,-8,-5,-3]])}
 {bytes_to_asm('v0_data', v1_data)}
 {bytes_to_asm('v1_data', v2_data)}
 {bytes_to_asm('v2_data', v3_data)}

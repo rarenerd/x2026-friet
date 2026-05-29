@@ -157,7 +157,10 @@ def main():
     # same source range can appear in multiple output segments — the chorus
     # notes get played 3 times.
     SEGMENTS = [
-        # (src_start, src_end, label)
+        # (src_start, src_end, label) — the deFEEST hardcore edit: verse/pre/
+        # chorus once, then the 3x "Freed from desire" climax (chorus replayed
+        # three times, each with its own timbre; chorus3 octave-up). NOT the
+        # full source song — just the triple-chorus banger.
         (  0.0,  21.5, 'intro'),
         ( 21.5,  54.5, 'verse1'),
         ( 54.5,  88.0, 'prechorus1'),
@@ -166,7 +169,7 @@ def main():
         (149.5, 153.5, 'breathe1'),   # 4-beat instrumental gap (drums + hook bass)
         ( 88.0, 117.5, 'chorus2'),    # reprise of chorus 1
         (149.5, 153.5, 'breathe2'),   # 4-beat gap
-        ( 88.0, 117.5, 'chorus3'),    # reprise of chorus 1
+        ( 88.0, 117.5, 'chorus3'),    # reprise of chorus 1 (octave-up climax)
     ]
     out_offsets = []
     cur = 0.0
@@ -247,26 +250,66 @@ def main():
             return int(round(beat * fbeat_lead))
 
         # Vocal (V2): T7 verbatim + per-section waveform.
+        # Each chorus reprise gets a DISTINCT timbre so the same melody line
+        # doesn't wear thin when it returns: chorus1 = saw/hoover,
+        # chorus2 = pulse, chorus3 = tri+pulse (brightest, climactic final).
         SECTION_LEAD_CTRL = {
             'intro':           0x10,
             'verse1':          0x10,
             'prechorus1':      0x10,
-            'chorus1':         0x20,
+            'chorus1':         0x20,  # saw -> hoover
             'postchorus_nana': 0x20,
             'breathe1':        0x20,
-            'chorus2':         0x20,
-            'breathe2':        0x20,
-            'chorus3':         0x40,
+            'chorus2':         0x40,  # pulse -- distinct reprise 2 (clean, loud)
+            'breathe2':        0x40,
+            'chorus3':         0x20,  # saw -- fat & clear for the climactic final
+                                      # (was $50 tri+pulse: AND-combine = thin,
+                                      # dropped notes — the "missing notes")
+        }
+        # Per-section lead transpose (semitones). Octave-up the FINAL chorus
+        # so the last drop peaks above all the earlier choruses = climactic
+        # lift, and the thrice-played hook stops wearing thin.
+        SECTION_LEAD_TRANSPOSE = {
+            'chorus3': 12,
         }
         for s_b, d_b, pitch in layers['layers'].get('vocal', []):
             d = max(0.2, d_b)
             for out_b, label in remap(s_b):
                 lead_events.append({
                     'frame': grid_frame(out_b),
-                    'note':  int(pitch),
+                    'note':  int(pitch) + SECTION_LEAD_TRANSPOSE.get(label, 0),
                     'dur_frames': max(4, int(round(d * fbeat_lead))),
                     'ctrl':  SECTION_LEAD_CTRL.get(label, 0x10),
                 })
+
+        # ---- Legato-fill the lead -------------------------------------------
+        # The source durations are short transcribed syllables, leaving
+        # 0.2-0.7s of silence between almost every note — the melody blipped
+        # instead of singing ("silent bits"). Extend each note to the NEXT
+        # onset so the line is continuous; retrigger (synth) still re-attacks
+        # every note, so it stays accented and pops. Genuine section drops
+        # (gap > SECTION_REST) are preserved: the note rings out then rests.
+        lead_events.sort(key=lambda e: e['frame'])
+        SECTION_REST = int(round(beats_to_frames(3.5, play_bpm)))  # only the chorus
+                                                                   # DROPS exceed this;
+                                                                   # all breaths fill
+        RING_OUT     = int(round(beats_to_frames(1.0, play_bpm)))  # ring before a rest
+        for i, ev in enumerate(lead_events):
+            if i + 1 >= len(lead_events):
+                continue
+            gap = lead_events[i + 1]['frame'] - ev['frame']
+            if gap <= 0:
+                continue
+            if gap <= SECTION_REST:
+                # Legato, but leave ~2 frames of gate-off before the next onset.
+                # Butting notes frame-to-frame makes the retrigger toggle gate
+                # off→on within one frame, which the SID envelope can't
+                # hard-restart cleanly -> glitched / "barely there" notes.
+                # The 2-frame (~40ms) gate-off is inaudible but lets each note
+                # re-attack cleanly.
+                ev['dur_frames'] = max(1, gap - 2)
+            else:
+                ev['dur_frames'] = max(ev['dur_frames'], RING_OUT)  # ring, then rest
 
         # ---- V1: section-authentic, verbatim per source layer.
         # Per the score analysis + voice_essence.md:
@@ -374,6 +417,8 @@ def main():
             # Drums (V3): T13 verbatim, section-filtered. The source
             # drummer's pattern is coherent with the vocal/bass timing
             # because they were composed together. No synthetic overlay.
+            # Drums keep DRIVING through the breaks (relentless > silent) —
+            # the snare roll below stacks ON TOP for the build.
             for s_b, _d_b, pitch in layers['layers'].get('drums', []):
                 kind = GM_DRUMS.get(int(pitch))
                 if not kind: continue
@@ -412,16 +457,18 @@ def main():
                     'kind': 'crash',
                     'frame': grid_frame(out_s),
                 })
-            # Reprise energy push: fill the BREATHE bars before chorus2/3
-            # with a snare roll (8th-note snares) so the reprises hit
-            # as proper "second/third drops" instead of just repeats.
+            # Reprise energy push: the BREATHE bars before chorus2/3 get a
+            # full-length 16th-note snare roll stacked on top of the still-
+            # driving kit — a relentless build into the drop (no dead air;
+            # silence read as less epic). Then chorus2/3 slam in with a fresh
+            # timbre + drop crash.
             for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
                 if label not in ('breathe1', 'breathe2'): continue
                 dur = src_e - src_s
-                for step in range(int(dur * 2)):
+                for step in range(int(dur * 4)):  # full 16th-note roll, no gap
                     drum_events.append({
                         'kind': 'snare',
-                        'frame': grid_frame(out_s + step / 2.0),
+                        'frame': grid_frame(out_s + step / 4.0),
                     })
             # Chorus2/3 also get on-beat hats (= full 8th hat pattern
             # vs off-beat-only in verse/chorus1). Subtle density boost.
@@ -549,8 +596,14 @@ def main():
             # was. Bass + drums (above) accompany the real tune.
         cur_bar += bars
 
-    # Final composition
-    end_frame = int(round(total_bars * fpbar)) + 50
+    # Final composition.
+    # End at the ACTUAL last event plus a short tail (ring-out + clean loop
+    # point), NOT the synthetic total_bars length. The old formula padded
+    # every voice with ~2 min of rests before the loop sentinel = dead air.
+    _ends  = [e['frame'] + e.get('dur_frames', 6) for e in bass_events + lead_events]
+    _ends += [e['frame'] + 12 for e in drum_events + fx_events]  # drum ring-out
+    last_event = max(_ends) if _ends else 0
+    end_frame = last_event + int(round(beats_to_frames(2, play_bpm)))  # ~½-bar tail
     composition = {
         'title':       'Friet From Desire — Happy Hardcore Remix',
         'derived_from': spec.get('source_midi', 'unknown'),
