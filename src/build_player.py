@@ -68,7 +68,8 @@ def remap(src_beat):
         if s <= src_beat < e:
             yield out_s + (src_beat - s)
 
-# ---- Lyrics source: pref order = NulBytesVrij > TL-Buis > karaoke ----
+# ---- Lyrics source: pref order = FrietMetDesire > NulBytesVrij > TL-Buis > karaoke ----
+FRIET_PATH      = os.path.join(BASE, 'docs', 'friet_met_desire_lyrics.yaml')
 NUL_BYTES_PATH = os.path.join(BASE, 'docs', 'nul_bytes_vrij_lyrics.yaml')
 TL_BUIS_PATH    = os.path.join(BASE, 'docs', 'tl_buis_lyrics.yaml')
 
@@ -78,8 +79,9 @@ FAST_BPM = 175
 FRAMES_PER_BEAT = 50.0 * 60 / FAST_BPM   # ≈ 17.14 fr/beat at 175 BPM
 
 lyric_sources = [
-    ('NulBytesVrij', NUL_BYTES_PATH),
-    ('TL-Buis',      TL_BUIS_PATH),
+    ('FrietMetDesire', FRIET_PATH),
+    ('NulBytesVrij',   NUL_BYTES_PATH),
+    ('TL-Buis',        TL_BUIS_PATH),
 ]
 lines = None
 for name, path in lyric_sources:
@@ -172,8 +174,8 @@ def to_screen(s, width=40):
             out.append(0x20)
         elif 0x30 <= o <= 0x39:             # 0-9
             out.append(o)
-        elif o in (44, 46, 33, 39, 47, 45): # , . ! ' / -
-            out.append(o)
+        elif o in (44, 46, 33, 39, 47, 45, 38): # , . ! ' / - &
+            out.append(o)                        # ($20-$3F: screen code == ASCII)
         else:
             out.append(0x20)
     return bytes(out)
@@ -182,7 +184,7 @@ def to_screen(s, width=40):
 with open(os.path.join(PLAYER_DIR, 'banner_top.bin'), 'wb') as f:
     f.write(to_screen("Friet met Desire -- deFEEST at X2026"))
 with open(os.path.join(PLAYER_DIR, 'banner_bottom.bin'), 'wb') as f:
-    f.write(to_screen("Kloot & Anus / deFEEST / met MAYO"))
+    f.write(to_screen("Kloot & Anus / deFEEST / met TL-Buis"))
 
 # Lyric table — sequence of (frame_lo, frame_hi, len, screen_bytes...)
 buf = bytearray()

@@ -1,0 +1,70 @@
+# Friet met Desire — deFEEST X2026
+# Frituur-meets-demoscene parodie op Gala's "Freed from Desire". Elke regel
+# valt op dezelfde beat als de T7-melodie. Thema: de crew (trots, niet arm),
+# de sporthal-compo, soldeerflux & lauwe energiedrank, MAYO (brand voice),
+# C64/SID/kunst. Geen byte-armoede — er zijn bytes zat vrij. ;-)
+# LET OP bij handmatig typen: alleen a-z A-Z 0-9 spatie , . ! ' / - & renderen;
+# géén é/—/etc (worden spaties). Regels < 40 kolommen (anders wrap).
+
+lyrics:
+  # Intro
+  - {beat: 0.0,  text: "Friet met Desire"}
+  - {beat: 4.0,  text: "deFEEST - X2026"}
+  - {beat: 8.0,  text: "De hapkar staat buiten"}
+
+  # Couplet 1 — "My love has got no money..." -> onze crew is NIET arm
+  - {beat: 21.5, text: "Mijn crew die heeft geen shaders"}
+  - {beat: 25.5, text: "maar wel een rasterrol"}
+  - {beat: 29.5, text: "Mijn crew die heeft geen sponsors"}
+  - {beat: 33.5, text: "maar wel een bak kabaal"}
+  - {beat: 37.5, text: "Twintig man, een verlengsnoer"}
+  - {beat: 41.5, text: "nog een laatste fix"}
+  - {beat: 45.5, text: "vlak voor de compo ingestuurd"}
+  - {beat: 49.5, text: "en de frituur draait door"}
+
+  # Pre-refrein — "Want more and more, people just want more and more"
+  - {beat: 54.5,  text: "Meer en meer"}
+  - {beat: 58.5,  text: "iedereen wil meer en meer"}
+  - {beat: 62.5,  text: "frames en effect"}
+  - {beat: 66.5,  text: "tot de deadline implodeert"}
+  - {beat: 70.5,  text: "Meer en meer"}
+  - {beat: 74.5,  text: "iedereen wil meer en meer"}
+  - {beat: 78.5,  text: "bier en geweld"}
+  - {beat: 82.5,  text: "uit een speaker veel te schel"}
+
+  # Refrein 1 — "Freed from desire, mind and senses purified"
+  - {beat: 88.0,  text: "Friet met Desire"}
+  - {beat: 92.0,  text: "maag en zinnen gefrituurd"}
+  - {beat: 96.0,  text: "Friet met Desire"}
+  - {beat: 100.0, text: "MAYO maakt het af"}
+  - {beat: 104.0, text: "Friet met Desire"}
+  - {beat: 108.0, text: "knapperig en goudgeel"}
+  - {beat: 112.0, text: "Friet met Desire"}
+
+  # Na-na — de sporthal, de soldeerflux, de kunst
+  - {beat: 117.5, text: "De frituur ruikt naar soldeerflux"}
+  - {beat: 121.5, text: "en naar lauw energiedrank"}
+  - {beat: 125.5, text: "De sporthal staat te feesten"}
+  - {beat: 129.5, text: "op C64 en SID"}
+  - {beat: 133.5, text: "De frituur ruikt naar soldeerflux"}
+  - {beat: 137.5, text: "en goedkope energie"}
+  - {beat: 141.5, text: "Twintig man, een rasterrol"}
+  - {beat: 145.5, text: "dit is kunst, dit is deFEEST"}
+
+  # Refrein 2
+  - {beat: 153.5, text: "Friet met Desire"}
+  - {beat: 157.5, text: "maag en zinnen gefrituurd"}
+  - {beat: 161.5, text: "Friet met Desire"}
+  - {beat: 165.5, text: "MAYO maakt het af"}
+  - {beat: 169.5, text: "Friet met Desire"}
+  - {beat: 173.5, text: "knapperig en goudgeel"}
+  - {beat: 177.5, text: "Friet met Desire"}
+
+  # Refrein 3 — climax
+  - {beat: 187.0, text: "Friet met Desire"}
+  - {beat: 191.0, text: "maag en zinnen gefrituurd"}
+  - {beat: 195.0, text: "Friet met Desire"}
+  - {beat: 199.0, text: "MAYO maakt het af"}
+  - {beat: 203.0, text: "Friet met Desire"}
+  - {beat: 207.0, text: "friet & MAYO - deFEEST"}
+  - {beat: 211.0, text: "de sporthal gaat plat"}
