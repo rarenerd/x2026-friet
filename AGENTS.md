@@ -101,6 +101,28 @@ we know T7 is genuinely the vocal melody and not a counter-line.
    bassline in T5 doesn't enter until beat 120 (~60s). For short
    previews this means early seconds are sparse. That's the actual song
    structure — don't paper over it with synthetic backing.
+9. **Every voice must share ONE beat→frame grid.** Lead/bass/organ/hook
+   use `grid_frame()` (an integer-accumulated Bresenham 16th grid, zero
+   drift). The drums once used `round(beat * fbeat)` instead — ~30% of
+   source hits sat off-grid and flammed against the grid-snapped lead.
+   Route *everything* through `grid_frame()`.
+10. **The lead is legato-filled, and the ~2-frame gate-off gap is
+    load-bearing.** Each note extends to the next onset *minus 2 frames*
+    (`dur = gap - 2`). Without the fill the melody blips with silent
+    gaps; without the 2-frame gate-off the per-note retrigger toggles
+    gate off→on within one frame, the envelope can't hard-restart, and
+    notes glitch / barely sound. Keep both.
+11. **Don't combine waveforms on the lead.** `$50` (tri+pulse) AND-
+    combines to a thin, partly-cancelled tone that *drops notes* — this
+    was the chorus-3 "missing notes". Use a single waveform ($10/$20/$40).
+12. **Filter resonance > ~$9 masks the note fundamental** → muddy melody.
+    The flangey lead sweep wants res $8 + cutoff-LFO ±10 (`filt_lfo`).
+    $A / ±16 ate notes.
+13. **`length_frames` = last actual event (+ tail), NOT `total_bars *
+    fpbar`.** The synthetic length padded every voice with ~2 min of
+    rests before the loop sentinel = dead air. And in `render-preview.sh`
+    never name a var `SECONDS` (bash special var — it silently broke the
+    `-t` length and the `afade`-out).
 
 ## Where to start
 
