@@ -3,6 +3,34 @@
 All notable changes to **Friet met Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-05-30 — The "new standard": melody / sync / sound overhaul
+
+Signed off by Anus as "the new standard — it rocks on all levels".
+Full engine writeup in `docs/sound_engine.md`; new pitfalls 9–13 in
+`AGENTS.md`; companion SID-craft notes in the demo repo
+(`outline26-claude-c64` PR #39).
+
+- **Frame-grid sync.** Drums + all FX moved onto the lead's zero-drift
+  Bresenham 16th grid (`grid_frame`). ~30% of source drum hits had been on
+  `round(beat * fbeat)` and flammed against the grid-snapped lead. The groove
+  now locks.
+- **Lead retrigger + legato-fill.** Every note re-articulates (no more silent
+  legato glide that floated off the beat); each note extends to the next onset
+  *minus a 2-frame gate-off* so the envelope hard-restarts cleanly. Killed 116
+  ~80 ms blips and 19 of 21 silent gaps — the melody sings, continuous *and*
+  accented.
+- **Octave-up final chorus** (`chorus3` +12) for a climactic lift; `chorus3`
+  back to fat saw (`$50` tri+pulse AND-combined to a thin, note-dropping tone —
+  the "missing notes").
+- **Aggressive plucky bass** (V1 attack `$0` → decay to ~40 % sustain).
+- **Flange** on the lead: resonant filter sweep, res `$8` + cutoff-LFO `±10`
+  (res `$A` / `±16` masked the fundamentals = muddy).
+- **No more dead air.** `length_frames` tracks the actual last event (+ tail),
+  not the synthetic 92-bar length that padded ~2 min of rests before the loop.
+- **Smooth ending.** `render-preview.sh` gained an `afade`-out — and fixed the
+  `SECONDS` bash-special-variable clash that had silently broken `-t` and the
+  fade on *every* render.
+
 ## 2026-05-27 — ADHD lyrics: "Nul bytes vrij" constraint-war lyrics
 
 - **ADHD divergence loop** (5 frames × 6 ideas → 30 → score/cluster → top 3
