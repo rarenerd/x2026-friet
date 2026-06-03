@@ -14,6 +14,25 @@
 - **Length:** **1:14** release build (175 BPM); **1:48** song-faithful
   workstage at 120 BPM; loops on reaching the end. See "Structure" below.
 
+## Deliverables — wat we inleveren op X2026
+
+Twee aparte inzendingen, twee aparte bestanden:
+
+| # | Inzending | Bestand | Bouwen | Inhoud |
+|---|-----------|---------|--------|--------|
+| **A** | **Muziek-compo** | `out/Friet_met_Desire-deFEEST.sid` | `make compo` | Pure PSID v2 — **géén animaties** (0 VIC-register-writes; init+play raken alleen de SID-chip). |
+| **B** | **Lyrics-floppy** | `out/friet.d64` | `make disk` | `.d64` met de standalone player: lyric-ticker + kick-strobe + glijdende banners. Laden: `LOAD"FRIET MET DESIRE",8,1` → `RUN`. |
+
+Beide bouwen in één keer: `make compo disk`.
+
+Verificatie (headless, geen scherm nodig):
+- SID schoon? `python3 -c "..."` telt 0 `8D xx D0` (VIC-writes) in de body.
+- Floppy draait? `x64sc -autostart out/friet.d64` (of headless via Xvfb +
+  `-exitscreenshot`). Geverifieerd: banners, lyrics en `&` renderen.
+
+> De muziek-compo wil puur geluid; de animaties/lyrics zitten **alleen** in
+> de `.prg`/`.d64`, nooit in de `.sid`. Niet vermengen bij het inleveren.
+
 ## Companion demo
 
 This SID will sound in deFEEST's X2026 demo, *"Kloten met de

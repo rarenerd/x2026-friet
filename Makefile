@@ -8,7 +8,7 @@
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet lab compo \
+        clean-pipeline melody-only friet lab compo disk \
         preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
@@ -31,6 +31,7 @@ MELODY_MP3 := $(OUT_DIR)/friet_melody_only.mp3
 FRIET_SID  := $(OUT_DIR)/friet.sid
 FRIET_MP3  := $(OUT_DIR)/friet.mp3
 FRIET_PRG  := $(OUT_DIR)/friet.prg
+FRIET_D64  := $(OUT_DIR)/friet.d64
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
@@ -118,6 +119,16 @@ $(FRIET_PRG): $(SRC_DIR)/build_player.py $(SRC_DIR)/player/friet.asm \
               $(FRIET_SID) docs/friet_met_desire_lyrics.yaml \
               docs/nul_bytes_vrij_lyrics.yaml docs/tl_buis_lyrics.yaml
 	$(PYTHON) $(SRC_DIR)/build_player.py
+
+# Floppy deliverable — a .d64 holding the standalone lyric-ticker player
+# (kick-strobe + lyrics). This is the WITH-LYRICS version for the disk; the
+# music-compo entry is the animation-free $(COMPO_SID) instead.
+# Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
+disk: $(FRIET_D64)
+$(FRIET_D64): $(FRIET_PRG)
+	c1541 -format "friet met desire,fd" d64 $@ -write $< "friet met desire" >/dev/null
+	@echo "Floppy: $@"
+	@c1541 $@ -dir
 
 # --- previews ----
 preview: preview-clean preview-melody preview-friet
