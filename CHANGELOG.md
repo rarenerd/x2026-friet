@@ -3,6 +3,33 @@
 All notable changes to **Friet met Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-06-03 — 8580/PAL target, submission polish, two deliverables
+
+- **Committed to MOS 8580 + PAL.** PSID flags `0x0000 → 0x0024` (PAL clock +
+  8580 model). Filter retuned for the 8580's brighter/near-linear cutoff curve
+  and stronger resonance: res `$8→$7`, cutoff init/target `$80→$60`, per-note
+  open `$E0→$C0`, filter LFO `±10→±6`. `render-preview.sh` now forces 8580+PAL
+  (`-sidenginemodel 257 -pal`) — VICE's default is 6581, so every earlier
+  preview was the wrong chip. (Determined + adversarially verified via a
+  research workflow.)
+- **Lyrics rewrite.** New `docs/friet_met_desire_lyrics.yaml` (primary ticker):
+  frituur-meets-demoscene parody of FFD — crew is proud not poor, "Meer en
+  meer", soldeerflux + lauwe energiedrank, the compo deadline, sporthal.
+  Replaces the "nul bytes vrij" theme. `to_screen()` now renders `&`.
+- **Two submission deliverables.**
+  - Music compo (pure audio): `out/Friet_met_Desire-deFEEST.sid` +
+    `out/friet_compo.prg` (new static-credit player, no ticker/strobe) +
+    `out/friet_compo.d64` (`make compo`).
+  - Lyrics floppy (bonus): `out/friet.d64` — the ticker/strobe player
+    (`make disk`).
+- **Shareable master:** `make master` → 192 kbps, +6.8 dB make-up gain,
+  rendered on 8580.
+- **Scene files:** `FRIET.NFO` and `docs/hvsc_stub.md` (Songlengths + STIL).
+- Credits aligned to "Kloot, Anus & Augurk / deFEEST" (banner = SID author);
+  pre-submission audit (28-agent workflow) cleared sync (91% of lyric lines
+  within 30 ms — the loose feel is the deliberate 8th-grid prechorus), audio
+  (clean, no clipping), and PSID-header correctness.
+
 ## 2026-05-30 — The "new standard": melody / sync / sound overhaul
 
 Signed off by Anus as "the new standard — it rocks on all levels".

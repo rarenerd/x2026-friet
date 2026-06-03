@@ -207,21 +207,8 @@ def main():
         fbeat_groove = beats_to_frames(1, play_bpm_groove)
 
         # ---- Vocal (V2 lead) -- T7 verbatim, remapped per segment ----
-        # V2 timbre per section: triangle in verses (vocal-like), sawtooth in
-        # choruses/na-na (hoover with filter envelope), pulse in the
-        # final chorus 3 (climactic). The filter envelope in synth.py opens
-        # on every note-on and closes over the note's life — the "wow".
-        SECTION_LEAD_CTRL = {
-            'intro':           0x10,  # triangle
-            'verse1':          0x10,
-            'prechorus1':      0x10,
-            'chorus1':         0x20,  # saw -> hoover with filter env
-            'postchorus_nana': 0x20,
-            'breathe1':        0x20,
-            'chorus2':         0x20,
-            'breathe2':        0x20,
-            'chorus3':         0x40,  # pulse -- different timbre for final reprise
-        }
+        # (The per-section timbre/transpose tables live just below, after the
+        # master frame grid — that's the effective definition.)
         # ---- Master frame grid (Bresenham) --------------------------------
         # 175 BPM = 120/7 frames per beat = 30/7 frames per 16th.
         # Independent int(round(beat * fbeat)) per voice causes ±0.5

@@ -384,7 +384,7 @@ vib_active:
 ; Modulate filter cutoff each frame: decay sweep + LFO wobble.
 ; The LFO shares the free-running ZP_VIB_IDX phase with the vibrato,
 ; adding a subtle phaser-like wobble to the filter cutoff.
-; The wobble is small (±4 on HI byte, ~±25 Hz at the filter's range)
+; The wobble is small (±6 on HI byte; gentle on the 8580's bright curve)
 ; so it shimmers rather than swoops.
 filter_env:
     lda ZP_FILT_CUR

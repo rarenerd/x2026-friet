@@ -8,7 +8,7 @@
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet lab compo disk \
+        clean-pipeline melody-only friet lab compo disk master \
         preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
@@ -32,6 +32,8 @@ FRIET_SID  := $(OUT_DIR)/friet.sid
 FRIET_MP3  := $(OUT_DIR)/friet.mp3
 FRIET_PRG  := $(OUT_DIR)/friet.prg
 FRIET_D64  := $(OUT_DIR)/friet.d64
+FRIET_COMPO_PRG := $(OUT_DIR)/friet_compo.prg
+COMPO_D64  := $(OUT_DIR)/friet_compo.d64
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
@@ -94,14 +96,22 @@ preview-friet: $(FRIET_MP3)
 $(FRIET_MP3): $(FRIET_SID)
 	$(TOOLS_DIR)/render-preview.sh $< $@ $(PREVIEW_SECONDS)
 
-# Competition deliverable — clean PSID, no .prg, no ticker.
-# Identical audio to friet.sid but as a separate tracked file for
-# compo organisers. HVSC-ready metadata inside.
+# Music-compo deliverables — PURE AUDIO, no lyrics, no strobe:
+#   1. the clean PSID (HVSC-ready), and
+#   2. a .d64 holding the static-credit pure-audio player ($(FRIET_COMPO_PRG),
+#      built by build_player.py) PLUS the raw SID.
+# (The lyric/visual version is the separate $(FRIET_D64) — see `make disk`.)
 COMPO_SID := $(OUT_DIR)/Friet_met_Desire-deFEEST.sid
-compo: $(COMPO_SID)
+compo: $(COMPO_SID) $(COMPO_D64)
 $(COMPO_SID): $(FRIET_SID)
 	cp $< $@
 	@echo "Competition SID: $@"
+$(COMPO_D64): $(FRIET_PRG) $(COMPO_SID)
+	c1541 -format "friet met desire,fd" d64 $@ \
+	  -write $(FRIET_COMPO_PRG) "friet met desire" \
+	  -write $(COMPO_SID) "friet.sid" >/dev/null
+	@echo "Music-compo disk: $@"
+	@c1541 $@ -dir
 
 # Experimental sandbox — short loop of a fragment + hand-written
 # beat/bass pattern. Tweak src/lab.py SETTINGS and re-run `make lab`.
@@ -129,6 +139,15 @@ $(FRIET_D64): $(FRIET_PRG)
 	c1541 -format "friet met desire,fd" d64 $@ -write $< "friet met desire" >/dev/null
 	@echo "Floppy: $@"
 	@c1541 $@ -dir
+
+# Shareable audio master — 192 kbps, +6.8 dB make-up gain (verified 0 clips),
+# smooth 10s fade, rendered on 8580. The .sid/.prg is the actual entry; this
+# MP3 is only for sharing/preview (a SID plays at its own chip volume on a PA).
+master: $(FRIET_SID)
+	FAST=1 $(PYTHON) $(SRC_DIR)/compose.py >/dev/null
+	SECS=$$($(PYTHON) -c "import yaml,math;print(math.ceil(yaml.safe_load(open('$(COMP)'))['length_frames']/50))")
+	$(TOOLS_DIR)/render-preview.sh $(FRIET_SID) $(FRIET_MP3) $$SECS 10 192k 6.8
+	$(PYTHON) $(SRC_DIR)/compose.py >/dev/null
 
 # --- previews ----
 preview: preview-clean preview-melody preview-friet

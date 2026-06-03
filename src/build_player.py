@@ -184,7 +184,7 @@ def to_screen(s, width=40):
 with open(os.path.join(PLAYER_DIR, 'banner_top.bin'), 'wb') as f:
     f.write(to_screen("Friet met Desire -- deFEEST at X2026"))
 with open(os.path.join(PLAYER_DIR, 'banner_bottom.bin'), 'wb') as f:
-    f.write(to_screen("Kloot & Anus / deFEEST / met TL-Buis"))
+    f.write(to_screen("Kloot, Anus & Augurk / deFEEST"))
 
 # Lyric table — sequence of (frame_lo, frame_hi, len, screen_bytes...)
 buf = bytearray()
@@ -209,3 +209,31 @@ if r.returncode != 0:
     sys.exit(1)
 size = os.path.getsize(OUT_PRG)
 print(f"Wrote {OUT_PRG} ({size} bytes)")
+
+# ---- 4. Pure-audio compo player --------------------------------------
+# The X2026 music-compo entry: same SID, but NO lyric ticker / strobe —
+# just a static centred credit screen. (The lyric/visual version is
+# OUT_PRG / friet.d64.)
+def to_screen_line(s, width=40):
+    s = s.strip()[:width]
+    pad = (width - len(s)) // 2
+    return to_screen(' ' * pad + s + ' ' * (width - len(s) - pad), width)
+
+COMPO_ASM = os.path.join(PLAYER_DIR, 'friet_compo.asm')
+COMPO_PRG = os.path.join(BASE, 'out', 'friet_compo.prg')
+for fn, text in [
+    ('compo_title.bin',  'Friet met Desire'),
+    ('compo_author.bin', 'Kloot, Anus & Augurk / deFEEST'),
+    ('compo_info.bin',   'MOS 8580 . PAL . X2026'),
+]:
+    with open(os.path.join(PLAYER_DIR, fn), 'wb') as f:
+        f.write(to_screen_line(text))
+rc = subprocess.run(
+    ['java', '-jar', KICKASS_JAR, COMPO_ASM, '-o', COMPO_PRG],
+    capture_output=True, text=True,
+)
+print(rc.stdout)
+if rc.returncode != 0:
+    print(rc.stderr)
+    sys.exit(1)
+print(f"Wrote {COMPO_PRG} ({os.path.getsize(COMPO_PRG)} bytes)")

@@ -18,20 +18,27 @@
 
 Twee aparte inzendingen, twee aparte bestanden:
 
-| # | Inzending | Bestand | Bouwen | Inhoud |
-|---|-----------|---------|--------|--------|
-| **A** | **Muziek-compo** | `out/Friet_met_Desire-deFEEST.sid` | `make compo` | Pure PSID v2 — **géén animaties** (0 VIC-register-writes; init+play raken alleen de SID-chip). |
-| **B** | **Lyrics-floppy** | `out/friet.d64` | `make disk` | `.d64` met de standalone player: lyric-ticker + kick-strobe + glijdende banners. Laden: `LOAD"FRIET MET DESIRE",8,1` → `RUN`. |
+Twee inzendingen — **muziek-compo = puur geluid**, de lyrics/visuals zijn een
+aparte productie. Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:14**.
 
-Beide bouwen in één keer: `make compo disk`.
+| # | Inzending | Bestand(en) | Bouwen | Inhoud |
+|---|-----------|-------------|--------|--------|
+| **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + een draaibare player met **statisch credit-scherm** — géén ticker, géén strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
+| **B** | **Lyrics-floppy** (bonus) | `out/friet.d64` | `make disk` | `.d64` met de player mét lyric-ticker + kick-strobe + glijdende banners. |
 
-Verificatie (headless, geen scherm nodig):
-- SID schoon? `python3 -c "..."` telt 0 `8D xx D0` (VIC-writes) in de body.
-- Floppy draait? `x64sc -autostart out/friet.d64` (of headless via Xvfb +
-  `-exitscreenshot`). Geverifieerd: banners, lyrics en `&` renderen.
+Laden (beide disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
+Shareable audio: `make master` → `out/friet.mp3` (192 kbps, +6.8 dB, 8580).
+Alles bouwen: `make compo disk master`.
 
-> De muziek-compo wil puur geluid; de animaties/lyrics zitten **alleen** in
-> de `.prg`/`.d64`, nooit in de `.sid`. Niet vermengen bij het inleveren.
+Scene-release files: `FRIET.NFO` (credits/inhoud), `docs/hvsc_stub.md`
+(Songlengths + STIL, klaar voor HVSC).
+
+Verificatie (headless): de muziek-compo-SID telt **0** `8D xx D0` VIC-writes
+(puur audio); de pure-audio player en de lyrics-player zijn beide live in
+VICE op 8580 bevestigd (`x64sc -sidenginemodel 257 -pal -autostart …`).
+
+> De muziek-compo wil puur geluid; ticker/strobe zitten **alleen** in
+> `friet.prg`/`friet.d64`, nooit in de compo-`.sid`/`friet_compo.prg`.
 
 ## Companion demo
 

@@ -1,0 +1,49 @@
+  ____________________________________________________________________
+
+        F R I E T   M E T   D E S I R E        deFEEST  *  X2026
+  ____________________________________________________________________
+
+
+     a happy-hardcore SID cover of Gala's "Freed from Desire" (1996)
+                  released at the X2026 demoparty, 2026
+
+
+  ....................................................................
+
+     code & sound : Kloot/deFEEST   (Claude)
+                    Anus/deFEEST    (annejan)
+                    Augurk/deFEEST  (Big Pickle)
+     brand voice  : MAYO
+     chip         : MOS 8580  *  PAL  *  PSID v2 (flags $0024)
+     length       : 1:14  (175 BPM, loops)
+
+  ....................................................................
+
+     CONTENTS
+
+       Music compo (pure audio, no visuals):
+         Friet_met_Desire-deFEEST.sid   the tune, HVSC-ready
+         friet_compo.prg / friet_compo.d64
+                                        static-screen player
+           LOAD"FRIET MET DESIRE",8,1  :  RUN
+
+       Bonus disk (with synced lyric ticker + beat-strobe):
+         friet.prg / friet.d64
+           LOAD"FRIET MET DESIRE",8,1  :  RUN
+
+  ....................................................................
+
+     Built reproducibly from source:  make compo disk master
+     Source + docs:  https://github.com/annejan/friet-met-desire
+     Companion demo: https://github.com/annejan/outline26-claude-c64
+
+     "Freed from Desire" (c) Gala. This is a fan/scene cover for a
+     non-commercial demoparty compo; all rights to the original song
+     remain with their owners.
+
+     contact:  brouwer@annejan.com
+
+  ____________________________________________________________________
+
+                 nul bytes vrij?  nee. friet zat vrij.
+  ____________________________________________________________________

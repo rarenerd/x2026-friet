@@ -8,6 +8,8 @@ SID="${1:?sid file required}"
 MP3="${2:?output mp3 path required}"
 DUR="${3:-60}"          # render length in seconds
 FADE="${4:-4}"          # fade-out length (s) for a smooth ending; 0 disables
+BR="${5:-64k}"          # MP3 bitrate (64k preview / 192k master)
+GAINDB="${6:-0}"        # make-up gain in dB (0 = none; 6.8 = compo master)
 # NB: do NOT name these SECONDS — that's a bash special variable (elapsed time
 # since assignment), so reading it after the sleep below returns the wrong
 # value and the fade/-t silently break.
@@ -26,10 +28,13 @@ kill -TERM "$RPID" 2>/dev/null || true
 wait 2>/dev/null || true
 
 # Decode raw PCM (skip 44-byte WAV header) and re-encode as MP3.
-# afade=out smooths the ending instead of a hard cut into silence/loop.
-AF=""
+# Filter chain: optional make-up gain (volume) then afade-out (smooth ending).
+FILT=""
+[ "$GAINDB" != "0" ] && FILT="volume=${GAINDB}dB"
 if [ "$FADE" -gt 0 ] && [ "$DUR" -gt "$FADE" ]; then
-    AF="-af afade=t=out:st=$(( DUR - FADE )):d=${FADE}"
+    FILT="${FILT:+$FILT,}afade=t=out:st=$(( DUR - FADE )):d=${FADE}"
 fi
-ffmpeg -y -f s16le -ar 48000 -ac 1 -i <(tail -c +45 "$WAV") -t "$DUR" $AF "$MP3" 2>&1 | tail -3
-echo "wrote $MP3 ($DUR s, fade ${FADE}s)"
+AF=""
+[ -n "$FILT" ] && AF="-af $FILT"
+ffmpeg -y -f s16le -ar 48000 -ac 1 -i <(tail -c +45 "$WAV") -t "$DUR" $AF -b:a "$BR" "$MP3" 2>&1 | tail -3
+echo "wrote $MP3 ($DUR s, fade ${FADE}s, ${BR}, +${GAINDB}dB)"
