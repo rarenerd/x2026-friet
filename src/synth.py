@@ -296,18 +296,20 @@ init_clr:
     ; The decay is gentle so the triangle vocal in verses still cuts through.
     lda #$00
     sta SID+21          ; FC LO
-    lda #$80
-    sta SID+22          ; FC HI -- mid cutoff (so verses pass through)
-    lda #$82            ; resonance $8, V2 routed (bit 1) -- enough ring for a
-                        ; flangey sweep WITHOUT masking the note fundamentals
-                        ; ($A muddied the melody / ate notes)
+    lda #$60
+    sta SID+22          ; FC HI -- mid cutoff ($80->$60 for the 8580's brighter,
+                        ; near-linear curve; keeps the warm mid-LP body)
+    lda #$72            ; resonance $7, V2 routed (bit 1) -- 8580 resonance is
+                        ; stronger/sharper than 6581, so one notch lower than
+                        ; the 6581 sweet-spot ($8) keeps the flangey ring
+                        ; without masking the fundamentals
     sta SID+23
     lda #$1F            ; LP mode + volume max
     sta SID+24
-    lda #$E0
-    sta ZP_FILT_CUR     ; start open so the first note isn't muffled
-    lda #$80
-    sta ZP_FILT_TGT
+    lda #$C0
+    sta ZP_FILT_CUR     ; start open ($E0->$C0: $E0 is near fully-open on 8580)
+    lda #$60
+    sta ZP_FILT_TGT     ; sweep settles to a warm mid-LP ($80->$60 for 8580)
     lda #<v0_data
     sta ZP_V0
     lda #>v0_data
@@ -539,7 +541,7 @@ f1go:
     sta SID+8
 
     ; Reset filter cutoff on every new note — hoover "wow" sweep
-    lda #$E0
+    lda #$C0            ; $E0->$C0: 8580 curve opens brighter, $C0 keeps the wow
     sta ZP_FILT_CUR
 
     ; Retrigger the envelope on EVERY note onset. The old code skipped
@@ -649,10 +651,12 @@ f2done:
 ; vib_hi is the sign-extended high byte so the 16-bit add carries correctly.
 {bytes_to_asm('vib_lo', [(v & 0xFF) for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
 {bytes_to_asm('vib_hi', [0xFF if v < 0 else 0x00 for v in [0,4,8,12,12,8,4,0,0,-4,-8,-12,-12,-8,-4,0]])}
-; Filter LFO: 16-step triangle, ±10 on cutoff HI byte — a flangey/phasey
-; sweep that's audible but doesn't smear the melody (±16 was too wah-y).
+; Filter LFO: 16-step triangle, ±6 on cutoff HI byte — a flangey/phasey
+; shimmer. On the 8580's steeper/near-linear curve a fixed HI-byte delta is a
+; WIDER frequency swing than on 6581, so ±6 here gives the shimmer that ±10
+; gave on 6581 (and ±16 was too wah-y even there).
 ; Shares ZP_VIB_IDX phase with the vibrato for a synchronised wobble.
-{bytes_to_asm('filt_lfo', [(v & 0xFF) for v in [0,3,5,8,10,8,5,3,0,-3,-5,-8,-10,-8,-5,-3]])}
+{bytes_to_asm('filt_lfo', [(v & 0xFF) for v in [0,2,3,5,6,5,3,2,0,-2,-3,-5,-6,-5,-3,-2]])}
 {bytes_to_asm('v0_data', v1_data)}
 {bytes_to_asm('v1_data', v2_data)}
 {bytes_to_asm('v2_data', v3_data)}
@@ -690,7 +694,9 @@ f2done:
     header += pad32('Friet met Desire')
     header += pad32('Kloot, Anus & Augurk / deFEEST')
     header += pad32('2026 X / deFEEST + MAYO')
-    header += struct.pack('>H', 0x0000)
+    # PSID flags: PAL (clock bits 2-3 = 01 -> 0x04) + MOS 8580 (model bits
+    # 4-5 = 10 -> 0x20). Single SID. = 0x0024.
+    header += struct.pack('>H', 0x0024)
     header += bytes([0, 0, 0, 0])
     assert len(header) == 0x7C
     os.makedirs(os.path.dirname(OUT_SID), exist_ok=True)

@@ -9,7 +9,7 @@
 - **Target party:** **X2026** (Dutch Commodore demoparty)
 - **Format:** PSID v2 / `out/friet.sid` (release) + `out/friet.prg`
   (standalone C64 player with lyric ticker)
-- **Chip:** MOS 6581/8580 (PAL, 985 248 Hz)
+- **Chip:** MOS 8580 (PAL, 985 248 Hz) — PSID flags `0x0024`
 - **Player:** 50 Hz IRQ, init at $1000, play at $1003
 - **Length:** **1:14** release build (175 BPM); **1:48** song-faithful
   workstage at 120 BPM; loops on reaching the end. See "Structure" below.

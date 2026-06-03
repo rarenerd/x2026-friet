@@ -17,7 +17,9 @@ CYCLES=$(( DUR * PAL_CLK ))
 WAV=$(mktemp --suffix=.wav)
 trap 'rm -f "$WAV"' EXIT
 
-vsid -sounddev wav -soundarg "$WAV" -limitcycles "$CYCLES" "$SID" >/dev/null 2>&1 &
+# -sidenginemodel 257 = reSID + MOS 8580; -pal = PAL clock. Match the
+# release target (PSID flags 0x0024) so previews aren't rendered on 6581.
+vsid -sidenginemodel 257 -pal -sounddev wav -soundarg "$WAV" -limitcycles "$CYCLES" "$SID" >/dev/null 2>&1 &
 RPID=$!
 sleep $(( DUR + 3 ))
 kill -TERM "$RPID" 2>/dev/null || true

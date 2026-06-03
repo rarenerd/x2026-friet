@@ -101,14 +101,18 @@ thrice-played hook wearing thin, each reprise has its own character:
 ## 4. The flange (resonant filter sweep) — V2 only
 
 The lead is routed through a resonant low-pass. Each note resets the cutoff to
-`$E0` (open) and `filter_env` decays it toward `$80` while a triangle LFO
-(`filt_lfo`, shared phase with the vibrato) wobbles it ±10 — the "flangey /
+`$C0` (open) and `filter_env` decays it toward `$60` while a triangle LFO
+(`filt_lfo`, shared phase with the vibrato) wobbles it ±6 — the "flangey /
 hoover whoosh".
 
-The depth and resonance matter: at **res `$8` + LFO `±10`** the sweep colours
-the tone. Push to **res `$A` / `±16`** and the resonant peak overpowers the
-note's own fundamental — the melody muddies and notes go "barely there". Keep
-the resonance ≤ ~`$9`. *(AGENTS.md pitfall 12.)*
+**Tuned for the MOS 8580.** The 8580's cutoff curve is near-linear and shifted
+up, and its resonance is stronger/sharper than the 6581's. So the values run
+one notch gentler than the 6581 sweet-spots: **res `$7` + LFO `±6`**, cutoff
+init/target `$60`, per-note open `$C0`. (On 6581 these were res `$8`, ±10,
+`$80`/`$E0` — but the release ships 8580, PSID flags `0x0024`.) Push resonance
+or LFO higher and the peak overpowers the fundamental — the melody muddies and
+notes go "barely there". Render/verify on 8580 (`vsid -sidenginemodel 257
+-pal`), never the VICE-default 6581. *(AGENTS.md pitfalls 4 & 12.)*
 
 ---
 

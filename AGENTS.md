@@ -19,7 +19,10 @@ Release-quality bar:
 - Owner: annejan (brouwer@annejan.com), openSUSE Tumbleweed, comfortable with
   6502 asm and low-level audio. Reminded me to use a Python `.venv` rather than
   `pip --user`.
-- Target chip: MOS 6581/8580 (SID). PAL clock = 985 248 Hz.
+- Target chip: **MOS 8580 (SID), PAL** — committed target. Clock = 985 248 Hz.
+  PSID flags = `0x0024` (PAL bits 2-3 = 01, 8580 bits 4-5 = 10). Render/verify
+  on 8580 (`vsid -sidenginemodel 257 -pal …`); VICE's default is 6581, so a
+  plain render is the WRONG chip.
 - Output format: PSID v2NG (`.sid`).
 
 ## Local tools (already installed)
@@ -82,10 +85,12 @@ we know T7 is genuinely the vocal melody and not a counter-line.
 3. **V3 drum retrigger**: each drum hit must write ctrl with gate off, *then*
    ctrl with gate on. Writing only "noise+gate" doesn't transition gate from
    0→1 if the previous chord left gate on.
-4. **Filter cutoff** $50 in `$D416` = ~400 Hz (way too dark — pulse-lead sounds
-   muffled). $A0 ≈ 2.5 kHz is a good sweet spot for taming pulse harmonics
-   without dulling the lead. $C0 ≈ 5 kHz lets the 6th harmonic through as a
-   "beep".
+4. **Filter cutoff (8580 target).** The 8580 cutoff curve is near-linear and
+   shifted UP vs the 6581, so a given `$D416` HI value = a HIGHER frequency.
+   On 8580 the lead sits right with cutoff init/target ≈ `$60` and a per-note
+   "open" of ≈ `$C0` (these were `$80`/`$E0` back when previews were wrongly
+   rendered on 6581). Do NOT reuse the old 6581 sweet-spots ($50≈400Hz,
+   $A0≈2.5kHz, $C0≈5kHz) — they read brighter/harsher on 8580.
 5. **Polyphonic-collapse on T4 (piano comp)** produces chaotic chopped sound
    because the "max note" jumps around chord voicings. T4 is *not* a melody
    track — don't pick it as lead.
@@ -115,9 +120,10 @@ we know T7 is genuinely the vocal melody and not a counter-line.
 11. **Don't combine waveforms on the lead.** `$50` (tri+pulse) AND-
     combines to a thin, partly-cancelled tone that *drops notes* — this
     was the chorus-3 "missing notes". Use a single waveform ($10/$20/$40).
-12. **Filter resonance > ~$9 masks the note fundamental** → muddy melody.
-    The flangey lead sweep wants res $8 + cutoff-LFO ±10 (`filt_lfo`).
-    $A / ±16 ate notes.
+12. **Filter resonance masks the note fundamental when too high** → muddy
+    melody. On the **8580** the flangey lead sweep wants **res $7 + cutoff-LFO
+    ±6** (`filt_lfo`). 8580 resonance is stronger/sharper than 6581, so this is
+    one notch below the old 6581 values (res $8 / ±10); $A / ±16 ate notes.
 13. **`length_frames` = last actual event (+ tail), NOT `total_bars *
     fpbar`.** The synthetic length padded every voice with ~2 min of
     rests before the loop sentinel = dead air. And in `render-preview.sh`
