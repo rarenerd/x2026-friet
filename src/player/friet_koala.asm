@@ -238,14 +238,15 @@ irq_top:
 irq_split:
     lda #$FF
     sta $D019
+    lda #$00                 // black text bg FIRST: change $D021 at the very
+    sta $D021                // top of the line so the grey bitmap bg can't leak
+                             // onto the right of the split scanline
     lda #$1B                 // text mode (BMM off)
     sta $D011
     lda #$08                 // hires (MCM off)
     sta $D016
     lda #$34                 // text screen $4C00, font $5000
     sta $D018
-    lda #$00                 // ...the lyric rows get a black background
-    sta $D021
     lda #TOPL
     sta $D012
     lda #<irq_top
