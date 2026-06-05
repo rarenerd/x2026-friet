@@ -38,15 +38,20 @@ for cy in range(25):
         for r in range(8):
             for p in range(4):
                 x=cx*4+p; y=cy*8+r
-                dist=math.hypot((x-GCX)/90.0,(y-GCY)/70.0)
-                glow=max(0.0,1.0-dist)            # 1 at centre -> 0 at edge
-                # WARM sunset glow: yellow core -> orange -> red -> black
-                if glow>0.66:   cl,cd=WHITE,YELLOW
-                elif glow>0.46: cl,cd=YELLOW,ORANGE
-                elif glow>0.26: cl,cd=ORANGE,LRED
-                elif glow>0.10: cl,cd=LRED,RED
-                else:           cl,cd=RED,0
-                img[y,x]= cl if (glow*1.5)>BAYER[y&3,x&3] else cd
+                dist=math.hypot((x-GCX)/96.0,(y-GCY)/80.0)
+                b=max(0.0,1.0-dist)               # radial vignette brightness
+                if b<0.10:
+                    img[y,x]=0; continue
+                h=y/199.0                          # COOL (top) -> HOT (bottom)
+                if   h<0.16: cl,cd=CYAN,BLUE       # cool
+                elif h<0.30: cl,cd=BLUE,PURPLE
+                elif h<0.45: cl,cd=PURPLE,LRED     # halverwege: cool<->hot bridge (magenta)
+                elif h<0.59: cl,cd=LRED,ORANGE
+                elif h<0.73: cl,cd=ORANGE,YELLOW   # hot
+                else:        cl,cd=YELLOW,WHITE
+                # the interlace (frame B) blends cl<->cd; vignette fades to black
+                if b<0.26: img[y,x]= cd if (b*2.4)>BAYER[y&3,x&3] else 0
+                else:      img[y,x]= cl if (b*1.25)>BAYER[y&3,x&3] else cd
 
 # ---- frikandel speciaal into the dragon's mouth (rows ~96-100) ---------
 def disc(cx,cy,r,c):
