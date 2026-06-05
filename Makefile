@@ -37,7 +37,7 @@ COMPO_D64  := $(OUT_DIR)/friet_compo.d64
 KOALA_KOA  := $(OUT_DIR)/friet.koa
 KOALA_PRG  := $(OUT_DIR)/friet_koala.prg
 KOALA_D64  := $(OUT_DIR)/friet_koala.d64
-KLA_SRC    := FrietFromDesireMiep.kla
+KLA_SRC    := LegerZuigtPenisCroLLer.kla
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
@@ -149,14 +149,16 @@ $(FRIET_D64): $(FRIET_PRG)
 # "demo" version (the music-compo entry is the pure-audio $(FRIET_COMPO_PRG)).
 # Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
 koala: $(KOALA_D64)
-# Demo picture = the hand-painted $(KLA_SRC) (Miep) composited with the
-# frikandel speciaal going into his mouth (tools/merge_koala.py).
-# (`make koala-art` = procedural snackbar; kla_to_bins.py = plain Miep.)
-$(KOALA_KOA): $(KLA_SRC) $(TOOLS_DIR)/merge_koala.py
-	$(PYTHON) $(TOOLS_DIR)/merge_koala.py
+# Demo = the hand-painted $(KLA_SRC) as a full-screen bitmap + 6 bouncing
+# hardware-sprite ornaments (re-launched up on every kick) + the SID.
+# (Alt art: merge_koala.py = Miep eating a frikandel; make_koala.py =
+# procedural snackbar via `make koala-art`.)
+$(KOALA_KOA): $(KLA_SRC) $(TOOLS_DIR)/kla_to_bins.py
+	$(PYTHON) $(TOOLS_DIR)/kla_to_bins.py $(KLA_SRC)
 koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
-$(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm $(SRC_DIR)/build_player.py $(FRIET_SID)
+$(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm \
+              $(SRC_DIR)/player/sprite_orn.bin $(SRC_DIR)/build_player.py $(FRIET_SID)
 	$(PYTHON) $(SRC_DIR)/build_player.py
 $(KOALA_D64): $(KOALA_PRG)
 	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet met desire" >/dev/null

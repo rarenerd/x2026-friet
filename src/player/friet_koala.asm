@@ -1,36 +1,39 @@
-// Friet met Desire — KOALA demo player.
-// Full-screen multicolor-bitmap KoalaPainter image + the SID, with a
-// beat-reactive colour cycle (border + background step on every kick).
+// Friet met Desire — KOALA demo player WITH BOUNCING SPRITE ORNAMENTS.
+// Full-screen multicolor-bitmap picture + the SID + 6 hardware sprites that
+// bounce (gravity + floor restitution) and get re-launched UP on every kick.
+// Border colour also cycles on the kick.
 //
-// Memory: $0801 BASIC stub, $0810 player, $1000 SID body (~$43C5),
-//         $5C00 screen matrix (filled at runtime), $6000 koala bitmap,
-//         $7F40 koala screen src, $8328 koala colour src, $8710 bg.
-// VIC bank 1 ($4000-$7FFF): bitmap $6000 (offset $2000), screen $5C00.
+// Memory: $0801 stub, $0810 player, $1000 SID, $4800 sprite shape,
+//         $5C00 screen matrix (runtime copy), $5FF8 sprite pointers,
+//         $6000 koala bitmap, $7F40 screen src, $8328 colour src, $8710 bg.
+// VIC bank 1 ($4000-$7FFF).
 
 .const SID_INIT = $1000
 .const SID_PLAY = $1003
-.var gate_prev = $90      // previous V3 triangle bit (kick edge-detect)
-.var beatc     = $91      // kicks counted -> colour-cycle index
+.var gate_prev = $90
+.var beatc     = $91
+.const NSPR  = 6
+.const FLOOR = 214          // sprite Y where it bounces
+.const GRAV  = 1
 
 *=$0801
-    .byte $0B, $08, $0A, $00, $9E
+    .byte $0B,$08,$0A,$00,$9E
     .text "2064"
-    .byte $00, $00, $00
+    .byte $00,$00,$00
 
 *=$0810
 entry:
     sei
     lda #0
     ldx #$0d
-!zpclr:
+!zp:
     sta $02,x
     dex
-    bpl !zpclr-
+    bpl !zp-
     sta gate_prev
     sta beatc
 
-    // Copy koala screen-RAM ($7F40) -> VIC screen matrix $5C00, and
-    // koala colour-RAM ($8328) -> colour RAM $D800 (1024 bytes each).
+    // copy koala screen ($7F40)->$5C00 and colour ($8328)->$D800 (1024 b)
     ldx #0
 !cp:
     lda koala_screen,x
@@ -52,29 +55,62 @@ entry:
     inx
     bne !cp-
 
-    // VIC bank 1 ($4000-$7FFF)
+    // sprite pointers (AFTER the copy, which touched $5FF8): all -> $4800
+    lda #32
+    ldx #7
+!sp:
+    sta $5FF8,x
+    dex
+    bpl !sp-
+
+    // VIC bank 1, multicolor bitmap
     lda $DD00
     and #$FC
     ora #$02
     sta $DD00
-    lda #$78            // screen matrix $5C00 (hi nibble 7), bitmap $6000 (bit3)
+    lda #$78
     sta $D018
-    lda #$3B            // bitmap mode (BMM), display enabled
+    lda #$3B
     sta $D011
-    lda #$18            // multicolor on
+    lda #$18
     sta $D016
     lda koala_bg
     sta $D021
     lda #$00
     sta $D020
 
-    // SID init (subtune 0)
+    // sprites: fixed X, colours, enable, init bounce state
+    ldx #NSPR-1
+!si:
+    lda spr_xlo,x
+    txa
+    asl
+    tay
+    lda spr_xlo,x
+    sta $D000,y          // X low for sprite x  ($D000 + 2*x)
+    lda spr_y0,x
+    sta spr_y,x
+    lda spr_vy0,x
+    sta spr_vy,x
+    lda sprcol,x
+    sta $D027,x          // sprite colour
+    dex
+    bpl !si-
+    lda #$30             // X MSB for sprites 4 & 5 (x=256,300)
+    sta $D010
+    lda #$00
+    sta $D01C            // hires sprites
+    sta $D01B            // sprites in front of the bitmap
+    lda #$3F             // enable sprites 0..5
+    sta $D015
+
+    // SID init
     lda #0
     tax
     tay
     jsr SID_INIT
 
-    // Hook IRQ (raster)
+    // hook IRQ
     lda #<irq
     sta $0314
     lda #>irq
@@ -92,49 +128,98 @@ entry:
     and #$7F
     sta $D011
     cli
-!forever:
-    jmp !forever-
+!fe:
+    jmp !fe-
 
 irq:
     lda #$FF
     sta $D019
     jsr SID_PLAY
-    // --- kick detect (V3 triangle waveform bit) rising edge -> cycle ---
+    jsr bounce
+    // kick detect (V3 triangle bit rising edge) -> border cycle + re-launch
     lda $D412
     and #$10
     tax
     cmp gate_prev
     stx gate_prev
-    beq !nobeat+
+    beq !nob+
     txa
-    beq !nobeat+        // triangle cleared (kick ended) -> ignore
+    beq !nob+
     inc beatc
     lda beatc
     and #$03
     tay
     lda bordtab,y
-    sta $D020            // border pulses on the kick; the painted picture
-                         // ($D021 background) is left intact
-!nobeat:
+    sta $D020
+    ldx #NSPR-1          // re-launch every sprite UP on the kick
+!kl:
+    lda spr_launch,x
+    sta spr_vy,x
+    dex
+    bpl !kl-
+!nob:
     jmp $EA81
 
-bordtab: .byte $01, $07, $0a, $0e    // white, yellow, light red, light blue
+// ---- bounce: gravity + floor, write Y registers -----------------------
+bounce:
+    ldx #NSPR-1
+!b:
+    lda spr_vy,x
+    clc
+    adc #GRAV
+    sta spr_vy,x
+    clc
+    lda spr_y,x
+    adc spr_vy,x         // signed add (vy is two's-complement)
+    sta spr_y,x
+    cmp #FLOOR
+    bcc !nf+
+    lda #FLOOR
+    sta spr_y,x
+    lda spr_bounce,x     // restitution velocity (negative)
+    sta spr_vy,x
+    lda #FLOOR
+    sta spr_y,x
+!nf:
+    txa
+    asl
+    tay
+    lda spr_y,x
+    sta $D001,y          // sprite x's Y register ($D001 + 2*x)
+    dex
+    bpl !b-
+    rts
+
+bordtab:    .byte $01,$07,$0a,$0e
+spr_xlo:    .byte 30, 64, 98, 222, 0, 44       // X low (spr4,5 use MSB)
+sprcol:     .byte $01,$07,$03,$0a,$0d,$0e      // white,yellow,cyan,lred,lgreen,lblue
+spr_y0:     .byte 80, 120, 170, 90, 140, 200
+spr_vy0:    .byte $f8,$f6,$f9,$f7,$f5,$fa
+spr_bounce: .byte $f9,$f8,$f7,$f9,$f8,$f7      // -7..-9 restitution
+spr_launch: .byte $f4,$f3,$f5,$f4,$f3,$f5      // -11,-13,-11.. kick pop
+spr_y:      .byte 0,0,0,0,0,0
+spr_vy:     .byte 0,0,0,0,0,0
+
+// ---- sprite shape -----------------------------------------------------
+*=$4800
+spr_data:
+    .import binary "sprite_orn.bin"
 
 // ---- SID body ---------------------------------------------------------
 *=$1000
 sid_body:
     .import binary "sid_body.bin"
 
-// ---- Koala image (KoalaPainter memory layout) -------------------------
+// ---- Koala image ------------------------------------------------------
 *=$6000
 koala_bitmap:
-    .import binary "koala_bitmap.bin"    // 8000  $6000-$7F3F
+    .import binary "koala_bitmap.bin"
 *=$7F40
 koala_screen:
-    .import binary "koala_screen.bin"    // 1000  $7F40-$8327
+    .import binary "koala_screen.bin"
 *=$8328
 koala_color:
-    .import binary "koala_color.bin"     // 1000  $8328-$870F
+    .import binary "koala_color.bin"
 *=$8710
 koala_bg:
-    .import binary "koala_bg.bin"        // 1     $8710
+    .import binary "koala_bg.bin"
