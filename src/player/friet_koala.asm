@@ -150,6 +150,8 @@ entry:
     sta $D01B                // sprites in front
     lda #$3F
     sta $D015
+    sta $D017                // double height (epic, imposing cubes)
+    sta $D01D                // double width
 
     // bitmap colours
     lda koala_bg
@@ -353,8 +355,8 @@ bordtab:    .byte $01,$07,$0a,$0e
 sprcol:     .byte $01,$07,$08,$0a,$0e,$03      // white,yellow,orange,lred,lblue,cyan
 phtab:      .byte 0, 43, 86, 128, 171, 214     // orbit phase per sprite
 // elliptical orbit position tables (KickAss computes the sines at assemble time)
-xtab: .fill 256, round(140 + 100*sin(toRadians((i+64)*360/256)))
-ytab: .fill 256, round(108 + 70*sin(toRadians(i*360/256)))
+xtab: .fill 256, round(140 + 112*sin(toRadians((i+64)*360/256)))
+ytab: .fill 256, round(104 + 80*sin(toRadians(i*360/256)))
 
 *=$4400
 spr_data:
