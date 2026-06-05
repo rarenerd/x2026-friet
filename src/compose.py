@@ -401,21 +401,44 @@ def main():
                     break
             return cur
         if not MELODY_ONLY:
-            # Drums (V3): T13 verbatim, section-filtered. The source
-            # drummer's pattern is coherent with the vocal/bass timing
-            # because they were composed together. No synthetic overlay.
-            # Drums keep DRIVING through the breaks (relentless > silent) —
-            # the snare roll below stacks ON TOP for the build.
-            for s_b, _d_b, pitch in layers['layers'].get('drums', []):
-                kind = GM_DRUMS.get(int(pitch))
-                if not kind: continue
-                sec_name = section_at(s_b)
-                if kind not in SECTION_KIT.get(sec_name, set()): continue
-                for out_b, _label in remap(s_b):
-                    drum_events.append({
-                        'kind':  kind,
-                        'frame': grid_frame(out_b),
-                    })
+            # Canonical happy-hardcore foundation, generated on the OUTPUT grid
+            # so every voice shares ONE pulse: 4-on-the-floor kick, backbeat
+            # clap on beats 2 & 4, offbeat-8th hats (full 8ths in choruses).
+            # The verbatim T13 drums were dense and un-anchored — kick scattered
+            # off the grid, snare on every 16th, no backbeat — so the layers
+            # read as "pasted together". This gives a singular rhythm; the
+            # iconic FFD bass + the vocal float ON TOP (the bass already shares
+            # the downbeat with the kick). Breathe snare-roll + crashes (below)
+            # stack on this. (SECTIONS/SECTION_KIT/GM_DRUMS above are now unused.)
+            LABEL_INTENSITY = {
+                'intro':           0,   # silence — only the crash swell
+                'verse1':          2,   # kick + clap + offbeat hats
+                'prechorus1':      3,   # + on-beat hats (full 8ths) = build
+                'chorus1':         3,
+                'postchorus_nana': 3,
+                'breathe1':        1,   # kick only; the snare roll fills the rest
+                'chorus2':         3,
+                'breathe2':        1,
+                'chorus3':         3,
+            }
+            def label_at_out(ob):
+                for (s_, e_, lab), o_ in zip(SEGMENTS, out_offsets):
+                    if o_ <= ob < o_ + (e_ - s_):
+                        return lab
+                return None
+            for i in range(int(round(song_out_beats * 2))):    # 8th-note steps
+                ob = i / 2.0
+                inten = LABEL_INTENSITY.get(label_at_out(ob), 0)
+                if inten == 0:
+                    continue
+                on_beat = (i % 2 == 0)
+                in_bar  = int(round(ob)) % 4                     # bar position
+                if on_beat:                                      # KICK 4-on-floor
+                    drum_events.append({'kind': 'kick', 'frame': grid_frame(ob)})
+                if on_beat and in_bar in (1, 3) and inten >= 2:  # CLAP on 2 & 4
+                    drum_events.append({'kind': 'snare', 'frame': grid_frame(ob)})
+                if inten >= 2 and (not on_beat or inten >= 3):   # HATS
+                    drum_events.append({'kind': 'hat', 'frame': grid_frame(ob)})
 
         # ---- T12 reverse-cymbal swells (intro AND section transitions) ----
         if not MELODY_ONLY:
@@ -457,19 +480,7 @@ def main():
                         'kind': 'snare',
                         'frame': grid_frame(out_s + step / 4.0),
                     })
-            # Chorus2/3 also get on-beat hats (= full 8th hat pattern
-            # vs off-beat-only in verse/chorus1). Subtle density boost.
-            for (src_s, src_e, label), out_s in zip(SEGMENTS, out_offsets):
-                if label not in ('chorus2', 'chorus3'): continue
-                seg_dur = src_e - src_s
-                n_bars = int(seg_dur // 4)
-                for bar in range(n_bars):
-                    bar_start = out_s + bar * 4.0
-                    for off in (0, 1, 2, 3):  # on-beat hats (supplements off-beat)
-                        drum_events.append({
-                            'kind': 'hat',
-                            'frame': grid_frame(bar_start + off),
-                        })
+            # (Chorus full-8th hats now come from the canonical generator above.)
 
         if MELODY_ONLY:
             bass_events.clear()
