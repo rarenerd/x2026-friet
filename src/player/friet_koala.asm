@@ -26,7 +26,7 @@
 .var tmpx      = $98
 .var tmpy      = $9a
 .const NSPR  = 6
-.const CUBE_FRAMES = 8    // rotation frames in sprite_cube.bin (power of 2; 32 later)
+.const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (power of 2; 32 later)
 .const CUBE_MASK   = CUBE_FRAMES-1
 .const CUBE_PTR    = 16   // first cube frame = sprite pointer 16 ($4400)
 .const SPLIT = 225        // raster line: switch to text mode
@@ -124,7 +124,7 @@ entry:
     lda #$20                 // clear visible text rows 22..24 to spaces
     ldx #119
 !ct:
-    sta $4800+22*40,x
+    sta $4C00+22*40,x
     lda #$07                 // yellow text colour for those rows
     sta $D800+22*40,x
     lda #$20
@@ -239,7 +239,7 @@ irq_split:
     sta $D011
     lda #$08                 // hires (MCM off)
     sta $D016
-    lda #$24                 // text screen $4800, font $5000
+    lda #$34                 // text screen $4C00, font $5000
     sta $D018
     lda #TOPL
     sta $D012
@@ -319,7 +319,7 @@ lyric_tick:
     lda #$20
     ldx #39
 !clr:
-    sta $4800+23*40,x
+    sta $4C00+23*40,x
     dex
     bpl !clr-
     lda #40
@@ -331,7 +331,7 @@ lyric_tick:
     ldx tmp_col
 !cp2:
     lda (ly_lo),y
-    sta $4800+23*40,x
+    sta $4C00+23*40,x
     iny
     inx
     dec tmp_len
