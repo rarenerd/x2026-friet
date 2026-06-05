@@ -3,6 +3,26 @@
 All notable changes to **Friet met Desire** are recorded here.
 Dates are local (Europe/Amsterdam).
 
+## 2026-06-03 — Koala demo: full-screen snackbar picture
+
+- **New demo deliverable**: `out/friet_koala.prg` / `friet_koala.d64`
+  (`make koala`) — a full-screen KoalaPainter (multicolor bitmap) snackbar
+  scene + the SID + a beat-reactive colour cycle (border/bg step on each
+  kick). Replaces the text-ticker as the visual "demo" version; the lyrics
+  player stays as an extra.
+- **Composition** chosen via an ADHD divergent-ideation run (5 frames → 30
+  ideas → top-3 deepened): a split-depth TWO-POINT PERSPECTIVE — big
+  foreground patatzak (messy dithered fries + mayo) clipped bottom-left, a
+  steel counter receding to a neon "FRIET MET DESIRE" sign at the upper-right
+  power point, frikandel speciaal (curry + uitjes) and kaassouffle staggered
+  by depth.
+- **`tools/make_koala.py`**: procedural art in numpy with ordered (Bayer)
+  dithering for shading/gradients/neon-glow, irregular fry clump, and a
+  `clash_lint()` that reports cells exceeding the C64 4-colours-per-cell
+  limit. Writes `out/friet.koa` + the player .asm import bins.
+- `src/player/friet_koala.asm`: multicolor-bitmap display (VIC bank 1,
+  bitmap $6000, screen $5C00) + kick-locked colour cycle.
+
 ## 2026-06-03 — 8580/PAL target, submission polish, two deliverables
 
 - **Committed to MOS 8580 + PAL.** PSID flags `0x0000 → 0x0024` (PAL clock +

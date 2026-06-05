@@ -8,7 +8,7 @@
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet lab compo disk master \
+        clean-pipeline melody-only friet lab compo disk master koala \
         preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
@@ -34,6 +34,9 @@ FRIET_PRG  := $(OUT_DIR)/friet.prg
 FRIET_D64  := $(OUT_DIR)/friet.d64
 FRIET_COMPO_PRG := $(OUT_DIR)/friet_compo.prg
 COMPO_D64  := $(OUT_DIR)/friet_compo.d64
+KOALA_KOA  := $(OUT_DIR)/friet.koa
+KOALA_PRG  := $(OUT_DIR)/friet_koala.prg
+KOALA_D64  := $(OUT_DIR)/friet_koala.d64
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
@@ -138,6 +141,20 @@ disk: $(FRIET_D64)
 $(FRIET_D64): $(FRIET_PRG)
 	c1541 -format "friet met desire,fd" d64 $@ -write $< "friet met desire" >/dev/null
 	@echo "Floppy: $@"
+	@c1541 $@ -dir
+
+# Demo deliverable — full-screen KoalaPainter snackbar picture + the SID +
+# a beat-reactive colour cycle (border/bg step on every kick). This is the
+# "demo" version (the music-compo entry is the pure-audio $(FRIET_COMPO_PRG)).
+# Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
+koala: $(KOALA_D64)
+$(KOALA_KOA): $(TOOLS_DIR)/make_koala.py
+	$(PYTHON) $(TOOLS_DIR)/make_koala.py
+$(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm $(SRC_DIR)/build_player.py $(FRIET_SID)
+	$(PYTHON) $(SRC_DIR)/build_player.py
+$(KOALA_D64): $(KOALA_PRG)
+	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet met desire" >/dev/null
+	@echo "Demo (koala) disk: $@"
 	@c1541 $@ -dir
 
 # Shareable audio master — 192 kbps, +6.8 dB make-up gain (verified 0 clips),

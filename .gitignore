@@ -21,3 +21,7 @@ src/player/sid_body.bin
 src/player/lyric_table.bin
 src/player/banner_top.bin
 src/player/banner_bottom.bin
+
+# koala preview intermediates
+out/*.ppm
+out/friet_koala_preview.png

@@ -237,3 +237,18 @@ if rc.returncode != 0:
     print(rc.stderr)
     sys.exit(1)
 print(f"Wrote {COMPO_PRG} ({os.path.getsize(COMPO_PRG)} bytes)")
+
+# ---- 5. Koala demo player (if the koala asset has been generated) -----
+# Full-screen multicolor-bitmap snackbar picture + the SID + beat colour-cycle.
+KOALA_ASM = os.path.join(PLAYER_DIR, 'friet_koala.asm')
+KOALA_PRG = os.path.join(BASE, 'out', 'friet_koala.prg')
+_koala_bins = ('koala_bitmap.bin', 'koala_screen.bin', 'koala_color.bin', 'koala_bg.bin')
+if all(os.path.exists(os.path.join(PLAYER_DIR, b)) for b in _koala_bins):
+    rc = subprocess.run(['java', '-jar', KICKASS_JAR, KOALA_ASM, '-o', KOALA_PRG],
+                        capture_output=True, text=True)
+    print(rc.stdout)
+    if rc.returncode != 0:
+        print(rc.stderr); sys.exit(1)
+    print(f"Wrote {KOALA_PRG} ({os.path.getsize(KOALA_PRG)} bytes)")
+else:
+    print("  (koala player skipped — run tools/make_koala.py first)")

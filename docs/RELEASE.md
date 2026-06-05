@@ -16,19 +16,18 @@
 
 ## Deliverables — wat we inleveren op X2026
 
-Twee aparte inzendingen, twee aparte bestanden:
-
-Twee inzendingen — **muziek-compo = puur geluid**, de lyrics/visuals zijn een
-aparte productie. Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:14**.
+**Muziek-compo = puur geluid**; de visuele versies zijn aparte producties.
+Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:14**.
 
 | # | Inzending | Bestand(en) | Bouwen | Inhoud |
 |---|-----------|-------------|--------|--------|
-| **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + een draaibare player met **statisch credit-scherm** — géén ticker, géén strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
-| **B** | **Lyrics-floppy** (bonus) | `out/friet.d64` | `make disk` | `.d64` met de player mét lyric-ticker + kick-strobe + glijdende banners. |
+| **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + draaibare player met **statisch credit-scherm** — géén ticker/strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
+| **B** | **Demo** (full-screen Koala) | `out/friet_koala.prg` + `out/friet_koala.d64` | `make koala` | Full-screen KoalaPainter snackbar-plaat (twee-punts-perspectief: patatzak vooraan, toonbank naar neon-titel, frikandel speciaal + kaassouffle op diepte) + de SID + kleur-cycle op de kick. |
+| **C** | **Lyrics-floppy** (extra) | `out/friet.d64` | `make disk` | `.d64` met de player mét synced lyric-ticker + kick-strobe + glijdende banners. |
 
-Laden (beide disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
+Laden (alle disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
 Shareable audio: `make master` → `out/friet.mp3` (192 kbps, +6.8 dB, 8580).
-Alles bouwen: `make compo disk master`.
+Alles bouwen: `make compo koala disk master`.
 
 Scene-release files: `FRIET.NFO` (credits/inhoud), `docs/hvsc_stub.md`
 (Songlengths + STIL, klaar voor HVSC).
