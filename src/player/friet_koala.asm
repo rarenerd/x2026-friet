@@ -26,6 +26,7 @@
 .var tmpx      = $98
 .var tmpy      = $9a
 .var scidx     = $9b      // scene index for the song-structure escalation arc
+.var colcyc    = $9c      // cube-colour rave-cycle phase (advances on every kick)
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -52,6 +53,7 @@ entry:
     sta frame_lo
     sta frame_hi
     sta scidx
+    sta colcyc
     lda #<lyric_table
     sta ly_lo
     lda #>lyric_table
@@ -212,6 +214,7 @@ irq_top:
     tay
     lda bordtab,y
     sta $D020
+    jsr flash_cubes          // rave-pulse the 8 cube colours on the kick
 !nob:
     inc frame_lo
     bne !nf+
@@ -288,6 +291,26 @@ spin:
     bpl !s-
     rts
 cube_ph: .byte 0, 4, 8, 12, 16, 20, 24, 28    // 8 cubes spread across 32 frames
+
+// ---- flash_cubes: shift the 8 sprite colours through a rave palette ---
+// Called on every kick. Each cube reads cubepal[(i + colcyc) & 15], so the
+// whole rack of cubes ripples through the palette in time with the beat.
+flash_cubes:
+    inc colcyc
+    ldx #NSPR-1
+!fc:
+    txa
+    clc
+    adc colcyc
+    and #$0f
+    tay
+    lda cubepal,y
+    sta $D027,x              // sprite colour register for cube X
+    dex
+    bpl !fc-
+    rts
+// bright, saturated colours only (no $00/$06/$09/$0b — too dark on sprites)
+cubepal: .byte $01,$07,$0a,$08,$0e,$03,$0d,$05,$0f,$07,$02,$0e,$0a,$04,$0d,$01
 
 // ---- tick_scene: song-structure escalation arc ------------------------
 // Keyed off the frame counter (the song is the clock). Each scene gates how
