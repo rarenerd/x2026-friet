@@ -113,14 +113,12 @@ irq:
     and #$03
     tay
     lda bordtab,y
-    sta $D020
-    lda bgtab,y
-    sta $D021
+    sta $D020            // border pulses on the kick; the painted picture
+                         // ($D021 background) is left intact
 !nobeat:
     jmp $EA81
 
 bordtab: .byte $01, $07, $0a, $0e    // white, yellow, light red, light blue
-bgtab:   .byte $00, $06, $04, $00    // black, blue, purple, black
 
 // ---- SID body ---------------------------------------------------------
 *=$1000

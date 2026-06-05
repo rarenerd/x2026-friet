@@ -8,7 +8,7 @@
 #   make preview-clean   song-faithful workstage render (130 BPM)
 #   make preview-melody  vocal-only workstage (verification)
 .PHONY: all clean analyze extract compose synth \
-        clean-pipeline melody-only friet lab compo disk master koala \
+        clean-pipeline melody-only friet lab compo disk master koala koala-art \
         preview preview-clean preview-melody preview-friet preview-lab player
 
 SHELL      := /bin/bash
@@ -37,6 +37,7 @@ COMPO_D64  := $(OUT_DIR)/friet_compo.d64
 KOALA_KOA  := $(OUT_DIR)/friet.koa
 KOALA_PRG  := $(OUT_DIR)/friet_koala.prg
 KOALA_D64  := $(OUT_DIR)/friet_koala.d64
+KLA_SRC    := FrietFromDesireMiep.kla
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
 
@@ -148,7 +149,11 @@ $(FRIET_D64): $(FRIET_PRG)
 # "demo" version (the music-compo entry is the pure-audio $(FRIET_COMPO_PRG)).
 # Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
 koala: $(KOALA_D64)
-$(KOALA_KOA): $(TOOLS_DIR)/make_koala.py
+# The demo picture is the hand-painted $(KLA_SRC). (make_koala.py is the
+# procedural fallback — run `make koala-art` to regenerate that instead.)
+$(KOALA_KOA): $(KLA_SRC) $(TOOLS_DIR)/kla_to_bins.py
+	$(PYTHON) $(TOOLS_DIR)/kla_to_bins.py $(KLA_SRC)
+koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
 $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm $(SRC_DIR)/build_player.py $(FRIET_SID)
 	$(PYTHON) $(SRC_DIR)/build_player.py
