@@ -127,7 +127,7 @@ entry:
     ldx #119
 !ct:
     sta $4C00+22*40,x
-    lda #$07                 // yellow text colour for those rows
+    lda #$01                 // WHITE text on (soon) black -> clean, not MinVWS-grey
     sta $D800+22*40,x
     lda #$20
     dex
@@ -199,6 +199,8 @@ irq_top:
     sta $D016
     lda #$78                 // screen $5C00 (interlace flip disabled — was too flickery)
     sta $D018
+    lda koala_bg             // bitmap region keeps its background...
+    sta $D021
     jsr SID_PLAY
     jsr fly
     jsr spin
@@ -242,6 +244,8 @@ irq_split:
     sta $D016
     lda #$34                 // text screen $4C00, font $5000
     sta $D018
+    lda #$00                 // ...the lyric rows get a black background
+    sta $D021
     lda #TOPL
     sta $D012
     lda #<irq_top
