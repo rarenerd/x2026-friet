@@ -21,7 +21,7 @@ SID_PATH     = os.path.join(BASE, 'out', 'friet.sid')
 LAYERS_PATH  = os.path.join(BASE, 'docs', 'song_layers.yaml')
 ASM_PATH     = os.path.join(BASE, 'src', 'player', 'friet.asm')
 PLAYER_DIR   = os.path.dirname(ASM_PATH)
-OUT_PRG      = os.path.join(BASE, 'out', 'friet.prg')
+OUT_PRG      = os.path.join(BASE, 'out', 'friet_lyrics.prg')
 KICKASS_JAR  = os.path.join(BASE, 'kickass', 'KickAss.jar')
 
 # ---- 1. SID body ------------------------------------------------------
@@ -241,7 +241,7 @@ print(f"Wrote {COMPO_PRG} ({os.path.getsize(COMPO_PRG)} bytes)")
 # ---- 5. Koala demo player (if the koala asset has been generated) -----
 # Full-screen multicolor-bitmap snackbar picture + the SID + beat colour-cycle.
 KOALA_ASM = os.path.join(PLAYER_DIR, 'friet_koala.asm')
-KOALA_PRG = os.path.join(BASE, 'out', 'friet_koala.prg')
+KOALA_PRG = os.path.join(BASE, 'out', 'friet.prg')
 _koala_bins = ('koala_bitmap.bin', 'koala_screen.bin', 'koala_color.bin', 'koala_bg.bin')
 if all(os.path.exists(os.path.join(PLAYER_DIR, b)) for b in _koala_bins):
     rc = subprocess.run(['java', '-jar', KICKASS_JAR, KOALA_ASM, '-o', KOALA_PRG],

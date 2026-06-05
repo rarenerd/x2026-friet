@@ -30,13 +30,13 @@ MELODY_SID := $(OUT_DIR)/friet_melody_only.sid
 MELODY_MP3 := $(OUT_DIR)/friet_melody_only.mp3
 FRIET_SID  := $(OUT_DIR)/friet.sid
 FRIET_MP3  := $(OUT_DIR)/friet.mp3
-FRIET_PRG  := $(OUT_DIR)/friet.prg
-FRIET_D64  := $(OUT_DIR)/friet.d64
+FRIET_PRG  := $(OUT_DIR)/friet_lyrics.prg
+FRIET_D64  := $(OUT_DIR)/friet_lyrics.d64
 FRIET_COMPO_PRG := $(OUT_DIR)/friet_compo.prg
 COMPO_D64  := $(OUT_DIR)/friet_compo.d64
 KOALA_KOA  := $(OUT_DIR)/friet.koa
-KOALA_PRG  := $(OUT_DIR)/friet_koala.prg
-KOALA_D64  := $(OUT_DIR)/friet_koala.d64
+KOALA_PRG  := $(OUT_DIR)/friet.prg
+KOALA_D64  := $(OUT_DIR)/friet.d64
 KLA_SRC    := LegerZuigtPenisCroLLer.kla
 LAB_SID    := $(OUT_DIR)/lab.sid
 LAB_MP3    := $(OUT_DIR)/lab.mp3
@@ -166,7 +166,7 @@ $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm \
               $(SRC_DIR)/player/sprite_cube.bin $(SRC_DIR)/build_player.py $(FRIET_SID)
 	$(PYTHON) $(SRC_DIR)/build_player.py
 $(KOALA_D64): $(KOALA_PRG)
-	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet met desire" >/dev/null
+	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet" >/dev/null
 	@echo "Demo (koala) disk: $@"
 	@c1541 $@ -dir
 

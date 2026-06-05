@@ -25,7 +25,7 @@
 .var spinbase  = $99      // cube rotation phase
 .var tmpx      = $98
 .var tmpy      = $9a
-.const NSPR  = 6
+.const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (power of 2; 32 later)
 .const CUBE_MASK   = CUBE_FRAMES-1
 .const CUBE_PTR    = 16   // first cube frame = sprite pointer 16 ($4400)
@@ -148,10 +148,11 @@ entry:
     sta $D010                // orbit x stays < 256, no X-MSB needed
     sta $D01C                // hires sprites
     sta $D01B                // sprites in front
-    lda #$3F
-    sta $D015
-    sta $D017                // double height (epic, imposing cubes)
-    sta $D01D                // double width
+    lda #$FF
+    sta $D015                // enable all 8 sprites
+    lda #$00
+    sta $D017                // normal size (2x stretch is reserved for the
+    sta $D01D                // climax escalation)
 
     // bitmap colours
     lda koala_bg
@@ -288,7 +289,7 @@ spin:
     dex
     bpl !s-
     rts
-cube_ph: .byte 0, 5, 11, 16, 21, 27    // spread across the 32 rotation frames
+cube_ph: .byte 0, 4, 8, 12, 16, 20, 24, 28    // 8 cubes spread across 32 frames
 
 // ---- lyric ticker: write the current line into text row 23 -----------
 lyric_tick:
@@ -348,8 +349,8 @@ lyric_tick:
     rts
 
 bordtab:    .byte $01,$07,$0a,$0e
-sprcol:     .byte $01,$07,$08,$0a,$0e,$03      // white,yellow,orange,lred,lblue,cyan
-phtab:      .byte 0, 43, 86, 128, 171, 214     // orbit phase per sprite
+sprcol:     .byte $01,$07,$08,$0a,$0e,$03,$0d,$05  // 8 cube colours
+phtab:      .byte 0,32,64,96,128,160,192,224       // orbit phase per sprite (8)
 // elliptical orbit position tables (KickAss computes the sines at assemble time)
 xtab: .fill 256, round(140 + 112*sin(toRadians((i+64)*360/256)))
 ytab: .fill 256, round(104 + 80*sin(toRadians(i*360/256)))
