@@ -25,6 +25,7 @@
 .var spinbase  = $99      // cube rotation phase
 .var tmpx      = $98
 .var tmpy      = $9a
+.var scidx     = $9b      // scene index for the song-structure escalation arc
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (power of 2; 32 later)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -50,6 +51,7 @@ entry:
     sta beatc
     sta frame_lo
     sta frame_hi
+    sta scidx
     lda #<lyric_table
     sta ly_lo
     lda #>lyric_table
@@ -200,6 +202,7 @@ irq_top:
     jsr SID_PLAY
     jsr fly
     jsr spin
+    jsr tick_scene
     jsr lyric_tick
     // kick detect -> border cycle + sprite re-launch
     lda $D412
@@ -290,6 +293,45 @@ spin:
     bpl !s-
     rts
 cube_ph: .byte 0, 4, 8, 12, 16, 20, 24, 28    // 8 cubes spread across 32 frames
+
+// ---- tick_scene: song-structure escalation arc ------------------------
+// Keyed off the frame counter (the song is the clock). Each scene gates how
+// many cubes are enabled and whether they're 2x-stretched (climax). Resyncs
+// at the song-loop point so it stays aligned across loops.
+tick_scene:
+    lda frame_hi             // resync at the song loop (~3731 frames = $0E93)
+    cmp #$0E
+    bcc !chk+
+    lda frame_lo
+    cmp #$93
+    bcc !chk+
+    lda #0
+    sta frame_lo
+    sta frame_hi
+    sta scidx
+!chk:
+    ldx scidx
+    cpx #6
+    bcs !set+                // past the last boundary
+    lda frame_lo
+    cmp sc_blo,x
+    lda frame_hi
+    sbc sc_bhi,x             // C set if frame >= boundary
+    bcc !set+
+    inc scidx
+!set:
+    ldx scidx
+    lda sc_mask,x
+    sta $D015                // cube count: 2 -> 4 -> 6 -> 8
+    lda sc_exp,x
+    sta $D017                // 2x stretch on the climax
+    sta $D01D
+    rts
+// boundaries (frames @175bpm): 369,934,1508,2014,2563,3205
+sc_blo:  .byte $71,$A6,$E4,$DE,$03,$85
+sc_bhi:  .byte $01,$03,$05,$07,$0A,$0C
+sc_mask: .byte $03,$0F,$3F,$FF,$FF,$FF,$FF   // 2,4,6,8,8,8,8 cubes
+sc_exp:  .byte $00,$00,$00,$00,$00,$FF,$FF   // normal ... then 2x for the climax
 
 // ---- lyric ticker: write the current line into text row 23 -----------
 lyric_tick:
