@@ -192,7 +192,7 @@ bounce:
 
 bordtab:    .byte $01,$07,$0a,$0e
 spr_xlo:    .byte 30, 64, 98, 222, 0, 44       // X low (spr4,5 use MSB)
-sprcol:     .byte $01,$07,$03,$0a,$0d,$0e      // white,yellow,cyan,lred,lgreen,lblue
+sprcol:     .byte $01,$07,$08,$0a,$07,$08      // white,yellow,orange,lred,yellow,orange (warm)
 spr_y0:     .byte 80, 120, 170, 90, 140, 200
 spr_vy0:    .byte $f8,$f6,$f9,$f7,$f5,$fa
 spr_bounce: .byte $f9,$f8,$f7,$f9,$f8,$f7      // -7..-9 restitution

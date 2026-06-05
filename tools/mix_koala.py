@@ -38,12 +38,13 @@ for cy in range(25):
                 x=cx*4+p; y=cy*8+r
                 dist=math.hypot((x-GCX)/90.0,(y-GCY)/70.0)
                 glow=max(0.0,1.0-dist)            # 1 at centre -> 0 at edge
-                # two-stop dither: near=CYAN over BLUE, mid=BLUE over PURPLE, far=PURPLE/BLACK
-                if glow>0.55:   cl,cd=CYAN,BLUE
-                elif glow>0.28: cl,cd=BLUE,PURPLE
-                else:           cl,cd=PURPLE,0
-                lvl=(glow-0.0)
-                img[y,x]= cl if (lvl*1.6)>BAYER[y&3,x&3] else cd
+                # WARM sunset glow: yellow core -> orange -> red -> black
+                if glow>0.66:   cl,cd=WHITE,YELLOW
+                elif glow>0.46: cl,cd=YELLOW,ORANGE
+                elif glow>0.26: cl,cd=ORANGE,LRED
+                elif glow>0.10: cl,cd=LRED,RED
+                else:           cl,cd=RED,0
+                img[y,x]= cl if (glow*1.5)>BAYER[y&3,x&3] else cd
 
 # ---- frikandel speciaal into the dragon's mouth (rows ~96-100) ---------
 def disc(cx,cy,r,c):
