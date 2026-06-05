@@ -194,12 +194,7 @@ irq_top:
     sta $D011
     lda #$18                 // multicolor on
     sta $D016
-    lda frame_lo             // 50Hz interlace: flip screen A/B each frame
-    lsr
-    lda #$78                 // even -> screen $5C00 (frame A)
-    bcc !ia+
-    lda #$68                 // odd  -> screen $5800 (frame B), bitmap $6000
-!ia:
+    lda #$78                 // screen $5C00 (interlace flip disabled — was too flickery)
     sta $D018
     jsr SID_PLAY
     jsr fly
@@ -282,17 +277,18 @@ spin:
     sta spinbase
     ldx #NSPR-1
 !s:
-    txa
+    lda cube_ph,x            // each cube starts at a different rotation frame
     clc
-    adc spinbase             // stagger phase per sprite
+    adc spinbase
     and #CUBE_MASK
     clc
     adc #CUBE_PTR            // cube frames = sprite pointers CUBE_PTR..+
-    sta $5FF8,x              // frame-A pointers
-    sta $5BF8,x              // frame-B pointers
+    sta $5FF8,x
+    sta $5BF8,x
     dex
     bpl !s-
     rts
+cube_ph: .byte 0, 5, 11, 16, 21, 27    // spread across the 32 rotation frames
 
 // ---- lyric ticker: write the current line into text row 23 -----------
 lyric_tick:
