@@ -32,23 +32,41 @@ def thick_line(x0,y0,x1,y1,r,c,t_lo=0.0,t_hi=1.0):
         t=i/n
         if t<t_lo or t>t_hi: continue
         disc(int(round(x0+(x1-x0)*t)), int(round(y0+(y1-y0)*t)), r, c)
+def rect(x0,y0,x1,y1,c): img[max(0,y0):min(H,y1), max(0,x0):min(W,x1)] = c
+def dith(x0,y0,x1,y1,c1,c2):
+    for y in range(max(0,y0),min(H,y1)):
+        for x in range(max(0,x0),min(W,x1)): img[y,x]=c1 if (x^y)&1 else c2
 
 # ---- frikandel speciaal going INTO Miep's mouth -----------------------
-# Mouth (red teeth) sits ~ (66,50); frikandel enters from the lower-left.
-MX,MY = 70,82          # mouth centre (white teeth-by-red centroid) — tip goes in
-OX,OY = 10,96          # outer end of the frikandel (sticks out to the lower-left)
-thick_line(OX,OY, MX,MY, 6, BROWN)                 # sausage body
-thick_line(OX,OY, MX,MY, 6, ORANGE, t_lo=0.0, t_hi=0.10)  # rounded cut end sheen
-# curry band along the top edge of the bar (offset perpendicular)
-dx,dy = MX-OX, MY-OY; L=math.hypot(dx,dy); nx,ny = -dy/L, dx/L   # normal
-for i in range(0, int(L)-8, 2):                    # stop short so it enters the mouth
+# Open mouth is rows ~96-100, x71-87 -> centre (79,99). (y82 was the nostril.)
+MX,MY = 79,99          # mouth centre — frikandel tip goes in here
+OX,OY = 8,106          # outer end (sticks out to the lower-left)
+thick_line(OX,OY, MX,MY, 5, BROWN)                 # sausage body
+thick_line(OX,OY, MX,MY, 5, ORANGE, t_lo=0.0, t_hi=0.10)  # rounded cut end
+# curry + uitjes on the TOP side of the bar (-normal)
+dx,dy = MX-OX, MY-OY; L=math.hypot(dx,dy); nx,ny = -dy/L, dx/L
+for i in range(0, int(L)-9, 2):                    # stop short so it enters the mouth
     t=i/L; bx=OX+dx*t; by=OY+dy*t
-    px,py=int(bx+nx*3), int(by+ny*3)
-    if 0<=px<W and 0<=py<H: img[py,px]= YELLOW if (i//2)%2 else ORANGE   # curry dither
-    # uitjes (onion specks)
-    if i%8==0:
-        ox,oy=int(bx+nx*2),int(by+ny*2)
+    px,py=int(bx-nx*3), int(by-ny*3)               # TOP side (curry)
+    if 0<=px<W and 0<=py<H: img[py,px]= YELLOW if (i//2)%2 else ORANGE
+    if i%8==0:                                      # uitjes (onion specks)
+        ox,oy=int(bx-nx*2),int(by-ny*2)
         if 0<=ox<W and 0<=oy<H: img[oy,ox]=WHITE
+
+# ---- a few frietjes also poking out of the mouth ----------------------
+for (fx0,fy0,fx1,fy1) in [(78,96,62,76),(82,96,74,72),(80,97,86,74)]:
+    thick_line(fx0,fy0,fx1,fy1,1,YELLOW)
+    thick_line(fx0,fy0,fx1,fy1,1,ORANGE,t_lo=0.0,t_hi=0.25)   # fried base
+
+# ---- MAYO blob in the mouth corner, on top of the frikandel -----------
+disc(60,94,4,WHITE); disc(55,96,3,WHITE)
+
+# ---- kaassouffle: RECTANGULAR breaded block, bottom-left corner -------
+rect(10,156,48,182, YELLOW)                        # breaded crust (outer)
+dith(13,159,45,179, ORANGE, BROWN)                 # golden breaded body
+rect(10,156,48,159, YELLOW); rect(10,179,48,182, YELLOW)   # top/bottom crust
+rect(10,156,13,182, YELLOW); rect(45,156,48,182, YELLOW)   # side crust
+rect(26,166,33,173, WHITE)                         # melted cheese ooze
 
 # ====================================================================
 def clash():
