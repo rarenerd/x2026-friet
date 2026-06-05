@@ -75,6 +75,12 @@ for i in range(0,int(L)-9,2):
         if 0<=ox<W and 0<=oy<H: img[oy,ox]=WHITE
 disc(60,94,4,WHITE); disc(55,96,3,WHITE)     # mayo
 
+# Black out the bottom rows (under the lyric text bar). The raster split
+# swaps bitmap->text there, and with IRQ jitter the VIC briefly shows
+# leftover bitmap pixels on the seam — making that strip black means there's
+# nothing to leak (no stray pixels at the top edge of the text area).
+img[176:H, :] = 0
+
 # ====================================================================
 def clash(): return sum(1 for cy in range(25) for cx in range(40)
                         if len(np.unique(img[cy*8:cy*8+8,cx*4:cx*4+4]))>4)
