@@ -159,8 +159,11 @@ $(KOALA_KOA): FrietFromDesireMiep.kla $(TOOLS_DIR)/mix_koala.py
 	$(PYTHON) $(TOOLS_DIR)/mix_koala.py
 koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
+# 8 rotation frames of the 3D cube, from the Spritemate .spm
+$(SRC_DIR)/player/sprite_cube.bin: $(TOOLS_DIR)/spm_to_sprites.py
+	$(PYTHON) $(TOOLS_DIR)/spm_to_sprites.py
 $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm \
-              $(SRC_DIR)/player/sprite_orn.bin $(SRC_DIR)/build_player.py $(FRIET_SID)
+              $(SRC_DIR)/player/sprite_cube.bin $(SRC_DIR)/build_player.py $(FRIET_SID)
 	$(PYTHON) $(SRC_DIR)/build_player.py
 $(KOALA_D64): $(KOALA_PRG)
 	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet met desire" >/dev/null

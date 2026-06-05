@@ -22,8 +22,13 @@
 .var tmp_col   = $97
 .var src       = $a0      // font-copy source ptr
 .var dst       = $a2      // font-copy dest ptr
+.var spinbase  = $99      // cube rotation phase
+.var tmpx      = $98
+.var tmpy      = $9a
 .const NSPR  = 6
-.const FLOOR = 200
+.const CUBE_FRAMES = 8    // rotation frames in sprite_cube.bin (power of 2; 32 later)
+.const CUBE_MASK   = CUBE_FRAMES-1
+.const CUBE_PTR    = 16   // first cube frame = sprite pointer 16 ($4400)
 .const SPLIT = 225        // raster line: switch to text mode
 .const TOPL  = 251        // raster line: switch to bitmap + run the frame
 
@@ -135,24 +140,14 @@ entry:
     // sprites: fixed X, colours, init bounce
     ldx #NSPR-1
 !si:
-    txa
-    asl
-    tay
-    lda spr_xlo,x
-    sta $D000,y
-    lda spr_y0,x
-    sta spr_y,x
-    lda spr_vy0,x
-    sta spr_vy,x
     lda sprcol,x
     sta $D027,x
     dex
     bpl !si-
-    lda #$30
-    sta $D010
     lda #$00
-    sta $D01C
-    sta $D01B
+    sta $D010                // orbit x stays < 256, no X-MSB needed
+    sta $D01C                // hires sprites
+    sta $D01B                // sprites in front
     lda #$3F
     sta $D015
 
@@ -205,7 +200,8 @@ irq_top:
 !ia:
     sta $D018
     jsr SID_PLAY
-    jsr bounce
+    jsr fly
+    jsr spin
     jsr lyric_tick
     // kick detect -> border cycle + sprite re-launch
     lda $D412
@@ -222,12 +218,6 @@ irq_top:
     tay
     lda bordtab,y
     sta $D020
-    ldx #NSPR-1
-!kl:
-    lda spr_launch,x
-    sta spr_vy,x
-    dex
-    bpl !kl-
 !nob:
     inc frame_lo
     bne !nf+
@@ -259,32 +249,47 @@ irq_split:
     sta $0315
     jmp $EA81
 
-// ---- bounce sprites ---------------------------------------------------
-bounce:
-    ldx #NSPR-1
-!b:
-    lda spr_vy,x
+// ---- fly: each sprite orbits an ellipse (sine paths) ------------------
+fly:
+    ldy #NSPR-1
+!f:
+    lda frame_lo
     clc
-    adc #1
-    sta spr_vy,x
-    clc
-    lda spr_y,x
-    adc spr_vy,x
-    sta spr_y,x
-    cmp #FLOOR
-    bcc !nf+
-    lda spr_bounce,x
-    sta spr_vy,x
-    lda #FLOOR
-    sta spr_y,x
-!nf:
-    txa
+    adc phtab,y              // per-sprite orbit phase
+    tax                      // X = angle index 0..255
+    lda xtab,x
+    sta tmpx
+    lda ytab,x
+    sta tmpy
+    tya
     asl
-    tay
-    lda spr_y,x
-    sta $D001,y
+    tax                      // X = 2*i (sprite register offset)
+    lda tmpx
+    sta $D000,x
+    lda tmpy
+    sta $D001,x
+    dey
+    bpl !f-
+    rts
+
+// ---- spin: cycle each sprite's pointer through the 8 cube frames ------
+spin:
+    lda frame_lo
+    lsr
+    lsr                      // advance one rotation frame every 4 ticks
+    sta spinbase
+    ldx #NSPR-1
+!s:
+    txa
+    clc
+    adc spinbase             // stagger phase per sprite
+    and #CUBE_MASK
+    clc
+    adc #CUBE_PTR            // cube frames = sprite pointers CUBE_PTR..+
+    sta $5FF8,x              // frame-A pointers
+    sta $5BF8,x              // frame-B pointers
     dex
-    bpl !b-
+    bpl !s-
     rts
 
 // ---- lyric ticker: write the current line into text row 23 -----------
@@ -345,18 +350,15 @@ lyric_tick:
     rts
 
 bordtab:    .byte $01,$07,$0a,$0e
-spr_xlo:    .byte 30, 64, 98, 222, 0, 44
-sprcol:     .byte $01,$07,$08,$0a,$07,$08
-spr_y0:     .byte 70, 110, 160, 80, 130, 185
-spr_vy0:    .byte $f8,$f6,$f9,$f7,$f5,$fa
-spr_bounce: .byte $f9,$f8,$f7,$f9,$f8,$f7
-spr_launch: .byte $f4,$f3,$f5,$f4,$f3,$f5
-spr_y:      .byte 0,0,0,0,0,0
-spr_vy:     .byte 0,0,0,0,0,0
+sprcol:     .byte $01,$07,$08,$0a,$0e,$03      // white,yellow,orange,lred,lblue,cyan
+phtab:      .byte 0, 43, 86, 128, 171, 214     // orbit phase per sprite
+// elliptical orbit position tables (KickAss computes the sines at assemble time)
+xtab: .fill 256, round(140 + 100*sin(toRadians((i+64)*360/256)))
+ytab: .fill 256, round(108 + 70*sin(toRadians(i*360/256)))
 
 *=$4400
 spr_data:
-    .import binary "sprite_orn.bin"
+    .import binary "sprite_cube.bin"     // 8 rotation frames of a 3D cube (ptr 16..23)
 
 *=$1000
 sid_body:
