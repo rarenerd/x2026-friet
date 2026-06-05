@@ -89,6 +89,14 @@ entry:
     sta $5E00,x
     lda koala_screen+$300,x
     sta $5F00,x
+    lda koala_screen_b,x          // interlace frame B -> $5800
+    sta $5800,x
+    lda koala_screen_b+$100,x
+    sta $5900,x
+    lda koala_screen_b+$200,x
+    sta $5A00,x
+    lda koala_screen_b+$300,x
+    sta $5B00,x
     lda koala_color,x
     sta $D800,x
     lda koala_color+$100,x
@@ -104,7 +112,8 @@ entry:
     lda #16
     ldx #7
 !sp:
-    sta $5FF8,x
+    sta $5FF8,x                  // sprite pointers for screen A ($5C00)
+    sta $5BF8,x                  // ... and for interlace screen B ($5800)
     dex
     bpl !sp-
     lda #$20                 // clear visible text rows 22..24 to spaces
@@ -188,7 +197,12 @@ irq_top:
     sta $D011
     lda #$18                 // multicolor on
     sta $D016
-    lda #$78                 // screen $5C00, bitmap $6000
+    lda frame_lo             // 50Hz interlace: flip screen A/B each frame
+    lsr
+    lda #$78                 // even -> screen $5C00 (frame A)
+    bcc !ia+
+    lda #$68                 // odd  -> screen $5800 (frame B), bitmap $6000
+!ia:
     sta $D018
     jsr SID_PLAY
     jsr bounce
@@ -365,3 +379,7 @@ koala_bg:
 lyric_table:
     .import binary "lyric_table.bin"
     .byte $FF,$FF,$00
+
+*=$8C00
+koala_screen_b:
+    .import binary "koala_screen_b.bin"
