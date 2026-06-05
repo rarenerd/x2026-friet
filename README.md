@@ -82,8 +82,8 @@ friet/
 │   ├── compose.py          phase 2: layers → composition (per-section V1 switching)
 │   ├── synth.py            phase 3: composition → PSID (PWM sweep, kick pitch-sweep)
 │   ├── lab.py              experimental composition sandbox (make lab)
-│   ├── build_player.py     bundles SID + lyric ticker → out/friet.prg
-│   └── player/             KickAssembler source for the standalone .prg
+│   ├── build_player.py     bundles SID + lyrics into 3 .prg players (lyric ticker, compo, demo)
+│   └── player/             KickAssembler source (friet.asm, friet_compo.asm, friet_koala.asm)
 ├── docs/
 │   ├── melody_understanding.md  canonical melody theory
 │   ├── voice_essence.md         DNA of each instrument (Pattern A/B engines)
@@ -116,8 +116,11 @@ source .venv/bin/activate
 make friet                          # → out/friet.sid
 make preview-friet                  # → out/friet.mp3
 
-# Standalone C64 .prg with lyric ticker:
-make player                         # → out/friet.prg
+# The one-file C64 demo (koala bitmap + 8 spinning 3D cubes + lyric ticker):
+make koala                          # → out/friet.prg  (+ out/friet.d64)
+
+# Standalone C64 .prg with just the lyric ticker + kick strobe:
+make player                         # → out/friet_lyrics.prg
 
 # Competition SID (HVSC-ready, scene-standard filename):
 make compo                          # → out/Friet_met_Desire-deFEEST.sid

@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-"""Build the stand-alone C64 .prg that plays out/friet.sid with a
-synchronised lyrics ticker.
+"""Build the stand-alone C64 .prg deliverables around out/friet.sid.
 
-Pipeline:
-  1. Extract the raw SID body from out/friet.sid (drop the PSID header
-     and the PRG load-address prefix).
-  2. Build a binary lyric table from docs/song_layers.yaml, lyric
-     lines remapped onto the OUTPUT timeline via the same SEGMENTS
-     table compose.py uses.
-  3. Drop those binaries plus two banner strings next to
-     src/player/friet.asm and invoke KickAssembler.
+Shared first step: extract the raw SID body from out/friet.sid (drop the
+PSID header + PRG load-address prefix) and build the binary lyric table
+from the lyric YAML. Then assemble three players that .import those bins:
+  - out/friet_lyrics.prg  — lyric ticker + kick strobe (friet.asm)
+  - out/friet_compo.prg   — pure-audio static credit screen (friet_compo.asm)
+  - out/friet.prg         — the koala bitmap demo (friet_koala.asm)
 
-Output: out/friet.prg (loads at $0801, runs via SYS 2064).
+Each loads at $0801 and runs via SYS 2064.
 """
 import os, sys, struct, subprocess, yaml
 
@@ -23,6 +20,17 @@ ASM_PATH     = os.path.join(BASE, 'src', 'player', 'friet.asm')
 PLAYER_DIR   = os.path.dirname(ASM_PATH)
 OUT_PRG      = os.path.join(BASE, 'out', 'friet_lyrics.prg')
 KICKASS_JAR  = os.path.join(BASE, 'kickass', 'KickAss.jar')
+
+def assemble(asm_path, prg_path):
+    """Run KickAssembler on asm_path -> prg_path; abort the build on error."""
+    if not os.path.exists(KICKASS_JAR):
+        sys.exit(f"KickAss.jar not found at {KICKASS_JAR}")
+    r = subprocess.run(['java', '-jar', KICKASS_JAR, asm_path, '-o', prg_path],
+                       capture_output=True, text=True)
+    print(r.stdout)
+    if r.returncode != 0:
+        sys.exit(r.stderr)
+    print(f"Wrote {prg_path} ({os.path.getsize(prg_path)} bytes)")
 
 # ---- 1. SID body ------------------------------------------------------
 with open(SID_PATH, 'rb') as f:
@@ -46,29 +54,7 @@ with open(os.path.join(PLAYER_DIR, 'sid_body.bin'), 'wb') as f:
     f.write(sid_code)
 
 # ---- 2. Lyrics table --------------------------------------------------
-SEGMENTS = [
-    (  0.0,  21.5, 'intro'),
-    ( 21.5,  54.5, 'verse1'),
-    ( 54.5,  88.0, 'prechorus1'),
-    ( 88.0, 117.5, 'chorus1'),
-    (117.5, 149.5, 'postchorus_nana'),
-    (149.5, 153.5, 'breathe1'),
-    ( 88.0, 117.5, 'chorus2'),
-    (149.5, 153.5, 'breathe2'),
-    ( 88.0, 117.5, 'chorus3'),
-]
-out_offsets = []
-cur = 0.0
-for s, e, _ in SEGMENTS:
-    out_offsets.append(cur)
-    cur += e - s
-
-def remap(src_beat):
-    for (s, e, _), out_s in zip(SEGMENTS, out_offsets):
-        if s <= src_beat < e:
-            yield out_s + (src_beat - s)
-
-# ---- Lyrics source: pref order = FrietMetDesire > NulBytesVrij > TL-Buis > karaoke ----
+# Lyrics source: pref order = FrietMetDesire > NulBytesVrij > TL-Buis > karaoke
 FRIET_PATH      = os.path.join(BASE, 'docs', 'friet_met_desire_lyrics.yaml')
 NUL_BYTES_PATH = os.path.join(BASE, 'docs', 'nul_bytes_vrij_lyrics.yaml')
 TL_BUIS_PATH    = os.path.join(BASE, 'docs', 'tl_buis_lyrics.yaml')
@@ -195,20 +181,8 @@ with open(os.path.join(PLAYER_DIR, 'lyric_table.bin'), 'wb') as f:
     f.write(buf)
 print(f"Lyric table: {len(buf)} bytes")
 
-# ---- 3. Invoke KickAssembler ------------------------------------------
-if not os.path.exists(KICKASS_JAR):
-    print(f"KickAss.jar not found at {KICKASS_JAR}")
-    sys.exit(1)
-r = subprocess.run(
-    ['java', '-jar', KICKASS_JAR, ASM_PATH, '-o', OUT_PRG],
-    capture_output=True, text=True,
-)
-print(r.stdout)
-if r.returncode != 0:
-    print(r.stderr)
-    sys.exit(1)
-size = os.path.getsize(OUT_PRG)
-print(f"Wrote {OUT_PRG} ({size} bytes)")
+# ---- 3. Lyric-ticker player -------------------------------------------
+assemble(ASM_PATH, OUT_PRG)
 
 # ---- 4. Pure-audio compo player --------------------------------------
 # The X2026 music-compo entry: same SID, but NO lyric ticker / strobe —
@@ -228,15 +202,7 @@ for fn, text in [
 ]:
     with open(os.path.join(PLAYER_DIR, fn), 'wb') as f:
         f.write(to_screen_line(text))
-rc = subprocess.run(
-    ['java', '-jar', KICKASS_JAR, COMPO_ASM, '-o', COMPO_PRG],
-    capture_output=True, text=True,
-)
-print(rc.stdout)
-if rc.returncode != 0:
-    print(rc.stderr)
-    sys.exit(1)
-print(f"Wrote {COMPO_PRG} ({os.path.getsize(COMPO_PRG)} bytes)")
+assemble(COMPO_ASM, COMPO_PRG)
 
 # ---- 5. Koala demo player (if the koala asset has been generated) -----
 # Full-screen multicolor-bitmap snackbar picture + the SID + beat colour-cycle.
@@ -244,11 +210,6 @@ KOALA_ASM = os.path.join(PLAYER_DIR, 'friet_koala.asm')
 KOALA_PRG = os.path.join(BASE, 'out', 'friet.prg')
 _koala_bins = ('koala_bitmap.bin', 'koala_screen.bin', 'koala_color.bin', 'koala_bg.bin')
 if all(os.path.exists(os.path.join(PLAYER_DIR, b)) for b in _koala_bins):
-    rc = subprocess.run(['java', '-jar', KICKASS_JAR, KOALA_ASM, '-o', KOALA_PRG],
-                        capture_output=True, text=True)
-    print(rc.stdout)
-    if rc.returncode != 0:
-        print(rc.stderr); sys.exit(1)
-    print(f"Wrote {KOALA_PRG} ({os.path.getsize(KOALA_PRG)} bytes)")
+    assemble(KOALA_ASM, KOALA_PRG)
 else:
-    print("  (koala player skipped — run tools/make_koala.py first)")
+    print("  (koala player skipped — run `make koala` / tools/mix_koala.py first)")

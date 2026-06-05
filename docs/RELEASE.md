@@ -22,8 +22,8 @@ Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:14**.
 | # | Inzending | Bestand(en) | Bouwen | Inhoud |
 |---|-----------|-------------|--------|--------|
 | **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + draaibare player met **statisch credit-scherm** — géén ticker/strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
-| **B** | **Demo** (full-screen Koala) | `out/friet_koala.prg` + `out/friet_koala.d64` | `make koala` | Full-screen KoalaPainter snackbar-plaat (twee-punts-perspectief: patatzak vooraan, toonbank naar neon-titel, frikandel speciaal + kaassouffle op diepte) + de SID + kleur-cycle op de kick. |
-| **C** | **Lyrics-floppy** (extra) | `out/friet.d64` | `make disk` | `.d64` met de player mét synced lyric-ticker + kick-strobe + glijdende banners. |
+| **B** | **Demo** (one-file) | `out/friet.prg` + `out/friet.d64` | `make koala` | Full-screen multicolor-bitmap van de draak **Miep** (warme glow-vignette + frikandel speciaal in z'n bek) + **8 vliegende/draaiende 3D-kubussen** (hardware-sprites) + een **raster-split lyric-ticker** + een song-structuur-escalatie (2→4→6→8 kubussen, 2× stretch op de climax) + de SID. |
+| **C** | **Lyrics-floppy** (extra) | `out/friet_lyrics.prg` + `out/friet_lyrics.d64` | `make player` + `make disk` | `.d64` met de kale player: synced lyric-ticker + kick-strobe, geen bitmap. |
 
 Laden (alle disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
 Shareable audio: `make master` → `out/friet.mp3` (192 kbps, +6.8 dB, 8580).
@@ -36,8 +36,9 @@ Verificatie (headless): de muziek-compo-SID telt **0** `8D xx D0` VIC-writes
 (puur audio); de pure-audio player en de lyrics-player zijn beide live in
 VICE op 8580 bevestigd (`x64sc -sidenginemodel 257 -pal -autostart …`).
 
-> De muziek-compo wil puur geluid; ticker/strobe zitten **alleen** in
-> `friet.prg`/`friet.d64`, nooit in de compo-`.sid`/`friet_compo.prg`.
+> De muziek-compo wil puur geluid; ticker/strobe/visuals zitten **alleen** in
+> de demo (`friet.prg`/`friet.d64`) en de lyrics-floppy (`friet_lyrics.*`),
+> nooit in de compo-`.sid`/`friet_compo.prg`.
 
 ## Companion demo
 

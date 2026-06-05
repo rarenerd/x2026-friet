@@ -149,21 +149,22 @@ $(FRIET_D64): $(FRIET_PRG)
 # "demo" version (the music-compo entry is the pure-audio $(FRIET_COMPO_PRG)).
 # Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
 koala: $(KOALA_D64)
-# Demo = the dragon (Miep) mixed into a nicer composition (blue glow-vignette
+# Demo = the dragon (Miep) mixed into a nicer composition (warm glow-vignette
 # background + frikandel speciaal in his mouth, tools/mix_koala.py) as the
-# full-screen bitmap, + 6 bouncing swirl-ornament hardware sprites (re-launched
-# up on every kick) + the SID.
+# full-screen bitmap, + 8 flying/spinning 3D-cube hardware sprites + a
+# raster-split lyric ticker + a song-structure escalation arc + the SID.
 # (Alt art: kla_to_bins.py = plain .kla; make_koala.py = procedural snackbar
 # via `make koala-art`.)
 $(KOALA_KOA): FrietFromDesireMiep.kla $(TOOLS_DIR)/mix_koala.py
 	$(PYTHON) $(TOOLS_DIR)/mix_koala.py
 koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
-# 8 rotation frames of the 3D cube, from the Spritemate .spm
+# 32 rotation frames of the 3D cube, from the Spritemate .spm
 $(SRC_DIR)/player/sprite_cube.bin: $(TOOLS_DIR)/spm_to_sprites.py FinaLKjoep32.spm
 	$(PYTHON) $(TOOLS_DIR)/spm_to_sprites.py FinaLKjoep32.spm
 $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm \
-              $(SRC_DIR)/player/sprite_cube.bin $(SRC_DIR)/build_player.py $(FRIET_SID)
+              $(SRC_DIR)/player/sprite_cube.bin $(SRC_DIR)/build_player.py $(FRIET_SID) \
+              docs/friet_met_desire_lyrics.yaml
 	$(PYTHON) $(SRC_DIR)/build_player.py
 $(KOALA_D64): $(KOALA_PRG)
 	c1541 -format "friet met desire,fd" d64 $@ -write $(KOALA_PRG) "friet" >/dev/null

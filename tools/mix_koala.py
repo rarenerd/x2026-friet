@@ -28,13 +28,11 @@ for cy in range(25):
 # Only repaint cells that are entirely "empty" (all index 0 = black), so the
 # dragon stays untouched and no cell gains a 5th colour.
 GCX,GCY=84,86            # glow centre (roughly the dragon's heart)
-glowcells=set()               # cells that are pure-background (get the glow + interlace)
 for cy in range(25):
     for cx in range(40):
         blk=img[cy*8:cy*8+8, cx*4:cx*4+4]
         if not np.all(blk==0):       # not a pure-black background cell -> skip
             continue
-        glowcells.add((cy,cx))
         for r in range(8):
             for p in range(4):
                 x=cx*4+p; y=cy*8+r
@@ -49,7 +47,7 @@ for cy in range(25):
                 elif h<0.59: cl,cd=LRED,ORANGE
                 elif h<0.73: cl,cd=ORANGE,YELLOW   # hot
                 else:        cl,cd=YELLOW,WHITE
-                # the interlace (frame B) blends cl<->cd; vignette fades to black
+                # ordered-dither the two hue colours; vignette fades to black
                 if b<0.26: img[y,x]= cd if (b*2.4)>BAYER[y&3,x&3] else 0
                 else:      img[y,x]= cl if (b*1.25)>BAYER[y&3,x&3] else cd
 
@@ -100,14 +98,8 @@ for cy in range(25):
             bitmap[cy*320+cx*8+r]=byte
 koala=bytes([0,0x60])+bytes(bitmap)+bytes(screen)+bytes(colram)+bytes([BG])
 open(os.path.join(OUT,'friet.koa'),'wb').write(koala)
-# 50 Hz INTERLACE frame B: same bitmap, but the glow cells swap hi/lo nibbles
-# so their two dither colours temporally blend (smoother warm gradient). The
-# dragon cells are identical in A and B -> they stay crisp, no flicker.
-screen_b=bytearray(screen)
-for (cy,cx) in glowcells:
-    i=cy*40+cx; screen_b[i]=((screen[i]&0x0f)<<4)|(screen[i]>>4)
 for nm,dt in [('koala_bitmap.bin',bitmap),('koala_screen.bin',screen),
-              ('koala_screen_b.bin',screen_b),('koala_color.bin',colram)]:
+              ('koala_color.bin',colram)]:
     open(os.path.join(PLAYER,nm),'wb').write(bytes(dt))
 open(os.path.join(PLAYER,'koala_bg.bin'),'wb').write(bytes([BG]))
 print("wrote out/friet.koa + player bins")

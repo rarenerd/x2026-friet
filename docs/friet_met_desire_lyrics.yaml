@@ -41,14 +41,15 @@ lyrics:
   - {beat: 108.0, text: "knapperig en goudgeel"}
   - {beat: 112.0, text: "Friet met Desire"}
 
-  # Na-na — de sporthal, de soldeerflux, de kunst
-  - {beat: 117.5, text: "De frituur ruikt naar soldeerflux"}
-  - {beat: 121.5, text: "en naar lauw energiedrank"}
-  - {beat: 125.5, text: "De sporthal staat te feesten"}
-  - {beat: 129.5, text: "op C64 en SID"}
-  - {beat: 133.5, text: "De frituur ruikt naar soldeerflux"}
-  - {beat: 137.5, text: "en goedkope energie"}
-  - {beat: 141.5, text: "Twintig man, een rasterrol"}
+  # Na-na — de iconische sing-along (origineel: "na na na na na...")
+  # Call: na-na. Response: frituur. Sporthal moet dit kunnen meebrullen.
+  - {beat: 117.5, text: "Na na na na naaa"}
+  - {beat: 121.5, text: "na na na na na na"}
+  - {beat: 125.5, text: "Geef mij friet met MAYO!"}
+  - {beat: 129.5, text: "handen in de lucht"}
+  - {beat: 133.5, text: "Na na na na naaa"}
+  - {beat: 137.5, text: "na na na na na na"}
+  - {beat: 141.5, text: "ruikt naar soldeerflux en bier"}
   - {beat: 145.5, text: "dit is kunst, dit is deFEEST"}
 
   # Refrein 2

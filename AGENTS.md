@@ -129,6 +129,34 @@ we know T7 is genuinely the vocal melody and not a counter-line.
     rests before the loop sentinel = dead air. And in `render-preview.sh`
     never name a var `SECONDS` (bash special var — it silently broke the
     `-t` length and the `afade`-out).
+14. **Raster-split `$D021` change must be the FIRST write in the split
+    IRQ.** The koala bg is light-grey; if `$D021=$00` is written *after*
+    `$D011/$D016/$D018` in `irq_split`, it changes too late in the line and
+    the grey leaks onto the right of the split scanline (loose pixels above
+    the lyric bar). Write the background colour first, at the top of the line.
+
+## Demo player (`src/player/friet_koala.asm`)
+
+The one-file demo (`make koala` → `out/friet.prg`). Built by
+`build_player.py`, which extracts the SID body + builds the lyric table,
+then assembles three players via the shared `assemble()` helper
+(`friet.asm` = lyric ticker, `friet_compo.asm` = pure-audio credits,
+`friet_koala.asm` = this demo). Visual assets come from
+`tools/mix_koala.py` (the Miep `.kla` → glow-vignette bitmap bins) and
+`tools/spm_to_sprites.py` (`FinaLKjoep32.spm` → 32 cube-rotation frames).
+
+- **Two-IRQ raster split.** `irq_top` (line `TOPL`=251) = multicolor
+  bitmap + runs the frame (SID play, `fly`, `spin`, `tick_scene`,
+  `lyric_tick`, kick→border strobe). `irq_split` (line `SPLIT`=225) =
+  hires text mode for the bottom 3 rows (the lyric ticker, white-on-black).
+- **VIC bank 1**; memory map is documented at the top of the .asm. RAM
+  font copied from char ROM `$D800` → `$5000` (char ROM isn't visible in
+  bank 1).
+- **8 hardware sprites = flying spinning cubes.** `fly` orbits each via
+  `xtab`/`ytab` sine tables; `spin` cycles the sprite pointer through the
+  32 cube frames. `tick_scene` is the song-structure escalation arc
+  (2→4→6→8 cubes via `$D015`, then 2× stretch via `$D017/$D01D` on the
+  climax), keyed off the frame counter and resynced at the song loop.
 
 ## Where to start
 
@@ -136,7 +164,8 @@ we know T7 is genuinely the vocal melody and not a counter-line.
 source .venv/bin/activate
 make friet                            # build the release SID (out/friet.sid)
 make preview-friet PREVIEW_SECONDS=60 # render an MP3 preview
-make player                           # standalone .prg with lyric ticker
+make koala                            # the one-file demo  → out/friet.prg (+ .d64)
+make player                           # lyric-ticker-only player → out/friet_lyrics.prg
 make analyze                          # research dump (if exploring MIDIs)
 ```
 

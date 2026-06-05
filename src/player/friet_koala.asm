@@ -3,10 +3,10 @@
 // lyric ticker. Music on V-blank, border + sprite-launch on the kick.
 //
 // VIC bank 1 ($4000-$7FFF) memory map:
-//   $1000  SID body          $4400 sprite shape (ptr 16)
-//   $4800  text screen (ptr 2)   $5000 RAM font (charbase 2)
-//   $5C00  bitmap screen (koala colours) + $5FF8 sprite pointers
-//   $6000  bitmap   $7F40 screen src   $8328 colour src   $8710 bg
+//   $1000  SID body              $4400 cube sprites (ptrs 16..47)
+//   $4C00  text screen (ptr 3)   $5000 RAM font (charbase 2)
+//   $5C00  bitmap colour screen + $5FF8 sprite pointers
+//   $6000  bitmap   $7F40 screen src   $8328 colour src   $8710 bg   $8720 lyrics
 //
 // Split: lines 51..224 = multicolor bitmap, 225..250 = hires text (rows 22-24).
 
@@ -27,7 +27,7 @@
 .var tmpy      = $9a
 .var scidx     = $9b      // scene index for the song-structure escalation arc
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
-.const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (power of 2; 32 later)
+.const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
 .const CUBE_PTR    = 16   // first cube frame = sprite pointer 16 ($4400)
 .const SPLIT = 225        // raster line: switch to text mode
@@ -96,14 +96,6 @@ entry:
     sta $5E00,x
     lda koala_screen+$300,x
     sta $5F00,x
-    lda koala_screen_b,x          // interlace frame B -> $5800
-    sta $5800,x
-    lda koala_screen_b+$100,x
-    sta $5900,x
-    lda koala_screen_b+$200,x
-    sta $5A00,x
-    lda koala_screen_b+$300,x
-    sta $5B00,x
     lda koala_color,x
     sta $D800,x
     lda koala_color+$100,x
@@ -119,8 +111,7 @@ entry:
     lda #16
     ldx #7
 !sp:
-    sta $5FF8,x                  // sprite pointers for screen A ($5C00)
-    sta $5BF8,x                  // ... and for interlace screen B ($5800)
+    sta $5FF8,x                  // sprite pointers (bitmap screen $5C00)
     dex
     bpl !sp-
     lda #$20                 // clear visible text rows 22..24 to spaces
@@ -197,7 +188,7 @@ irq_top:
     sta $D011
     lda #$18                 // multicolor on
     sta $D016
-    lda #$78                 // screen $5C00 (interlace flip disabled — was too flickery)
+    lda #$78                 // bitmap colour screen $5C00, bitmap data $6000
     sta $D018
     lda koala_bg             // bitmap region keeps its background...
     sta $D021
@@ -278,7 +269,7 @@ fly:
     bpl !f-
     rts
 
-// ---- spin: cycle each sprite's pointer through the 8 cube frames ------
+// ---- spin: cycle each sprite's pointer through the 32 cube frames -----
 spin:
     lda frame_lo
     lsr
@@ -293,7 +284,6 @@ spin:
     clc
     adc #CUBE_PTR            // cube frames = sprite pointers CUBE_PTR..+
     sta $5FF8,x
-    sta $5BF8,x
     dex
     bpl !s-
     rts
@@ -404,7 +394,7 @@ ytab: .fill 256, round(104 + 80*sin(toRadians(i*360/256)))
 
 *=$4400
 spr_data:
-    .import binary "sprite_cube.bin"     // 8 rotation frames of a 3D cube (ptr 16..23)
+    .import binary "sprite_cube.bin"     // 32 rotation frames of a 3D cube (ptr 16..47)
 
 *=$1000
 sid_body:
@@ -427,7 +417,3 @@ koala_bg:
 lyric_table:
     .import binary "lyric_table.bin"
     .byte $FF,$FF,$00
-
-*=$8C00
-koala_screen_b:
-    .import binary "koala_screen_b.bin"
