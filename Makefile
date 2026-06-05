@@ -149,10 +149,11 @@ $(FRIET_D64): $(FRIET_PRG)
 # "demo" version (the music-compo entry is the pure-audio $(FRIET_COMPO_PRG)).
 # Load on a C64 with:  LOAD"FRIET MET DESIRE",8,1  then  RUN
 koala: $(KOALA_D64)
-# The demo picture is the hand-painted $(KLA_SRC). (make_koala.py is the
-# procedural fallback — run `make koala-art` to regenerate that instead.)
-$(KOALA_KOA): $(KLA_SRC) $(TOOLS_DIR)/kla_to_bins.py
-	$(PYTHON) $(TOOLS_DIR)/kla_to_bins.py $(KLA_SRC)
+# Demo picture = the hand-painted $(KLA_SRC) (Miep) composited with the
+# frikandel speciaal going into his mouth (tools/merge_koala.py).
+# (`make koala-art` = procedural snackbar; kla_to_bins.py = plain Miep.)
+$(KOALA_KOA): $(KLA_SRC) $(TOOLS_DIR)/merge_koala.py
+	$(PYTHON) $(TOOLS_DIR)/merge_koala.py
 koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
 $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm $(SRC_DIR)/build_player.py $(FRIET_SID)
