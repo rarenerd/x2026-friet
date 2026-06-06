@@ -28,6 +28,7 @@
 .var scidx     = $9b      // scene index for the song-structure escalation arc
 .var colcyc    = $9c      // cube-colour rave-cycle phase (advances on every kick)
 .var msbacc    = $9e      // accumulates the per-sprite X-MSB bits for $D010
+.var lb_t      = $9f      // light-bomb colour-cycle phase
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -202,6 +203,7 @@ irq_top:
     jsr SID_PLAY
     jsr fly
     jsr spin
+    jsr lightbomb
     jsr tick_scene
     jsr lyric_tick
     // kick detect -> border cycle + sprite re-launch
@@ -343,6 +345,81 @@ flash_cubes:
     rts
 // bright, saturated colours only (no $00/$06/$09/$0b — too dark on sprites)
 cubepal: .byte $01,$07,$0a,$08,$0e,$03,$0d,$05,$0f,$07,$02,$0e,$0a,$04,$0d,$01
+
+// ---- lightbomb: cycle the background (nebula) colour-RAM in radial -----
+// rings -> an expanding light burst behind the dragon's head. Each bg cell
+// has a ring value in lbring (parallel to colour-RAM); non-bg = $FF (skip).
+// Split across 2 frames (pages 0/1 on even frames, 2/3 on odd) to fit the
+// CPU budget. glowpal is a bright->dark->bright loop so rings read as waves.
+lightbomb:
+    lda frame_lo
+    lsr
+    lsr                      // colour-cycle phase (advances every 4 frames)
+    sta lb_t
+    lda frame_lo
+    and #1
+    bne !odd+
+    ldx #0
+!e0:
+    ldy lbring+$000,x
+    bmi !se0+
+    tya
+    clc
+    adc lb_t
+    and #15
+    tay
+    lda glowpal,y
+    sta $D800,x
+!se0:
+    inx
+    bne !e0-
+    ldx #0
+!e1:
+    ldy lbring+$100,x
+    bmi !se1+
+    tya
+    clc
+    adc lb_t
+    and #15
+    tay
+    lda glowpal,y
+    sta $D900,x
+!se1:
+    inx
+    bne !e1-
+    rts
+!odd:
+    ldx #0
+!o2:
+    ldy lbring+$200,x
+    bmi !so2+
+    tya
+    clc
+    adc lb_t
+    and #15
+    tay
+    lda glowpal,y
+    sta $DA00,x
+!so2:
+    inx
+    bne !o2-
+    ldx #0
+!o3:
+    ldy lbring+$300,x
+    bmi !so3+
+    tya
+    clc
+    adc lb_t
+    and #15
+    tay
+    lda glowpal,y
+    sta $DB00,x
+!so3:
+    inx
+    bne !o3-
+    rts
+// bright -> dark -> bright pulse, so (ring+t) reads as expanding light waves
+glowpal: .byte $01,$07,$08,$0a,$04,$0e,$06,$0b,$00,$0b,$06,$0e,$04,$0a,$08,$07
 
 // ---- tick_scene: song-structure escalation arc ------------------------
 // Keyed off the frame counter (the song is the clock). Each scene gates how
@@ -488,3 +565,7 @@ koala_bg:
 lyric_table:
     .import binary "lyric_table.bin"
     .byte $FF,$FF,$00
+
+*=$8C00
+lbring:                                   // 1024-byte ring table (light-bomb)
+    .import binary "lightbomb.bin"
