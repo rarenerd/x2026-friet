@@ -24,6 +24,25 @@ for cy in range(25):
             byte=bm[cy*320+cx*8+r]
             for p in range(4): img[cy*8+r,cx*4+p]=pal[(byte>>(6-2*p))&3]
 
+# ---- kill stray small WHITE specks in Miep's art -----------------------
+# A couple of tiny floating white bars in the .kla were invisible on black
+# but read as ugly vertical stripes on the dark nebula. Flood-fill white
+# components; clear (->black, the nebula then covers them) any component
+# smaller than 24px. The crest is one big component, so it stays.
+_seen=np.zeros((H,W),bool)
+for y0 in range(H):
+    for x0 in range(W):
+        if img[y0,x0]!=WHITE or _seen[y0,x0]: continue
+        stack=[(y0,x0)]; comp=[]; _seen[y0,x0]=True
+        while stack:
+            yy,xx=stack.pop(); comp.append((yy,xx))
+            for dy,dx in ((1,0),(-1,0),(0,1),(0,-1)):
+                ny,nx=yy+dy,xx+dx
+                if 0<=ny<H and 0<=nx<W and not _seen[ny,nx] and img[ny,nx]==WHITE:
+                    _seen[ny,nx]=True; stack.append((ny,nx))
+        if len(comp)<24:
+            for (yy,xx) in comp: img[yy,xx]=0
+
 # ---- background: a cool, moody nebula halo behind the dragon ------------
 # A bright rainbow "sunburst" fought Miep's multicolour crest; a dark cool
 # halo (lavender -> purple -> indigo -> black) makes the dragon + the white
