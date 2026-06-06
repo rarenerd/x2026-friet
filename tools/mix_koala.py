@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Mix the hand-painted dragon (FrietFromDesireMiep.kla) into a nicer
-composition: dragon hero + frikandel speciaal in his mouth, on a dithered
-blue glow-vignette background (instead of flat black). Repacks to a Koala
-+ the player import bins. The swirl ornaments become bouncing sprites
-(see src/player/sprite_orn.bin / friet_koala.asm).
+"""Compose the koala demo picture from the crew's hand-painted art:
+  - Miep the dragon  (FrietFromDesireMiep.kla)        — the hero, centre
+  - cigar-Harry's white swirl ornaments (LegerZuigtPenisCroLLer.kla) — margins
+  - a shorter frikandel speciaal (+ mayo) in Miep's mouth
+  - a little bag of fries (patat) bottom-centre
+  - a dark, cool nebula halo (lavender->purple->indigo->black) + a starfield
+Stray white specks in Miep's .kla are cleaned first (they read ugly on the
+dark bg). Output: out/friet.koa + the koala_*.bin player import bins.
 """
 import os, numpy as np, math
 

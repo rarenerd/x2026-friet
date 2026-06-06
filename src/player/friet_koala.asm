@@ -1,6 +1,7 @@
-// Friet met Desire — KOALA demo: warm dragon bitmap (top) + bouncing sprite
-// ornaments + a RASTER-SPLIT text bar (bottom 3 rows) running the synced
-// lyric ticker. Music on V-blank, border + sprite-launch on the kick.
+// Friet met Desire — KOALA demo: dragon bitmap (Miep + swirls + frikandel +
+// fries on a nebula) + 8 flying/spinning 3D-cube sprites + a RASTER-SPLIT
+// text bar (bottom 3 rows) running the synced lyric ticker. Music on V-blank,
+// border + cube-colour rave-pulse on the kick; escalation arc + breakdown.
 //
 // VIC bank 1 ($4000-$7FFF) memory map:
 //   $1000  SID body (reaches ~$442C)   $4440 cube sprites (ptrs 17..48)

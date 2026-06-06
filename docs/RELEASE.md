@@ -22,7 +22,7 @@ Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:18**.
 | # | Inzending | Bestand(en) | Bouwen | Inhoud |
 |---|-----------|-------------|--------|--------|
 | **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + draaibare player met **statisch credit-scherm** — géén ticker/strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
-| **B** | **Demo** (one-file) | `out/friet.prg` + `out/friet.d64` | `make koala` | Full-screen multicolor-bitmap van de draak **Miep** (warme glow-vignette + frikandel speciaal in z'n bek) + **8 vliegende/draaiende 3D-kubussen** (hardware-sprites, eigen Lissajous-banen, rave-kleur op de kick) + een **raster-split lyric-ticker** + een **breakdown→drop** (beat & bass eruit, kubussen klappen in naar 2, dan knallen ze naar 8 + 2× op de drop) + de SID. |
+| **B** | **Demo** (one-file) | `out/friet.prg` + `out/friet.d64` | `make koala` | Full-screen multicolor-bitmap: de draak **Miep** + sigaar-Harrie's **swirl-ornamenten**, frikandel speciaal + mayo in de bek, een frietzakje, op een donkere **nevel-halo + sterrenveld** + **8 vliegende/draaiende 3D-kubussen** (Lissajous-banen, rave-kleur op de kick) + **raster-split lyric-ticker** + een **breakdown→drop** (beat & bass eruit, kubussen klappen in naar 2, knallen naar 8 + 2× op de drop) + de SID. |
 | **C** | **Lyrics-floppy** (extra) | `out/friet_lyrics.prg` + `out/friet_lyrics.d64` | `make player` + `make disk` | `.d64` met de kale player: synced lyric-ticker + kick-strobe, geen bitmap. |
 
 Laden (alle disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
