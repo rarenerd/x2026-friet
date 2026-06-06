@@ -28,7 +28,6 @@
 .var scidx     = $9b      // scene index for the song-structure escalation arc
 .var colcyc    = $9c      // cube-colour rave-cycle phase (advances on every kick)
 .var msbacc    = $9e      // accumulates the per-sprite X-MSB bits for $D010
-.const DRIFTSTEP = 12     // precession speed (16-bit add/frame; lower = gentler)
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -256,32 +255,20 @@ irq_split:
     jmp $EA81
 
 // ---- fly: each sprite weaves its OWN Lissajous curve ------------------
-// Per sprite: two independent phase accumulators (angx/angy) advanced by
-// per-sprite speeds (dax/day). Different X:Y speed ratios -> 8 distinct
-// figure-8 / pretzel / star paths instead of one shared ellipse. A slow
-// common drift is added to the Y *index* (not stored) so every figure
-// precesses and the whole thing never sits still. X uses the full 9-bit
-// range (xlo + xhi -> $D010 MSB) so the cubes sweep the WHOLE width.
+// Per sprite: two phase accumulators (angx/angy) advanced EVERY frame by a
+// small per-sprite step (dax/day). Updating every frame = buttery smooth;
+// the different X:Y ratios give 8 distinct figure-8 / ellipse paths. X uses
+// the full 9-bit range (xlo + xhi -> $D010 MSB) so they sweep the WHOLE width.
 fly:
-    lda driftlo              // advance the 16-bit precession accumulator
-    clc
-    adc #DRIFTSTEP
-    sta driftlo
-    lda drifthi
-    adc #0
-    sta drifthi              // drifthi = current precession offset (index units)
     lda #0
     sta msbacc               // build the $D010 X-MSB byte as we go
     ldx #NSPR-1
 !f:
-    lda axlo,x               // X phase += dxlo (16-bit, fractional speed)
+    lda angx,x               // X phase += dax (every frame -> smooth)
     clc
-    adc dxlo,x
-    sta axlo,x
-    lda axhi,x
-    adc #0
-    sta axhi,x
-    tay                      // table index = integer part of the X phase
+    adc dax,x
+    sta angx,x
+    tay
     lda xlo,y                // low 8 bits of X -> sprite X register
     sta tmpx
     lda xhi,y                // bit 8 of X: fold into the MSB byte at bit #sprite
@@ -290,15 +277,10 @@ fly:
     ora bittab,x
     sta msbacc
 !nomsb:
-    lda aylo,x               // Y phase += dylo (16-bit, fractional speed)
+    lda angy,x               // Y phase += day
     clc
-    adc dylo,x
-    sta aylo,x
-    lda ayhi,x
-    adc #0
-    sta ayhi,x
-    clc
-    adc drifthi              // + precession (index only, not stored)
+    adc day,x
+    sta angy,x
     tay
     lda ytab,y
     sta tmpy
@@ -318,23 +300,15 @@ bittab: .byte 1,2,4,8,16,32,64,128
 
 // ---- spin: cycle each sprite's pointer through the 32 cube frames -----
 spin:
-    // spinbase = (16-bit frame / 16) mod 32 -> advance one rotation frame
-    // every 16 ticks (~10s per full 32-frame turn). Using the 16-bit counter
-    // keeps it smooth past frame_lo's 256 wrap (frame_lo alone can't go
-    // slower than /8 without snapping back mid-rotation).
+    // advance one rotation frame every 8 ticks (~5s per 32-frame turn).
+    // Only 32 frames exist, so slower = fewer fps = visibly choppier; /8 is
+    // the balance between "calm" and "smooth". frame_lo>>3 = 0..31 covers a
+    // full turn per frame_lo wrap with no mid-rotation snap-back.
     lda frame_lo
     lsr
     lsr
-    lsr
-    lsr                      // bits 4-7 of frame (high nibble of frame_lo)
+    lsr                      // frame_lo / 8  -> 0..31
     sta spinbase
-    lda frame_hi
-    and #1                   // bit 8 of frame -> spinbase bit 4
-    beq !sb+
-    lda spinbase
-    ora #16
-    sta spinbase
-!sb:
     ldx #NSPR-1
 !s:
     lda cube_ph,x            // each cube starts at a different rotation frame
@@ -474,18 +448,13 @@ lyric_tick:
 
 bordtab:    .byte $01,$07,$0a,$0e
 sprcol:     .byte $01,$07,$08,$0a,$0e,$03,$0d,$05  // 8 cube colours
-// Lissajous state (RAM, mutated each frame). Phase is 8.8 fixed point per
-// axis (axhi:axlo) so the per-frame step can be a fraction of one table
-// entry -> smooth, slow drift. axhi/ayhi seeded spread out; the dxlo:dylo
-// ratio sets the figure shape, the magnitude sets the (gentle) speed.
-axlo: .byte 0,0,0,0,0,0,0,0              // X phase, fractional byte
-axhi: .byte 0,32,64,96,128,160,192,224  // X phase, integer byte (= table index)
-aylo: .byte 0,0,0,0,0,0,0,0
-ayhi: .byte 64,96,128,160,192,224,0,32
-dxlo: .byte 48,72,64,96,40,80,88,66     // X speed (/256 of an index per frame)
-dylo: .byte 72,48,96,64,80,40,66,88     // Y speed (!= dxlo -> weave)
-driftlo: .byte 0                          // 16-bit precession accumulator
-drifthi: .byte 0
+// Lissajous state (RAM, advanced every frame -> smooth). angx/angy seeded
+// spread out; the dax:day ratio sets the figure shape. Small steps (1-2)
+// keep it calm; updating every frame keeps it fluid.
+angx: .byte 0,32,64,96,128,160,192,224  // X phase (= sine table index)
+angy: .byte 64,160,0,96,192,32,128,224
+dax:  .byte 1,2,1,2,1,1,2,1             // X step/frame
+day:  .byte 2,1,1,1,2,1,1,2             // Y step/frame (!= dax -> weave)
 // sine position tables (KickAss computes the sines at assemble time).
 // X spans 22..322 (full screen width incl. the 9th bit); split into low byte
 // + bit-8 table. Y spans 48..224 (top of the picture to the raster split).

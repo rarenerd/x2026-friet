@@ -39,7 +39,13 @@ for cy in range(25):
                 dist=math.hypot((x-GCX)/96.0,(y-GCY)/80.0)
                 b=max(0.0,1.0-dist)               # radial vignette brightness
                 if b<0.10:
-                    img[y,x]=0; continue
+                    # dark outer region: a sparse starfield (depth, not flat
+                    # black). Deterministic hash -> reproducible build.
+                    if b<0.08 and (x*73+y*151)%1009<12 and (x+y)%2==0:
+                        img[y,x]= WHITE if (x*y)%4==0 else CYAN
+                    else:
+                        img[y,x]=0
+                    continue
                 h=y/199.0                          # COOL (top) -> HOT (bottom)
                 if   h<0.16: cl,cd=CYAN,BLUE       # cool
                 elif h<0.30: cl,cd=BLUE,PURPLE
@@ -61,8 +67,8 @@ def thick(x0,y0,x1,y1,r,c,t0=0.0,t1=1.0):
     for i in range(n+1):
         t=i/n
         if t0<=t<=t1: disc(int(round(x0+(x1-x0)*t)),int(round(y0+(y1-y0)*t)),r,c)
-MX,MY,OX,OY=79,99,8,106
-thick(OX,OY,MX,MY,5,BROWN); thick(OX,OY,MX,MY,5,ORANGE,0,0.10)
+MX,MY,OX,OY=79,99,46,104          # shorter frikandel: start nearer the mouth
+thick(OX,OY,MX,MY,5,BROWN); thick(OX,OY,MX,MY,5,ORANGE,0,0.18)
 dx,dy=MX-OX,MY-OY; L=math.hypot(dx,dy); nx,ny=-dy/L,dx/L
 for i in range(0,int(L)-9,2):
     t=i/L; bx,by=OX+dx*t,OY+dy*t
