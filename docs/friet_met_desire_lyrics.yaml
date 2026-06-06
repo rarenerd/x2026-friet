@@ -61,11 +61,15 @@ lyrics:
   - {beat: 173.5, text: "knapperig en goudgeel"}
   - {beat: 177.5, text: "Friet met Desire"}
 
-  # Refrein 3 — climax
-  - {beat: 187.0, text: "Friet met Desire"}
-  - {beat: 191.0, text: "maag en zinnen gefrituurd"}
+  # Breakdown — de hook helemaal kaal: beat & bass eruit, alleen de stem
+  - {beat: 183.0, text: "Friet met Desire"}
+  - {beat: 187.0, text: "maag en zinnen gefrituurd"}
+
+  # Refrein 3 — DE DROP / climax (alles knalt terug, octaaf omhoog)
   - {beat: 195.0, text: "Friet met Desire"}
-  - {beat: 199.0, text: "MAYO maakt het af"}
+  - {beat: 199.0, text: "maag en zinnen gefrituurd"}
   - {beat: 203.0, text: "Friet met Desire"}
-  - {beat: 207.0, text: "friet & MAYO - deFEEST"}
-  - {beat: 211.0, text: "de sporthal gaat plat"}
+  - {beat: 207.0, text: "MAYO maakt het af"}
+  - {beat: 211.0, text: "Friet met Desire"}
+  - {beat: 215.0, text: "friet & MAYO - deFEEST"}
+  - {beat: 219.0, text: "de sporthal gaat plat"}

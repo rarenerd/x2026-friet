@@ -159,9 +159,10 @@ $(KOALA_KOA): FrietFromDesireMiep.kla $(TOOLS_DIR)/mix_koala.py
 	$(PYTHON) $(TOOLS_DIR)/mix_koala.py
 koala-art:
 	$(PYTHON) $(TOOLS_DIR)/make_koala.py
-# 32 rotation frames of the 3D cube, from the Spritemate .spm
+# 32 rotation frames of the 3D cube, from the Spritemate .spm. Lives at $4440
+# (just past the grown SID); the text screen moved to $5800 to make room.
 $(SRC_DIR)/player/sprite_cube.bin: $(TOOLS_DIR)/spm_to_sprites.py FinaLKjoep32.spm
-	$(PYTHON) $(TOOLS_DIR)/spm_to_sprites.py FinaLKjoep32.spm
+	$(PYTHON) $(TOOLS_DIR)/spm_to_sprites.py FinaLKjoep32.spm $@ 1
 $(KOALA_PRG): $(KOALA_KOA) $(SRC_DIR)/player/friet_koala.asm \
               $(SRC_DIR)/player/sprite_cube.bin $(SRC_DIR)/build_player.py $(FRIET_SID) \
               docs/friet_met_desire_lyrics.yaml

@@ -3,8 +3,8 @@
 // lyric ticker. Music on V-blank, border + sprite-launch on the kick.
 //
 // VIC bank 1 ($4000-$7FFF) memory map:
-//   $1000  SID body              $4400 cube sprites (ptrs 16..47)
-//   $4C00  text screen (ptr 3)   $5000 RAM font (charbase 2)
+//   $1000  SID body (reaches ~$442C)   $4440 cube sprites (ptrs 17..48)
+//   $5000  RAM font (charbase 2)       $5800 text screen (ptr 6)
 //   $5C00  bitmap colour screen + $5FF8 sprite pointers
 //   $6000  bitmap   $7F40 screen src   $8328 colour src   $8710 bg   $8720 lyrics
 //
@@ -32,7 +32,7 @@
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
-.const CUBE_PTR    = 16   // first cube frame = sprite pointer 16 ($4400)
+.const CUBE_PTR    = 17   // first cube frame = sprite pointer 17 ($4440)
 .const SPLIT = 225        // raster line: switch to text mode
 .const TOPL  = 251        // raster line: switch to bitmap + run the frame
 
@@ -111,21 +111,21 @@ entry:
     inx
     bne !cp-
 
-    // sprite pointers -> $4400 (ptr 16); text screen cleared to spaces.
+    // sprite pointers -> cube frame 0; text screen cleared to spaces.
     // Mirror to BOTH screens' pointer slots: a sprite that dips below the
-    // raster split is displayed while $D018=$34 (text screen $4C00), so its
-    // pointer is fetched from $4FF8 — without the mirror it reads garbage.
-    lda #16
+    // raster split is displayed while $D018=$64 (text screen $5800), so its
+    // pointer is fetched from $5BF8 — without the mirror it reads garbage.
+    lda #CUBE_PTR
     ldx #7
 !sp:
     sta $5FF8,x                  // bitmap-screen pointers ($5C00, above split)
-    sta $4FF8,x                  // text-screen pointers   ($4C00, below split)
+    sta $5BF8,x                  // text-screen pointers   ($5800, below split)
     dex
     bpl !sp-
     lda #$20                 // clear visible text rows 22..24 to spaces
     ldx #119
 !ct:
-    sta $4C00+22*40,x
+    sta $5800+22*40,x
     lda #$01                 // WHITE text on (soon) black -> clean, not MinVWS-grey
     sta $D800+22*40,x
     lda #$20
@@ -245,7 +245,7 @@ irq_split:
     sta $D011
     lda #$08                 // hires (MCM off)
     sta $D016
-    lda #$34                 // text screen $4C00, font $5000
+    lda #$64                 // text screen $5800, font $5000
     sta $D018
     lda #TOPL
     sta $D012
@@ -331,7 +331,7 @@ spin:
     clc
     adc #CUBE_PTR            // cube frames = sprite pointers CUBE_PTR..+
     sta $5FF8,x              // above the split (bitmap screen $5C00)
-    sta $4FF8,x              // below the split (text screen $4C00) — see init
+    sta $5BF8,x              // below the split (text screen $5800) — see init
     dex
     bpl !s-
     rts
@@ -362,11 +362,11 @@ cubepal: .byte $01,$07,$0a,$08,$0e,$03,$0d,$05,$0f,$07,$02,$0e,$0a,$04,$0d,$01
 // many cubes are enabled and whether they're 2x-stretched (climax). Resyncs
 // at the song-loop point so it stays aligned across loops.
 tick_scene:
-    lda frame_hi             // resync at the song loop (~3731 frames = $0E93)
-    cmp #$0E
+    lda frame_hi             // resync at the song loop (3886 frames = $0F2E)
+    cmp #$0F
     bcc !chk+
     lda frame_lo
-    cmp #$93
+    cmp #$2E
     bcc !chk+
     lda #0
     sta frame_lo
@@ -378,7 +378,7 @@ tick_scene:
     sta ly_hi
 !chk:
     ldx scidx
-    cpx #6
+    cpx #5
     bcs !set+                // past the last boundary
     lda frame_lo
     cmp sc_blo,x
@@ -389,16 +389,18 @@ tick_scene:
 !set:
     ldx scidx
     lda sc_mask,x
-    sta $D015                // cube count: 2 -> 4 -> 6 -> 8
+    sta $D015                // cube count (see sc_mask)
     lda sc_exp,x
-    sta $D017                // 2x stretch on the climax
+    sta $D017                // 2x stretch on the final drop
     sta $D01D
     rts
-// boundaries (frames @175bpm): 369,934,1508,2014,2563,3205
-sc_blo:  .byte $71,$A6,$E4,$DE,$03,$85
-sc_bhi:  .byte $01,$03,$05,$07,$0A,$0C
-sc_mask: .byte $03,$0F,$3F,$FF,$FF,$FF,$FF   // 2,4,6,8,8,8,8 cubes
-sc_exp:  .byte $00,$00,$00,$00,$00,$FF,$FF   // normal ... then 2x for the climax
+// Escalation tied to the song: build 2->4->6->8, hold 8 through chorus1/2,
+// COLLAPSE to 2 for the breakdown+build, then EXPLODE to 8 + 2x on the drop.
+// boundaries (frames @175bpm): 369,934,1509,3137(breakdown),3343(chorus3 drop)
+sc_blo:  .byte $71,$A6,$E5,$41,$0F
+sc_bhi:  .byte $01,$03,$05,$0C,$0D
+sc_mask: .byte $03,$0F,$3F,$FF,$03,$FF   // 2,4,6,8 | 2 (breakdown) | 8 (drop)
+sc_exp:  .byte $00,$00,$00,$00,$00,$FF   // normal ... then 2x only on the drop
 
 // ---- lyric ticker: write the current line into text row 23 -----------
 lyric_tick:
@@ -427,7 +429,7 @@ lyric_tick:
     lda #$20
     ldx #39
 !clr:
-    sta $4C00+23*40,x
+    sta $5800+23*40,x
     dex
     bpl !clr-
     lda #40
@@ -439,7 +441,7 @@ lyric_tick:
     ldx tmp_col
 !cp2:
     lda (ly_lo),y
-    sta $4C00+23*40,x
+    sta $5800+23*40,x
     iny
     inx
     dec tmp_len
@@ -479,9 +481,9 @@ xlo:  .fill 256, mod(sx(i),256)
 xhi:  .fill 256, floor(sx(i)/256)
 ytab: .fill 256, round(136 + 88*sin(toRadians(i*360/256)))
 
-*=$4400
+*=$4440
 spr_data:
-    .import binary "sprite_cube.bin"     // 32 rotation frames of a 3D cube (ptr 16..47)
+    .import binary "sprite_cube.bin"     // 32 rotation frames of a 3D cube (ptr 17..48)
 
 *=$1000
 sid_body:

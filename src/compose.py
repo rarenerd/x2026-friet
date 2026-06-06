@@ -168,8 +168,10 @@ def main():
         (117.5, 149.5, 'postchorus_nana'),
         (149.5, 153.5, 'breathe1'),   # 4-beat instrumental gap (drums + hook bass)
         ( 88.0, 117.5, 'chorus2'),    # reprise of chorus 1
-        (149.5, 153.5, 'breathe2'),   # 4-beat gap
-        ( 88.0, 117.5, 'chorus3'),    # reprise of chorus 1 (octave-up climax)
+        ( 88.0,  96.0, 'breakdown'),  # THE BREAKDOWN: hook stripped bare, beat
+                                      # + bass drop out (8 beats of tension)
+        (149.5, 153.5, 'breathe2'),   # snare-roll build back up to the drop
+        ( 88.0, 117.5, 'chorus3'),    # THE DROP: full kit + octave-up climax
     ]
     out_offsets = []
     cur = 0.0
@@ -248,6 +250,7 @@ def main():
             'postchorus_nana': 0x20,
             'breathe1':        0x20,
             'chorus2':         0x40,  # pulse -- distinct reprise 2 (clean, loud)
+            'breakdown':       0x10,  # triangle -- the hook naked & soft in the gap
             'breathe2':        0x40,
             'chorus3':         0x20,  # saw -- fat & clear for the climactic final
                                       # (was $50 tri+pulse: AND-combine = thin,
@@ -312,6 +315,7 @@ def main():
             for s_b, d_b, pitch in organ:
                 d = max(0.1, d_b)
                 for out_b, label in remap(s_b):
+                    if label == 'breakdown': continue   # bass drops out too
                     bass_events.append({
                         'frame': grid_frame(out_b),
                         'note':  38,  # D2 always (organ is D-pedal)
@@ -322,6 +326,7 @@ def main():
             for s_b, d_b, pitch in t5:
                 d = max(0.1, d_b)
                 for out_b, label in remap(s_b):
+                    if label == 'breakdown': continue   # bass drops out too
                     bass_events.append({
                         'frame': grid_frame(out_b),
                         'note':  int(pitch),
@@ -332,6 +337,7 @@ def main():
             for s_b, d_b, pitch in t11:
                 d = max(0.1, d_b)
                 for out_b, label in remap(s_b):
+                    if label == 'breakdown': continue   # bass drops out too
                     bass_events.append({
                         'frame': grid_frame(out_b),
                         'note':  int(pitch) - 12,
@@ -418,6 +424,7 @@ def main():
                 'postchorus_nana': 3,
                 'breathe1':        1,   # kick only; the snare roll fills the rest
                 'chorus2':         3,
+                'breakdown':       0,   # beat drops out entirely — the breakdown
                 'breathe2':        1,
                 'chorus3':         3,
             }
@@ -467,6 +474,9 @@ def main():
                     'kind': 'crash',
                     'frame': grid_frame(out_s),
                 })
+            # (No crash inside the breakdown: it must breathe quiet. The riser
+            # into chorus3 — added by the chorus-riser loop above, 3 beats before
+            # the drop — does the build; the drop crash slams on chorus3.)
             # Reprise energy push: the BREATHE bars before chorus2/3 get a
             # full-length 16th-note snare roll stacked on top of the still-
             # driving kit — a relentless build into the drop (no dead air;
