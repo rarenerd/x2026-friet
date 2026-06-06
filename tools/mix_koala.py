@@ -46,6 +46,12 @@ for y0 in range(H):
         if len(comp)<24:
             for (yy,xx) in comp: img[yy,xx]=0
 
+# The crest's white tip pokes up into the dark nebula as an ugly bright white
+# bar. Tint the white in that region to grey so it blends into Miep's head.
+for yy in range(8,46):
+    for xx in range(84,99):
+        if img[yy,xx]==WHITE: img[yy,xx]=GREY
+
 # ---- background: a cool, moody nebula halo behind the dragon ------------
 # A bright rainbow "sunburst" fought Miep's multicolour crest; a dark cool
 # halo (lavender -> purple -> indigo -> black) makes the dragon + the white
