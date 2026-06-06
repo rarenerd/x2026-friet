@@ -136,11 +136,11 @@ we know T7 is genuinely the vocal melody and not a counter-line.
     the lyric bar). Write the background colour first, at the top of the line.
 15. **Sprites crossing a `$D018`-switching raster split need their pointers
     mirrored to BOTH screens.** The split flips `$D018` from `$78` (bitmap
-    screen `$5C00` → pointers `$5FF8`) to `$34` (text screen `$4C00` →
-    pointers `$4FF8`). A sprite whose Y dips below the split is displayed
-    while `$D018=$34`, so the VIC fetches its pointer from `$4FF8`; if you
+    screen `$5C00` → pointers `$5FF8`) to `$64` (text screen `$5800` →
+    pointers `$5BF8`). A sprite whose Y dips below the split is displayed
+    while `$D018=$64`, so the VIC fetches its pointer from `$5BF8`; if you
     only wrote `$5FF8` it reads garbage and the sprite shows corruption.
-    `spin` (and init) write the cube pointers to both `$5FF8` and `$4FF8`.
+    `spin` (and init) write the cube pointers to both `$5FF8` and `$5BF8`.
     (This only surfaced once the cubes' Y range was widened to reach the
     split — before that they never entered the text region.)
 
@@ -161,11 +161,17 @@ then assembles three players via the shared `assemble()` helper
 - **VIC bank 1**; memory map is documented at the top of the .asm. RAM
   font copied from char ROM `$D800` → `$5000` (char ROM isn't visible in
   bank 1).
-- **8 hardware sprites = flying spinning cubes.** `fly` orbits each via
-  `xtab`/`ytab` sine tables; `spin` cycles the sprite pointer through the
-  32 cube frames. `tick_scene` is the song-structure escalation arc
-  (2→4→6→8 cubes via `$D015`, then 2× stretch via `$D017/$D01D` on the
-  climax), keyed off the frame counter and resynced at the song loop.
+- **Arrangement has a breakdown→drop.** Before the climax `chorus3`,
+  an 8-beat `breakdown` segment drops drums + bass (just the naked hook),
+  then `breathe2` builds (snare roll + riser), then `chorus3` slams in full
+  + octave-up. The cube escalation mirrors it: collapse to 2, explode to
+  8 + 2× on the drop. If you change the song length, retune the asm loop
+  point + `sc_*` boundaries (they're frames; current length 3886 = `$0F2E`).
+- **8 hardware sprites = flying spinning cubes.** `fly` weaves each on its
+  own Lissajous curve (8.8 fixed-point phase accumulators, per-sprite X:Y
+  speeds, slow precession; 9-bit X via `$D010`); `spin` cycles the pointer
+  through the 32 cube frames. `tick_scene` drives the escalation arc above,
+  keyed off the frame counter and resynced at the song loop.
 
 ## Where to start
 

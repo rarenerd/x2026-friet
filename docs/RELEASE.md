@@ -11,18 +11,18 @@
   (standalone C64 player with lyric ticker)
 - **Chip:** MOS 8580 (PAL, 985 248 Hz) — PSID flags `0x0024`
 - **Player:** 50 Hz IRQ, init at $1000, play at $1003
-- **Length:** **1:14** release build (175 BPM); **1:48** song-faithful
+- **Length:** **1:18** release build (175 BPM, incl. the breakdown); **1:48** song-faithful
   workstage at 120 BPM; loops on reaching the end. See "Structure" below.
 
 ## Deliverables — wat we inleveren op X2026
 
 **Muziek-compo = puur geluid**; de visuele versies zijn aparte producties.
-Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:14**.
+Chip: **MOS 8580 / PAL** (PSID flags `$0024`), lengte **1:18**.
 
 | # | Inzending | Bestand(en) | Bouwen | Inhoud |
 |---|-----------|-------------|--------|--------|
 | **A** | **Muziek-compo** (pure audio) | `out/Friet_met_Desire-deFEEST.sid` + `out/friet_compo.prg` + `out/friet_compo.d64` | `make compo` | PSID v2 + draaibare player met **statisch credit-scherm** — géén ticker/strobe (0 VIC-writes in de SID-body). De `.d64` bevat de player én de rauwe `.sid`. |
-| **B** | **Demo** (one-file) | `out/friet.prg` + `out/friet.d64` | `make koala` | Full-screen multicolor-bitmap van de draak **Miep** (warme glow-vignette + frikandel speciaal in z'n bek) + **8 vliegende/draaiende 3D-kubussen** (hardware-sprites) + een **raster-split lyric-ticker** + een song-structuur-escalatie (2→4→6→8 kubussen, 2× stretch op de climax) + de SID. |
+| **B** | **Demo** (one-file) | `out/friet.prg` + `out/friet.d64` | `make koala` | Full-screen multicolor-bitmap van de draak **Miep** (warme glow-vignette + frikandel speciaal in z'n bek) + **8 vliegende/draaiende 3D-kubussen** (hardware-sprites, eigen Lissajous-banen, rave-kleur op de kick) + een **raster-split lyric-ticker** + een **breakdown→drop** (beat & bass eruit, kubussen klappen in naar 2, dan knallen ze naar 8 + 2× op de drop) + de SID. |
 | **C** | **Lyrics-floppy** (extra) | `out/friet_lyrics.prg` + `out/friet_lyrics.d64` | `make player` + `make disk` | `.d64` met de kale player: synced lyric-ticker + kick-strobe, geen bitmap. |
 
 Laden (alle disks): `LOAD"FRIET MET DESIRE",8,1` → `RUN`.
@@ -65,8 +65,11 @@ source MIDI to fit the happy-hardcore arrangement:
 
 Breathe segments are 4-beat instrumental gaps (drums + T11 hook bass keep
 going, no vocal) so each chorus reprise gets room to breathe before the
-next one hits. Total loop: **1:48** at 120 BPM workstage, **1:14** at
-175 BPM release.
+next one hits. Before the final chorus there's a proper **breakdown**: an
+8-beat segment where drums AND bass drop out entirely (just the naked hook),
+then the breathe-roll + riser builds, then chorus3 **drops** in full with
+the octave-up climax. Total loop: **1:48** at 120 BPM workstage, **1:18** at
+175 BPM release (incl. the breakdown).
 
 Each chorus reprise (#6 and #7) replays the same source range as Chorus 1,
 so the vocal + bass + drum events are bar-for-bar identical. A synthetic

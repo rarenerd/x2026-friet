@@ -37,8 +37,8 @@ De part claimt vrijwel de hele machine. Statische data + code:
 ```
 $0801–$080F  BASIC-stub (SYS 2064)
 $0810–...    code
-$1000–$43C5  SID body          (init $1000, play $1003)
-$4400–$4BFF  sprite_cube       (32 rotatieframes, ptrs 16..47)
+$1000–$442C  SID body          (init $1000, play $1003; groeide met de breakdown)
+$4440–$4C3F  sprite_cube       (32 rotatieframes, ptrs 17..48)
 $6000–$7F3F  koala_bitmap      (8000 b)
 $7F40–$8327  koala_screen src  (1000 b, wordt naar $5C00 gekopieerd)
 $8328–$870F  koala_color src   (1000 b, wordt naar $D800 gekopieerd)
@@ -49,13 +49,12 @@ $8720–$8B84  lyric_table       (+ $FF,$FF,$00 sentinel)
 Runtime-scratch (NIET in de .prg, wordt door de init geschreven):
 
 ```
-$4C00–$4FFF  tekstscherm (lyric-rows 22..24)
 $5000–$57FF  RAM-font    (gekopieerd uit char-ROM $D800 — char-ROM is
                           onzichtbaar in VIC-bank 1, vandaar)
-$5800–$5BFF  VRIJ (1KB)  ← was interlace screen B, nu ongebruikt
+$5800–$5BFF  tekstscherm (lyric-rows 22..24) + $5BF8 sprite-pointers
 $5C00–$5FFF  bitmap-kleurscherm + $5FF8 sprite-pointers
 $D800–$DBFF  colour-RAM
-ZP: $90–$9C, $A0–$A3
+ZP: $90–$9E, $A0–$A3
 ```
 
 Hard claims die met de host botsen:
@@ -143,11 +142,10 @@ Heb je een echte part-keten met transitions nodig, dan pas **B**.
 - **Naadloze SID-loop of harde cut?** → **Harde cut, en dat ís het.** Bij de
   `SPACE`-press silencet de egg de SID (`$D400–$D418` op nul) en friet start
   z'n eigen muziek + ticker vanaf het begin. Geen naadloze overgang nodig.
-- **De vrije 1KB op `$5800`?** → **Blijft van friet.** Kloot claimt het niet
-  en raakt friet's layout nergens aan (decruncht byte-exact `friet.prg`).
-  ⚠️ Adres-coïncidentie ter info: de host parkeert de exomizer-crunched
-  friet (~6.8K) tijdelijk op `$5800` in de end-part, maar de decrunch
-  overschrijft die stash meteen met friet's eigen data — **geen conflict**.
-  Ga ik `$5800` in friet vullen, dan komt het gewoon mee in de re-crunch;
-  als de naam-overlap dan verwarrend wordt, kan Kloot z'n host-stash
-  verparken (kleine wijziging). Tot die tijd: niks aan de hand.
+- **`$5800`?** → **Wordt nu door friet GEBRUIKT** (tekstscherm, sinds de
+  breakdown: de langere SID groeide tot `$442C` en duwde de 32-frame
+  cube-sheet naar `$4440`). Kloot claimt `$5800` niet en raakt friet's layout
+  nergens aan (decruncht byte-exact `friet.prg`). ⚠️ Adres-coïncidentie ter
+  info: de host parkeert de exomizer-crunched friet (~6.8K) tijdelijk op
+  `$5800` in de end-part, maar de decrunch overschrijft die stash meteen met
+  friet's eigen data — **geen conflict**, friet mag `$5800` gewoon gebruiken.
