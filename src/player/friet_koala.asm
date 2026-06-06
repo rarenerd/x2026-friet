@@ -320,7 +320,9 @@ bittab: .byte 1,2,4,8,16,32,64,128
 spin:
     lda frame_lo
     lsr
-    lsr                      // advance one rotation frame every 4 ticks
+    lsr
+    lsr                      // advance one rotation frame every 8 ticks
+                            // (~5s per full 32-frame turn; was hurried at /4)
     sta spinbase
     ldx #NSPR-1
 !s:
