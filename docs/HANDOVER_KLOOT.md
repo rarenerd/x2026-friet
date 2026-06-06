@@ -5,6 +5,8 @@
 **Doel:** de nieuwe one-file friet-demo inharken als **hidden part** in
 `outline26-claude-c64` ("Kloten met de broodtrommel").
 **Datum:** 2026-06-06
+**Status:** ✅ GEÏNTEGREERD (Kloot, 2026-06-06) — Strategy A, harde cut.
+Zie §3 en §6 voor de afgesproken contractdetails.
 
 ---
 
@@ -64,7 +66,14 @@ Hard claims die met de host botsen:
 
 ---
 
-## 3. Integratie-strategie — kies er één
+## 3. Integratie-strategie — ✅ GEKOZEN: A (takeover)
+
+> **Afgesproken (Kloot):** Strategy A. De egg decruncht friet byte-exact
+> naar `$0801`, doet een KERNAL cold-boot (IOINIT/RESTOR/CINT) en
+> `JMP $0810` — friet pakt daarna de hele machine. Eénrichtingsverkeer:
+> `SPACE` tijdens de credits → friet draait tot een reset. **Geen** refactor
+> naar losse init/driver; friet blijft één self-contained `.prg`. Strategy B
+> hieronder is dus NIET van toepassing (bewaard voor het geval ooit nodig).
 
 ### A. Takeover (snel, aanbevolen voor een hidden part)
 Laad `friet.prg` als los bestand en spring erin met `JMP $0810` (sla de
@@ -127,11 +136,18 @@ Heb je een echte part-keten met transitions nodig, dan pas **B**.
 
 ---
 
-## 6. Vragen / open punten
+## 6. Vragen / open punten — ✅ BEANTWOORD (Kloot, 2026-06-06)
 
-- Wil je de part als **volledige takeover** of moet 'ie terugkeren naar de
-  host-keten? (Bepaalt A vs B.)
-- Moet de SID-loop **naadloos** doorlopen onder een langere part-keten, of
-  is een harde cut bij de transition oké?
-- De 1KB op `$5800` is nu vrij — claim 'm gerust als je host daar iets
-  kwijt moet, maar laat het weten zodat ik 'm niet per ongeluk terugpak.
+- **Takeover of terugkeer?** → **Volledige takeover, geen terugkeer.**
+  Strategy A (zie §3). friet hoeft niks van de demo-keten te weten.
+- **Naadloze SID-loop of harde cut?** → **Harde cut, en dat ís het.** Bij de
+  `SPACE`-press silencet de egg de SID (`$D400–$D418` op nul) en friet start
+  z'n eigen muziek + ticker vanaf het begin. Geen naadloze overgang nodig.
+- **De vrije 1KB op `$5800`?** → **Blijft van friet.** Kloot claimt het niet
+  en raakt friet's layout nergens aan (decruncht byte-exact `friet.prg`).
+  ⚠️ Adres-coïncidentie ter info: de host parkeert de exomizer-crunched
+  friet (~6.8K) tijdelijk op `$5800` in de end-part, maar de decrunch
+  overschrijft die stash meteen met friet's eigen data — **geen conflict**.
+  Ga ik `$5800` in friet vullen, dan komt het gewoon mee in de re-crunch;
+  als de naam-overlap dan verwarrend wordt, kan Kloot z'n host-stash
+  verparken (kleine wijziging). Tot die tijd: niks aan de hand.
