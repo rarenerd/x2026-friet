@@ -50,7 +50,6 @@ for y0 in range(H):
 # Only repaint cells that are entirely "empty" (all index 0), so the dragon
 # stays untouched and no cell gains a 5th colour.
 GCX,GCY=84,80            # glow centre (behind the dragon's head)
-bgcells=set()            # cells we paint -> the light-bomb cycles their colour
 for cy in range(25):
     for cx in range(40):
         blk=img[cy*8:cy*8+8, cx*4:cx*4+4]
@@ -61,7 +60,6 @@ for cy in range(25):
         # dragon cells (their interior black is detail) are left alone.
         if (blk==0).mean() < 0.55:
             continue
-        bgcells.add((cy,cx))
         for r in range(8):
             for p in range(4):
                 x=cx*4+p; y=cy*8+r
@@ -152,21 +150,10 @@ for cy in range(25):
         vals,counts=np.unique(block,return_counts=True)
         nb=sorted([(int(v),int(n)) for v,n in zip(vals,counts) if v!=BG],key=lambda z:-z[1])
         chosen=[v for v,_ in nb[:3]]; code={BG:0}
-        if (cy,cx) in bgcells and chosen:
-            # background cell: put the DOMINANT colour in colour-RAM (%11) so
-            # the light-bomb can recolour most of the cell by writing $D800.
-            # Static look is identical (same colour per pixel, different plane).
-            code[chosen[0]]=3
-            if len(chosen)>1: code[chosen[1]]=1
-            if len(chosen)>2: code[chosen[2]]=2
-            fb=chosen[0]
-            screen[cy*40+cx]=((chosen[1] if len(chosen)>1 else 0)<<4)|(chosen[2] if len(chosen)>2 else 0)
-            colram[cy*40+cx]=chosen[0]
-        else:
-            for i,c in enumerate(chosen): code[c]=i+1
-            fb=chosen[0] if chosen else BG
-            screen[cy*40+cx]=((chosen[0] if chosen else 0)<<4)|(chosen[1] if len(chosen)>1 else 0)
-            colram[cy*40+cx]=(chosen[2] if len(chosen)>2 else 0)
+        for i,c in enumerate(chosen): code[c]=i+1
+        fb=chosen[0] if chosen else BG
+        screen[cy*40+cx]=((chosen[0] if chosen else 0)<<4)|(chosen[1] if len(chosen)>1 else 0)
+        colram[cy*40+cx]=(chosen[2] if len(chosen)>2 else 0)
         for r in range(8):
             byte=0
             for p in range(4): byte=(byte<<2)|code.get(int(block[r,p]),code.get(fb,0))
@@ -177,17 +164,6 @@ for nm,dt in [('koala_bitmap.bin',bitmap),('koala_screen.bin',screen),
               ('koala_color.bin',colram)]:
     open(os.path.join(PLAYER,nm),'wb').write(bytes(dt))
 open(os.path.join(PLAYER,'koala_bg.bin'),'wb').write(bytes([BG]))
-
-# ---- light-bomb ring table (1024 bytes, parallel to colour-RAM) -------
-# Per cell: RING value (distance from the head) so the player's per-frame
-# colour cycle radiates outward like an expanding light burst. Non-background
-# cells get $FF = "skip" (the dragon keeps its colours). The player walks all
-# 4 colour-RAM pages and rewrites only the ring!=$FF cells.
-ring=bytearray([0xFF]*1024)
-for (cy,cx) in bgcells:
-    ring[cy*40+cx]=int(math.hypot(cx*4+2-GCX, cy*8+4-GCY)/9.0)&15
-open(os.path.join(PLAYER,'lightbomb.bin'),'wb').write(bytes(ring))
-print(f"  light-bomb: {len(bgcells)} bg cells animated")
 print("wrote out/friet.koa + player bins")
 PEPTO=[(0,0,0),(255,255,255),(136,57,50),(103,182,189),(139,63,150),(85,160,73),(64,49,141),
  (191,206,114),(139,84,41),(87,66,0),(184,105,98),(80,80,80),(120,120,120),(148,224,137),(120,105,196),(159,159,159)]
