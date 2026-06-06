@@ -79,6 +79,36 @@ for i in range(0,int(L)-9,2):
         if 0<=ox<W and 0<=oy<H: img[oy,ox]=WHITE
 disc(60,94,4,WHITE); disc(55,96,3,WHITE)     # mayo
 
+# ---- ornaments: the white swirls from cigar-Harry -----------------------
+# LegerZuigtPenisCroLLer.kla has decorative white spirals in its left/right
+# margins. Miep only fills the centre, so we stamp those swirls into our side
+# margins (over the glow) — same crew art, no clash (white over background).
+HARRY=os.path.join(BASE,'LegerZuigtPenisCroLLer.kla')
+hd=open(HARRY,'rb').read(); hbm=hd[2:8002]; hscr=hd[8002:9002]; hcol=hd[9002:10002]; hBG=hd[10002]
+harry=np.zeros((H,W),np.uint8)
+for cy in range(25):
+    for cx in range(40):
+        s=hscr[cy*40+cx]; c=hcol[cy*40+cx]; pal=[hBG,s>>4,s&0xF,c&0xF]
+        for r in range(8):
+            byte=hbm[cy*320+cx*8+r]
+            for p in range(4): harry[cy*8+r,cx*4+p]=pal[(byte>>(6-2*p))&3]
+for y in range(0,176):
+    for x in range(W):
+        if (x<38 or x>=122) and harry[y,x]==WHITE:   # side margins only (clear of Miep)
+            img[y,x]=WHITE
+
+# ---- a little bag of fries (patat) bottom-centre, under the dragon ------
+FX,FY=92,168                                   # cone tip
+for i in range(-7,8):                          # red-white paper cone
+    h=8-abs(i)//1
+    for yy in range(FY-h,FY+1):
+        if 0<=FY-(FY-yy)<H and 0<=FX+i<W:
+            img[yy,FX+i]= RED if (i+yy)%3 else WHITE
+for k,fx in enumerate(range(FX-6,FX+7,3)):     # yellow fries sticking out
+    for yy in range(FY-8-(6+ (k%3)*3), FY-6):
+        if 0<=yy<176 and 0<=fx<W: img[yy,fx]=YELLOW
+        if 0<=yy<176 and 0<=fx+1<W: img[yy,fx+1]=ORANGE if yy==FY-9 else YELLOW
+
 # Black out the rows hidden behind / right under the lyric bar (the glow has
 # already faded to near-black here): keeps the seam clean.
 img[176:H, :] = 0
