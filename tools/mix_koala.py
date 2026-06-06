@@ -24,38 +24,45 @@ for cy in range(25):
             byte=bm[cy*320+cx*8+r]
             for p in range(4): img[cy*8+r,cx*4+p]=pal[(byte>>(6-2*p))&3]
 
-# ---- nicer background: blue glow-vignette behind the dragon ------------
-# Only repaint cells that are entirely "empty" (all index 0 = black), so the
-# dragon stays untouched and no cell gains a 5th colour.
-GCX,GCY=84,86            # glow centre (roughly the dragon's heart)
+# ---- background: a cool, moody nebula halo behind the dragon ------------
+# A bright rainbow "sunburst" fought Miep's multicolour crest; a dark cool
+# halo (lavender -> purple -> indigo -> black) makes the dragon + the white
+# swirls pop instead. Concentric (radial) hue + clean Bayer dither = strak.
+# Only repaint cells that are entirely "empty" (all index 0), so the dragon
+# stays untouched and no cell gains a 5th colour.
+GCX,GCY=84,80            # glow centre (behind the dragon's head)
 for cy in range(25):
     for cx in range(40):
         blk=img[cy*8:cy*8+8, cx*4:cx*4+4]
-        if not np.all(blk==0):       # not a pure-black background cell -> skip
+        # Fill any cell that's MOSTLY black (incl. the cells between the
+        # dragon's hair spikes) — only the black pixels, the dragon's own
+        # pixels stay. This kills the black-triangle gaps that came from
+        # cowardly skipping every cell with a stray dragon pixel. Dense
+        # dragon cells (their interior black is detail) are left alone.
+        if (blk==0).mean() < 0.55:
             continue
         for r in range(8):
             for p in range(4):
                 x=cx*4+p; y=cy*8+r
-                dist=math.hypot((x-GCX)/96.0,(y-GCY)/80.0)
-                b=max(0.0,1.0-dist)               # radial vignette brightness
-                if b<0.10:
+                if img[y,x]!=0:       # keep the dragon's own pixels
+                    continue
+                dist=math.hypot((x-GCX)/98.0,(y-GCY)/86.0)
+                b=max(0.0,1.0-dist)               # radial halo brightness
+                if b<0.14:
                     # dark outer region: a sparse starfield (depth, not flat
                     # black). Deterministic hash -> reproducible build.
-                    if b<0.08 and (x*73+y*151)%1009<12 and (x+y)%2==0:
-                        img[y,x]= WHITE if (x*y)%4==0 else CYAN
+                    if (x*73+y*151)%1009<11 and (x+y)%2==0:
+                        img[y,x]= WHITE if (x*y)%7==0 else CYAN
                     else:
                         img[y,x]=0
                     continue
-                h=y/199.0                          # COOL (top) -> HOT (bottom)
-                if   h<0.16: cl,cd=CYAN,BLUE       # cool
-                elif h<0.30: cl,cd=BLUE,PURPLE
-                elif h<0.45: cl,cd=PURPLE,LRED     # halverwege: cool<->hot bridge (magenta)
-                elif h<0.59: cl,cd=LRED,ORANGE
-                elif h<0.73: cl,cd=ORANGE,YELLOW   # hot
-                else:        cl,cd=YELLOW,WHITE
-                # ordered-dither the two hue colours; vignette fades to black
-                if b<0.26: img[y,x]= cd if (b*2.4)>BAYER[y&3,x&3] else 0
-                else:      img[y,x]= cl if (b*1.25)>BAYER[y&3,x&3] else cd
+                # concentric cool gradient; pairs chain on a shared colour so
+                # the band seams are invisible. Stays dark (no bright hues).
+                if   b>0.62: cl,cd=LBLUE,PURPLE   # soft lavender core
+                elif b>0.42: cl,cd=PURPLE,BLUE
+                elif b>0.26: cl,cd=BLUE,DGREY
+                else:        cl,cd=DGREY,0        # fade to black
+                img[y,x]= cl if b>BAYER[y&3,x&3] else cd
 
 # ---- frikandel speciaal into the dragon's mouth (rows ~96-100) ---------
 def disc(cx,cy,r,c):
