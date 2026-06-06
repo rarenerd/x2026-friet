@@ -134,6 +134,15 @@ we know T7 is genuinely the vocal melody and not a counter-line.
     `$D011/$D016/$D018` in `irq_split`, it changes too late in the line and
     the grey leaks onto the right of the split scanline (loose pixels above
     the lyric bar). Write the background colour first, at the top of the line.
+15. **Sprites crossing a `$D018`-switching raster split need their pointers
+    mirrored to BOTH screens.** The split flips `$D018` from `$78` (bitmap
+    screen `$5C00` → pointers `$5FF8`) to `$34` (text screen `$4C00` →
+    pointers `$4FF8`). A sprite whose Y dips below the split is displayed
+    while `$D018=$34`, so the VIC fetches its pointer from `$4FF8`; if you
+    only wrote `$5FF8` it reads garbage and the sprite shows corruption.
+    `spin` (and init) write the cube pointers to both `$5FF8` and `$4FF8`.
+    (This only surfaced once the cubes' Y range was widened to reach the
+    split — before that they never entered the text region.)
 
 ## Demo player (`src/player/friet_koala.asm`)
 

@@ -27,6 +27,8 @@
 .var tmpy      = $9a
 .var scidx     = $9b      // scene index for the song-structure escalation arc
 .var colcyc    = $9c      // cube-colour rave-cycle phase (advances on every kick)
+.var drift     = $9d      // slow common precession added to the Lissajous Y index
+.var msbacc    = $9e      // accumulates the per-sprite X-MSB bits for $D010
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -109,11 +111,15 @@ entry:
     inx
     bne !cp-
 
-    // sprite pointers -> $4400 (ptr 16); text screen cleared to spaces
+    // sprite pointers -> $4400 (ptr 16); text screen cleared to spaces.
+    // Mirror to BOTH screens' pointer slots: a sprite that dips below the
+    // raster split is displayed while $D018=$34 (text screen $4C00), so its
+    // pointer is fetched from $4FF8 — without the mirror it reads garbage.
     lda #16
     ldx #7
 !sp:
-    sta $5FF8,x                  // sprite pointers (bitmap screen $5C00)
+    sta $5FF8,x                  // bitmap-screen pointers ($5C00, above split)
+    sta $4FF8,x                  // text-screen pointers   ($4C00, below split)
     dex
     bpl !sp-
     lda #$20                 // clear visible text rows 22..24 to spaces
@@ -249,28 +255,57 @@ irq_split:
     sta $0315
     jmp $EA81
 
-// ---- fly: each sprite orbits an ellipse (sine paths) ------------------
+// ---- fly: each sprite weaves its OWN Lissajous curve ------------------
+// Per sprite: two independent phase accumulators (angx/angy) advanced by
+// per-sprite speeds (dax/day). Different X:Y speed ratios -> 8 distinct
+// figure-8 / pretzel / star paths instead of one shared ellipse. A slow
+// common drift is added to the Y *index* (not stored) so every figure
+// precesses and the whole thing never sits still. X uses the full 9-bit
+// range (xlo + xhi -> $D010 MSB) so the cubes sweep the WHOLE width.
 fly:
-    ldy #NSPR-1
-!f:
     lda frame_lo
+    lsr
+    lsr                      // drift = frame_lo/4 (gentle precession)
+    sta drift
+    lda #0
+    sta msbacc               // build the $D010 X-MSB byte as we go
+    ldx #NSPR-1
+!f:
+    lda angx,x               // X axis: Lissajous accumulator
     clc
-    adc phtab,y              // per-sprite orbit phase
-    tax                      // X = angle index 0..255
-    lda xtab,x
+    adc dax,x
+    sta angx,x
+    tay
+    lda xlo,y                // low 8 bits of X -> sprite X register
     sta tmpx
-    lda ytab,x
+    lda xhi,y                // bit 8 of X: fold into the MSB byte at bit #sprite
+    beq !nomsb+
+    lda msbacc
+    ora bittab,x
+    sta msbacc
+!nomsb:
+    lda angy,x               // Y axis: accumulator...
+    clc
+    adc day,x
+    sta angy,x
+    clc
+    adc drift                // ...plus precession drift (index only)
+    tay
+    lda ytab,y
     sta tmpy
-    tya
+    txa
     asl
-    tax                      // X = 2*i (sprite register offset)
+    tay                      // Y = 2*i (sprite register offset)
     lda tmpx
-    sta $D000,x
+    sta $D000,y
     lda tmpy
-    sta $D001,x
-    dey
+    sta $D001,y
+    dex
     bpl !f-
+    lda msbacc
+    sta $D010                // commit all 8 X-MSB bits at once
     rts
+bittab: .byte 1,2,4,8,16,32,64,128
 
 // ---- spin: cycle each sprite's pointer through the 32 cube frames -----
 spin:
@@ -286,7 +321,8 @@ spin:
     and #CUBE_MASK
     clc
     adc #CUBE_PTR            // cube frames = sprite pointers CUBE_PTR..+
-    sta $5FF8,x
+    sta $5FF8,x              // above the split (bitmap screen $5C00)
+    sta $4FF8,x              // below the split (text screen $4C00) — see init
     dex
     bpl !s-
     rts
@@ -410,10 +446,20 @@ lyric_tick:
 
 bordtab:    .byte $01,$07,$0a,$0e
 sprcol:     .byte $01,$07,$08,$0a,$0e,$03,$0d,$05  // 8 cube colours
-phtab:      .byte 0,32,64,96,128,160,192,224       // orbit phase per sprite (8)
-// elliptical orbit position tables (KickAss computes the sines at assemble time)
-xtab: .fill 256, round(140 + 112*sin(toRadians((i+64)*360/256)))
-ytab: .fill 256, round(104 + 80*sin(toRadians(i*360/256)))
+// Lissajous state (RAM, mutated each frame): per-sprite phase accumulators
+// seeded spread out, and per-sprite X/Y speeds. The (dax:day) ratio sets the
+// shape — coprime pairs give the prettiest figures; mixed speeds give variety.
+angx: .byte 0,32,64,96,128,160,192,224
+angy: .byte 64,96,128,160,192,224,0,32
+dax:  .byte 1,2,2,3,1,3,3,4              // X speed per sprite
+day:  .byte 2,1,3,2,3,1,4,3              // Y speed per sprite (!= dax -> weave)
+// sine position tables (KickAss computes the sines at assemble time).
+// X spans 22..322 (full screen width incl. the 9th bit); split into low byte
+// + bit-8 table. Y spans 48..224 (top of the picture to the raster split).
+.function sx(a) { .return round(172 + 150*sin(toRadians(a*360/256))) }
+xlo:  .fill 256, mod(sx(i),256)
+xhi:  .fill 256, floor(sx(i)/256)
+ytab: .fill 256, round(136 + 88*sin(toRadians(i*360/256)))
 
 *=$4400
 spr_data:
