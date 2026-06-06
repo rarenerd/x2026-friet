@@ -27,8 +27,8 @@
 .var tmpy      = $9a
 .var scidx     = $9b      // scene index for the song-structure escalation arc
 .var colcyc    = $9c      // cube-colour rave-cycle phase (advances on every kick)
-.var drift     = $9d      // slow common precession added to the Lissajous Y index
 .var msbacc    = $9e      // accumulates the per-sprite X-MSB bits for $D010
+.const DRIFTSTEP = 12     // precession speed (16-bit add/frame; lower = gentler)
 .const NSPR  = 8        // all 8 hardware sprites = 8 flying cubes
 .const CUBE_FRAMES = 32   // rotation frames in sprite_cube.bin (must be power of 2)
 .const CUBE_MASK   = CUBE_FRAMES-1
@@ -263,19 +263,25 @@ irq_split:
 // precesses and the whole thing never sits still. X uses the full 9-bit
 // range (xlo + xhi -> $D010 MSB) so the cubes sweep the WHOLE width.
 fly:
-    lda frame_lo
-    lsr
-    lsr                      // drift = frame_lo/4 (gentle precession)
-    sta drift
+    lda driftlo              // advance the 16-bit precession accumulator
+    clc
+    adc #DRIFTSTEP
+    sta driftlo
+    lda drifthi
+    adc #0
+    sta drifthi              // drifthi = current precession offset (index units)
     lda #0
     sta msbacc               // build the $D010 X-MSB byte as we go
     ldx #NSPR-1
 !f:
-    lda angx,x               // X axis: Lissajous accumulator
+    lda axlo,x               // X phase += dxlo (16-bit, fractional speed)
     clc
-    adc dax,x
-    sta angx,x
-    tay
+    adc dxlo,x
+    sta axlo,x
+    lda axhi,x
+    adc #0
+    sta axhi,x
+    tay                      // table index = integer part of the X phase
     lda xlo,y                // low 8 bits of X -> sprite X register
     sta tmpx
     lda xhi,y                // bit 8 of X: fold into the MSB byte at bit #sprite
@@ -284,12 +290,15 @@ fly:
     ora bittab,x
     sta msbacc
 !nomsb:
-    lda angy,x               // Y axis: accumulator...
+    lda aylo,x               // Y phase += dylo (16-bit, fractional speed)
     clc
-    adc day,x
-    sta angy,x
+    adc dylo,x
+    sta aylo,x
+    lda ayhi,x
+    adc #0
+    sta ayhi,x
     clc
-    adc drift                // ...plus precession drift (index only)
+    adc drifthi              // + precession (index only, not stored)
     tay
     lda ytab,y
     sta tmpy
@@ -363,6 +372,10 @@ tick_scene:
     sta frame_lo
     sta frame_hi
     sta scidx
+    lda #<lyric_table        // rewind the lyric ticker so it replays each loop
+    sta ly_lo                // (else it stays frozen on the last line forever)
+    lda #>lyric_table
+    sta ly_hi
 !chk:
     ldx scidx
     cpx #6
@@ -446,13 +459,18 @@ lyric_tick:
 
 bordtab:    .byte $01,$07,$0a,$0e
 sprcol:     .byte $01,$07,$08,$0a,$0e,$03,$0d,$05  // 8 cube colours
-// Lissajous state (RAM, mutated each frame): per-sprite phase accumulators
-// seeded spread out, and per-sprite X/Y speeds. The (dax:day) ratio sets the
-// shape — coprime pairs give the prettiest figures; mixed speeds give variety.
-angx: .byte 0,32,64,96,128,160,192,224
-angy: .byte 64,96,128,160,192,224,0,32
-dax:  .byte 1,2,2,3,1,3,3,4              // X speed per sprite
-day:  .byte 2,1,3,2,3,1,4,3              // Y speed per sprite (!= dax -> weave)
+// Lissajous state (RAM, mutated each frame). Phase is 8.8 fixed point per
+// axis (axhi:axlo) so the per-frame step can be a fraction of one table
+// entry -> smooth, slow drift. axhi/ayhi seeded spread out; the dxlo:dylo
+// ratio sets the figure shape, the magnitude sets the (gentle) speed.
+axlo: .byte 0,0,0,0,0,0,0,0              // X phase, fractional byte
+axhi: .byte 0,32,64,96,128,160,192,224  // X phase, integer byte (= table index)
+aylo: .byte 0,0,0,0,0,0,0,0
+ayhi: .byte 64,96,128,160,192,224,0,32
+dxlo: .byte 48,72,64,96,40,80,88,66     // X speed (/256 of an index per frame)
+dylo: .byte 72,48,96,64,80,40,66,88     // Y speed (!= dxlo -> weave)
+driftlo: .byte 0                          // 16-bit precession accumulator
+drifthi: .byte 0
 // sine position tables (KickAss computes the sines at assemble time).
 // X spans 22..322 (full screen width incl. the 9th bit); split into low byte
 // + bit-8 table. Y spans 48..224 (top of the picture to the raster split).
