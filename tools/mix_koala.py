@@ -129,8 +129,10 @@ for cy in range(25):
             for p in range(4): harry[cy*8+r,cx*4+p]=pal[(byte>>(6-2*p))&3]
 for y in range(0,176):
     for x in range(W):
-        if (x<38 or x>=122) and harry[y,x]==WHITE:   # side margins only (clear of Miep)
-            img[y,x]=WHITE
+        if (x<34 or x>=126) and harry[y,x]==WHITE:   # only the dense swirl body;
+            img[y,x]=WHITE                            # tighter margin drops the
+                                                      # stray inner-curl strokes
+                                                      # that poked out as bars
 
 # ---- a little bag of fries (patat) bottom-centre, under the dragon ------
 FX,FY=92,168                                   # cone tip
