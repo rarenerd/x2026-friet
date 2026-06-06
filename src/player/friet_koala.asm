@@ -318,12 +318,23 @@ bittab: .byte 1,2,4,8,16,32,64,128
 
 // ---- spin: cycle each sprite's pointer through the 32 cube frames -----
 spin:
+    // spinbase = (16-bit frame / 16) mod 32 -> advance one rotation frame
+    // every 16 ticks (~10s per full 32-frame turn). Using the 16-bit counter
+    // keeps it smooth past frame_lo's 256 wrap (frame_lo alone can't go
+    // slower than /8 without snapping back mid-rotation).
     lda frame_lo
     lsr
     lsr
-    lsr                      // advance one rotation frame every 8 ticks
-                            // (~5s per full 32-frame turn; was hurried at /4)
+    lsr
+    lsr                      // bits 4-7 of frame (high nibble of frame_lo)
     sta spinbase
+    lda frame_hi
+    and #1                   // bit 8 of frame -> spinbase bit 4
+    beq !sb+
+    lda spinbase
+    ora #16
+    sta spinbase
+!sb:
     ldx #NSPR-1
 !s:
     lda cube_ph,x            // each cube starts at a different rotation frame
