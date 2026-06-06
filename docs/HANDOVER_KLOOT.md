@@ -127,11 +127,10 @@ Heb je een echte part-keten met transitions nodig, dan pas **B**.
    `out/friet.prg` (de demo) — niet `out/friet_lyrics.prg`.
 2. Reserveer in de host-memorymap `$0801–$8B84` + VIC-bank 1 + colour-RAM
    voor de part (zie §2), of laad 'm als losse overlay (strategie A).
-3. Nieuwe **koala-art komt eraan**: Anne Jan schildert een nieuwe Miep +
-   sigaar-Harry compositie in Multipaint. Die wordt hier ingedraad via
-   `make koala` (`tools/mix_koala.py`) — de `.prg` blijft op hetzelfde
-   adres laden, dus jouw integratie verandert daar niet door. Pull gewoon
-   opnieuw en herbouw.
+3. Nieuwe **koala-art komt eraan** van **pHasedBased**: een nieuwe Miep +
+   sigaar-Harry compositie. Die wordt hier ingedraad via `make koala`
+   (`tools/mix_koala.py`) — de `.prg` blijft op hetzelfde adres laden, dus
+   jouw integratie verandert daar niet door. Pull gewoon opnieuw en herbouw.
 
 ---
 
